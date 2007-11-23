@@ -7,6 +7,9 @@
 =============================================================================-->
 <project name="JVMLauncher" default="JvmLauncher" basedir=".">
 
+  <property file="${user.home}/ant.env.properties" />
+  <property file="../../ant.properties" />
+
   <!-- set global properties for this build -->
   <property name="release" value="${basedir}/Release"/>
   <property name="release_x64" value="${basedir}/x64/Release"/>
