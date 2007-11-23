@@ -64,7 +64,16 @@ private:
 	 * @param pcApplicationDirectory the application directory
 	 * @param pcRelativeLibDirectory the lib directory relative to the application directory
 	 */
-	void addJarsToClasspath(LPSTR pcClasspath, DWORD dwClasspathLength, LPCSTR pcApplicationDirectory, LPCSTR pcRelativeLibDirectory);
+	void addJarsToClasspath(LPSTR& pcClasspath, DWORD& dwClasspathLength, LPCSTR pcApplicationDirectory, LPCSTR pcRelativeLibDirectory);
+
+	/*
+	 * Adds a path to the classpath
+	 * @param pcClasspath the classpath buffer
+	 * @param dwClasspathLength the length of the classpath buffer
+	 * @param pcPathToAdd the path to add
+	 * @param pcFiltToAdd the file to add. Maybe NULL
+	 */
+	void addToClasspath(LPSTR& pcClasspath, DWORD& dwClasspathLength, LPCSTR pcPathToAdd, LPCSTR pcFileToAdd);
 
 	/*
 	 * Initializes the memory options

@@ -28,7 +28,7 @@ History:
 #include <assert.h>
 #include <io.h>
 
-#define MAX_CLASSPATH_LENGTH 20000
+#define MAX_CLASSPATH_LENGTH 10000
 
 typedef struct 
 {
@@ -676,38 +676,72 @@ void CJavaProgram::initializeGarbageCollectorOptions(CVmOptions& options)
 	}
 }
 
+void CJavaProgram::addToClasspath(LPSTR& pcClasspath, DWORD& dwClasspathLength, LPCSTR pcPathToAdd, LPCSTR pcFileToAdd)
+{
+	LPSTR pcNewClasspath;
+	DWORD dwNeededPlace;
+
+	dwNeededPlace = 1+1+strlen(pcPathToAdd);  // 1 for ; and 1 for the ending zero
+	if (pcFileToAdd != NULL)
+	{
+		dwNeededPlace = dwNeededPlace+strlen(pcFileToAdd); 
+		CLog::info("  Adding '%s'", pcFileToAdd);
+	}
+	else
+	{
+		CLog::info("Adding '%s' directory to classpath", pcPathToAdd);
+	}
+
+	if ((strlen(pcClasspath)+dwNeededPlace) > dwClasspathLength)
+	{
+		CLog::info("Expanding classpath buffer form {%d}", dwClasspathLength);
+		pcNewClasspath = new char[dwClasspathLength*2];
+		strcpy_s(pcNewClasspath, dwClasspathLength, pcClasspath);
+		dwClasspathLength = dwClasspathLength*2;
+		delete pcClasspath;
+		pcClasspath = pcNewClasspath;
+	}
+	strcat_s(pcClasspath, dwClasspathLength, pcPathToAdd);
+	if (pcFileToAdd != NULL)
+	{
+		strcat_s(pcClasspath, dwClasspathLength, pcFileToAdd);
+	}
+	strcat_s(pcClasspath, dwClasspathLength, ";");
+}
+
+
 void CJavaProgram::initializeClassPathOption(CVmOptions& options, LPCSTR pcApplicationDirectory)
 {
 	char pcClassesDir[MAX_PATH];
-	char pcClassPath[MAX_CLASSPATH_LENGTH];
+	DWORD maxClassPathLength = MAX_CLASSPATH_LENGTH;
+	LPSTR pcClassPath = new char[MAX_CLASSPATH_LENGTH];
 	LPCSTR pcAuxDirectory;
 
 	/* Prepare a string which takes the classpath */
-    strcpy_s(pcClassPath, MAX_CLASSPATH_LENGTH, "-Djava.class.path=");
+    strcpy_s(pcClassPath, maxClassPathLength, "-Djava.class.path=");
 
 	/* Add the classes directory first */
 	strcpy_s(pcClassesDir, MAX_PATH, pcApplicationDirectory);
 	strcat_s(pcClassesDir, MAX_PATH, "\\lib\\classes");
-	CLog::info("Adding '%s' directory to classpath", pcClassesDir);
-	strcat_s(pcClassPath, MAX_CLASSPATH_LENGTH, pcClassesDir); 
-	strcat_s(pcClassPath, MAX_CLASSPATH_LENGTH, ";"); 
+
+	addToClasspath(pcClassPath, maxClassPathLength, pcClassesDir, NULL);
 
 	// Add jars in patch directory
-	addJarsToClasspath(pcClassPath, MAX_CLASSPATH_LENGTH, pcApplicationDirectory, "lib\\patch");
+	addJarsToClasspath(pcClassPath, maxClassPathLength, pcApplicationDirectory, "lib\\patch");
 	// Add jars in shared directory
-	addJarsToClasspath(pcClassPath, MAX_CLASSPATH_LENGTH, pcApplicationDirectory, "lib\\shared");
+	addJarsToClasspath(pcClassPath, maxClassPathLength, pcApplicationDirectory, "lib\\shared");
 	// Add jars in aux directory
 	pcAuxDirectory = m_launchConfiguration.getAuxDirectory();
 	if (pcAuxDirectory == NULL)
 	{
 		pcAuxDirectory = "lib\\ivy";
 	}
-	addJarsToClasspath(pcClassPath, MAX_CLASSPATH_LENGTH, pcApplicationDirectory, pcAuxDirectory);
+	addJarsToClasspath(pcClassPath, maxClassPathLength, pcApplicationDirectory, pcAuxDirectory);
 
 	options.addOption(pcClassPath, NULL);
 }
 
-void CJavaProgram::addJarsToClasspath(LPSTR pcClasspath, DWORD dwClasspathLength, LPCSTR pcApplicationDirectory, LPCSTR pcRelativeLibDirectory)
+void CJavaProgram::addJarsToClasspath(LPSTR& pcClasspath, DWORD& dwClasspathLength, LPCSTR pcApplicationDirectory, LPCSTR pcRelativeLibDirectory)
 {
 	char pcLibDirectory[MAX_PATH];
 	char pcJarFileFilter[MAX_PATH];
@@ -768,10 +802,7 @@ void CJavaProgram::addJarsToClasspath(LPSTR pcClasspath, DWORD dwClasspathLength
 	// Add to classpath
 	for(DWORD dwPos = 0; dwPos < dwCount; dwPos++)
 	{
-		strcat_s(pcClasspath, dwClasspathLength, pcLibDirectory);
-		strcat_s(pcClasspath, dwClasspathLength, ppcJarFiles[dwPos]);
-		strcat_s(pcClasspath, dwClasspathLength, ";");
-		CLog::info("  Adding %s", ppcJarFiles[dwPos]);
+		addToClasspath(pcClasspath, dwClasspathLength, pcLibDirectory, ppcJarFiles[dwPos]);
 	}
 	// release allocated memory
 	for (DWORD dwPos = 0; dwPos < dwCount; dwPos++)
