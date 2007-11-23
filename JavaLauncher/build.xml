@@ -1,0 +1,127 @@
+<!--============================================================================
+=== This is the build file for the Java Launcher projekt
+===
+=== Author Reto Weiss
+=== Version ReW 12.12.2005 changed Version Control System from cs-rcs to subversion
+=== Version ReW 19.4.2002
+=============================================================================-->
+<project name="JavaLauncher" default="JavaLauncher" basedir=".">
+
+  <!-- set global properties for this build -->
+  <!-- configuration properties -->
+  <!-- set the property 'icon' to an other location if the icon is not located in the default dir -->
+  <property name="icon" value="${basedir}/icons"/>
+  <!-- set the property 'config' to an other location if the config.h files are not located in the default dir -->
+  <property name="config" value="${basedir}/configurations"/>
+  <!-- set the property 'launcher' to an other name if the launcher has not the default name -->
+  <property name="launcher" value="Launcher"/>
+  <!-- set the property 'bin' to an other location if the resulting launcher should be located on an other location than the default dir -->
+  <property name="bin" value="${basedir}/bin"/>
+  <!-- the platform to build either x86 or x64 -->
+  <property name="platform" value="x86"/>
+
+
+
+  <!-- do not external configurate the following internal properties -->
+  <property name="icons" value="${basedir}/icons"/>
+  <property name="release" value="${basedir}/Release"/>
+  <property name="releaseConsole" value="${basedir}/ReleaseConsole"/>
+  <property name="release.x64" value="${basedir}/x64/Release"/>
+  <property name="releaseConsole.x64" value="${basedir}/x64/Release Console"/>
+  <property name="executable" value="JavaLauncher.exe"/>
+  <property name="executebleConsole" value="JavaLauncherC.exe"/>
+  <property name="tools.microsoft.visualstudio.builder" value="devenv.exe"/>
+
+  <!-- init -->
+  <target name="init" description="Initializes the Java Launcher build">
+    <condition property="dir.release" value="${release}">
+      <equals arg1="x86" arg2="${platform}"/>
+    </condition>
+    <condition property="dir.release" value="${release.x64}">
+      <equals arg1="x64" arg2="${platform}"/>
+    </condition>
+    <condition property="dir.releaseConsole" value="${releaseConsole}">
+      <equals arg1="x86" arg2="${platform}"/>
+    </condition>
+    <condition property="dir.releaseConsole" value="${releaseConsole.x64}">
+      <equals arg1="x64" arg2="${platform}"/>
+    </condition>
+    <condition property="cpplib" value="${tools.microsoft.visualstudio.lib}">
+      <equals arg1="x86" arg2="${platform}"/>
+    </condition>
+    <condition property="cpplib" value="${tools.microsoft.visualstudio.lib.x64}">
+      <equals arg1="x64" arg2="${platform}"/>
+    </condition>
+    <condition property="path" value="${tools.microsoft.visualstudio.path}">
+      <equals arg1="x86" arg2="${platform}"/>
+    </condition>
+    <condition property="path" value="${tools.microsoft.visualstudio.path.x64}">
+      <equals arg1="x64" arg2="${platform}"/>
+    </condition>
+    <condition property="targetConfig" value="Release">
+      <equals arg1="x86" arg2="${platform}"/>
+    </condition>
+    <condition property="targetConfig" value="Release|x64">
+      <equals arg1="x64" arg2="${platform}"/>
+    </condition>
+    <condition property="targetConfigConsole" value="Release Console|x64">
+      <equals arg1="x64" arg2="${platform}"/>
+    </condition>
+    <condition property="targetConfigConsole" value="Release Console">
+      <equals arg1="x86" arg2="${platform}"/>
+    </condition>
+    <echoproperties/>
+	 
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Delete the binaries -->
+    <delete file="${bin}/${launcher}.exe" failonerror="false"/>
+    <delete file="${bin}/${launcher}C.exe" failonerror="false"/>
+    <delete dir="${dir.release}" failonerror="false"/>
+    <delete dir="${dir.releaseConsole}" failonerror="false"/>
+  </target>
+
+  <!-- Build Java Launcher with Visual C++ -->
+  <target name="buildLauncher" description="Builds the Java Launcher with Visual C++" depends="init">
+    <!-- Copies the config file of the binary with no console to config.h -->
+    <copy file="${config}/${launcher}.h" tofile="${basedir}/config.h" overwrite="true"/>
+
+    <!-- Copies the icon file of the binary to the icons dir -->
+    <copy file="${icon}/${launcher}.ico" todir="${icons}"/>
+
+    <!-- Build visual C++ project -->
+    <exec executable="${tools.microsoft.visualstudio.builder}" failonerror="true">
+        <arg line="JavaLauncher.sln /Rebuild ${targetConfig} /UseEnv"/>
+        <env key="include" path="${tools.microsoft.visualstudio.include}"/>
+        <env key="lib" path="${cpplib}"/>
+        <env key="path" path="${path}"/>
+    </exec>
+    <!-- copy resulting executable to bin directory -->
+    <copy file="${dir.release}/${executable}" tofile="${bin}/${launcher}.exe"/>
+  </target>
+
+  <!-- Build Java Launcher with Visual C++ -->
+  <target name="buildConsoleLauncher" description="Builds the Java Console Launcher with Visual C++" depends="init">
+    <!-- Copies the config file of the binary with no console to config.h -->
+    <copy file="${config}/${launcher}C.h" tofile="${basedir}/config.h" overwrite="true"/>
+
+    <!-- Copies the icon file of the binary to the icons dir -->
+    <copy file="${icon}/${launcher}.ico" todir="${icons}"/>
+
+    <!-- Build visual C++ project -->
+    <exec executable="${tools.microsoft.visualstudio.builder}" failonerror="true">
+        <arg line="JavaLauncher.sln /Rebuild &quot;${targetConfigConsole}&quot; /UseEnv"/>
+        <env key="include" path="${tools.microsoft.visualstudio.include}"/>
+        <env key="lib" path="${cpplib}"/>
+        <env key="path" path="${path}"/>        
+    </exec>
+    <!-- copy resulting executable to bin directory -->
+    <copy file="${dir.releaseConsole}/${executebleConsole}" tofile="${bin}/${launcher}C.exe"/>
+  </target>
+
+  <!-- Builds the Java Launcher and the Java Console Launcher -->
+  <target name="build" description="Builds the Java Launcher and the Java Console Launcher" depends="buildLauncher, buildConsoleLauncher"/>
+
+  <!-- Checks out sources and builds the Java Launcher and the Java Console Launcher -->
+  <target name="JavaLauncher" description="Build the Java Launcher" depends="build"/>
+</project>

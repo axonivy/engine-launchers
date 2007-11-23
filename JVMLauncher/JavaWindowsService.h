@@ -1,0 +1,288 @@
+/*-----------------------------------------------------------------------------------
+
+   Java Virtual Maschine Launcher
+
+-------------------------------------------------------------------------------------
+
+A java Windows service. This is an Windows service that calls certain static java methods of a java class
+if some eveWindowss on the Windows service happends. 
+
+--------------------------------------------------------------------------------------
+
+Project		: JVMLauncher
+Version		: 1.0
+Compiler	: VC++ 6
+Java		: JDK1.4
+Author		: Reto Weiss
+Copyright	: Ivyteam, 2006
+
+--------------------------------------------------------------------------------------
+History:
+		  27.3.2006 ReW created
+--------------------------------------------------------------------------------------*/
+#ifndef __JAVA_NT_SERVICE_H__
+#define __JAVA_NT_SERVICE_H__
+
+#include "JavaProgram.h"
+#include "LaunchException.h"
+
+#ifdef JVMLauncher
+#define JVMLauncherExport __declspec(dllexport)
+#else
+#define JVMLauncherExport __declspec(dllimport)
+#endif
+
+class JVMLauncherExport CJavaWindowsService : public CJavaProgram
+{
+private:
+	/*  The java virtual maschine to use */
+	CJavaVirtualMaschine* m_pJavaVirtualMaschine;
+
+	/* The one and only java windows service in this process */
+	static CJavaWindowsService*  m_pInstance;
+
+	/* The status of the windows service */
+	SERVICE_STATUS			m_serviceStatus;		
+
+	/* The service status handle */
+	SERVICE_STATUS_HANDLE   m_hServiceStatus;		
+
+	/* The java class which represents the windows service */
+	jclass					m_javaServiceClass;	
+
+	/* The java method to start the windows service */
+	jmethodID				m_startServiceMethod;
+
+	/* The java method to stop the windows service */
+	jmethodID				m_stopServiceMethod;	
+
+	/* The java method to pause the windows service */
+	jmethodID				m_pauseServiceMethod;	
+
+	/* The java method to continue the windows service */
+	jmethodID				m_continueServiceMethod;	
+
+	/* the java mehtod to shutdown the windows service */
+	jmethodID				m_shutdownServiceMethod;	
+
+	/* Handle to the event used to signal that java startup thread has startuped the java windows service */
+	HANDLE					m_hEvent;
+
+	/* The exception thrown if java startup thread fails */
+	CLaunchException*		m_pStartupException;
+
+	/* 
+	 * This method is called by the static startupWindowsService method
+	 * @param argc number of arguments
+	 * @param argv arguments
+     * @throws CLaunchException if an error occurs
+	 */
+	void startup(DWORD argc, LPSTR* argv);
+
+	/*
+	 * This method is called by the static startupJavaWindowsService method. It startups the java virtual maschine and 
+	 * calls the startService method of the java service class
+	 */
+	void startupJava();
+
+	/*
+	 * Initializes the java windows service 
+	 * @throws CLaunchException if java service class can not be loaded or java service control method are not found
+	 */
+	void initializeJavaWindowsService();
+
+	/*
+	 * Initializes the service. This method starts the java main thread and then waits until the java main 
+	 * thread has launched the java virtual maschine and has invoked the startService method of the java service class
+	 */
+	void initialize(DWORD argc, LPSTR* argv);
+
+	/*
+	 * Adds the exit hook to the vm options
+	 * @param options the vm options
+	 */
+	void addJvmExitHook(CVmOptions& options);
+
+	/*
+	 * This method is called by the static controlWindowsService method
+	 * @param operationCode the code of the operation the windows service should do
+	 * @throws CLaunchException if an error occurs
+	 */
+	void control(DWORD operationCode);
+
+	/*
+	 * Pauses the windows service 
+	 */
+	void pause();
+
+	/*
+	 * Continues the windows service 
+	 */
+	void continue_();
+	
+	/*
+	 * stops the windows serivce 
+	 */
+	void stop();
+
+	/*
+	 * shutdowns the windows service
+	 */
+	void shutdown();
+
+	/*
+	 * Starts the windows service
+	 */
+	void start();
+
+	/*
+	 * This method is called by the static exitWindowsService method
+	 * @param javaExitCode the java exit code
+	 */
+	void exit(jint javaExitCode);
+
+public:
+	/*
+	 * Constructor 
+	 * @param launchConfiguration the launch configuration to use 
+	 */
+	CJavaWindowsService(CLaunchConfiguration& launchConfiguration);
+
+	/*
+	 * Destructor
+	 */
+	virtual ~CJavaWindowsService(void);
+
+	/*
+	 * Creates a java Windows service
+	 * @param pcWindowsServiceName the windows service name
+	 * @param pcMainJavaWindowsServiceClass the main java Windows service class to run
+	 * @return the created java windows service instance
+	 */
+	static CJavaWindowsService* createJavaWindowsService(LPCSTR pcWindowsServiceName, LPCSTR pcMainJavaWindowsServiceClass);
+
+	/*
+	 * Creates a java Windows service.
+	 * Reads the launch configuration from a launch configuration file that has the same name as the exe started this program.
+	 * @return the created java windows service instance
+	 * @throws CLaunchException if launch configuration file does not exists, cannot be read or has a unvalid format
+	 */
+	static CJavaWindowsService* createJavaWindowsService();
+
+	/**
+	 * Creates a java Windows service.
+	 * Uses the launch configuration stored in the launch configuration file
+	 * @param launchConfigurationFile poiWindowser to the launch configuration file to use
+	 * @return the created java windows service instance
+	 * @throws CLaunchException if launch configuration file does not exists, cannot be read or has a unvalid format
+	 */
+	static CJavaWindowsService* createJavaWindowsService(CLaunchConfigurationFile launchConfigurationFile);
+
+	/*
+	 * Creates a java Windows service.
+	 * Uses the launch configuration given
+	 * @param launchConfiguration the launch configuration to used
+	 * @return the created java windows service instance
+	 */
+	static CJavaWindowsService* createJavaWindowsService(CLaunchConfiguration launchConfiguration);
+
+	/*
+	 * Creates a java Windows service program.
+	 * Uses the launch configuration given overwritten with the launch configuration read from a 
+	 * launch configuration file that has the same name as the exe started this program. 
+	 * @param defaultLaunchConfiguration the default launch configuration to used
+	 * @param readLaunchConfigurationFileIfExists should the launch configuration file be read if it exists 
+	 * @return the created java windows service instance
+	 * @throws CLaunchException if launch configuration file cannot be read or has a unvalid format
+	 */	
+	static CJavaWindowsService* createJavaWindowsService(CLaunchConfiguration defaultLaunchConfiguration, bool readLaunchConfigurationFileIfExists);
+
+	/*
+	 * Creates a java net service program.
+	 * Uses the launch configuration given overwritten with the launch configuration read from a 
+	 * launch configuration file. 
+	 * @param launchConfiguration the launch configuration to used
+	 * @param launchConfigurationFile the launch configuration file that overwrittes the settings in pLaunchConfiguration 
+	 * @return the created java windows service instance
+	 * @throws CLaunchException if launch configuration file does not exists cannot be read or has a unvalid format
+	 */	
+	static CJavaWindowsService* createJavaWindowsService(CLaunchConfiguration defaultLaunchConfiguration, CLaunchConfigurationFile launchConfigurationFile);
+
+	/*
+	 * The main method of the Windows service. This function must be called if the windows starts the windows service.
+	 * The method installs then a service control manager and exits. After that windows calls the startup method to startup the service.
+	 * Note you can use the startWindowsService method to told the system to start the service.
+	 * @throws CLaunchException if the Windows service can not be started.
+	 */
+	void main();
+
+	/*
+	 * Calls the main method above argc and argv are ignored
+	 * @param argc the number of argumeWindowss passed to the java program
+	 * @param argv the argumeWindowss passed to the java program
+	 */
+	void main(int argc, LPSTR argv[]);
+
+	/*
+	 * Registers the NT Service
+	 * @param pcUserName Name of user as this service should iWindowseract as (NULL means SystemUser)
+	 * @param pcPassword Password of service user (can be NULL for SystemUser)
+	 * @param dwStartType How is the service started. See CreateService of Win32 documeWindowsation for details
+	 * @param dwDesiredAccess What access rights has the service. See CreateService of Win32 documeWindowsation for details
+	 * @param dwErrorCoWindowsrol What happens if the service can not started. See CreateService of Win32 documeWindowsation for details
+	 * @throws CLaunchException if NT Service cannot be registered
+	 */
+	void registerWindowsService(
+			LPCSTR pcUserName = NULL,
+			LPCSTR pcPassword = NULL,
+			DWORD dwStartType = SERVICE_AUTO_START,
+			DWORD dwDesiredAccess = SERVICE_ALL_ACCESS,
+			DWORD dwErrorCoWindowsrol = SERVICE_ERROR_NORMAL);
+
+	/*
+	 * Unregisters the NT Service
+	 * @throws CLaunchException if NT service cannot be unregistered
+	 */
+	void unregisterWindowsService();
+
+	/*
+	 * Starts the NT Service. Note this function simply told windows to start the service. 
+	 * It does not implemeWindows the service itself. To implemeWindows the service one has to call the main method of this class
+	 * @throws CLaunchException if NT service cannot be started
+	 */
+	void startWindowsService();
+
+	/*
+	 * Stops the NT Service
+	 * @throws CLaunchException if NT service cannot be started
+	 */
+	void stopWindowsService();
+
+	/* 
+	 * This method is called by the system to start the windows service. Do not call this method otherwise.
+ 	 * @param argc number of arguments
+	 * @param argv arguments
+	*/
+	static void startupWindowsService(DWORD argc, LPSTR *argv);
+
+	/*
+	 * This method is called by the system to control the windows service. Do not call this method otherwise.
+	 * @param operationCode the code of the operation the windows service should do
+	 */
+	static void controlWindowsService(DWORD operationCode);
+
+	/*
+	 * This method is called by the java startup thread. Do not call this method otherwise. 
+	 * The method startups the java virtual maschine and calls the startService method of the java service class.
+	 */
+	static void startupJavaWindowsService();
+
+	/*
+	 * This method is called by the jvm exit hook (jvmExitHook). Do not call this method otherwise.
+	 * The method set the status of the windows service to stop and sets the exit code. Then it calls exit()
+	 * to stop the windows service process 
+	 */
+	static void exitWindowsService(jint javaExitCode);
+};
+
+#endif

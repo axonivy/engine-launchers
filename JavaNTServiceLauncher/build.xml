@@ -1,0 +1,80 @@
+<!--============================================================================
+=== This is the build file for the Java NT Service Launcher projekt
+===
+=== Author Reto Weiss
+=== Version ReW 12.12.2005 changed Version Control System from cs-rcs to subversion
+=== Version ReW 23.4.2002
+=============================================================================-->
+<project name="JavaNtServiceLauncher" default="JavaNtServiceLauncher" basedir=".">
+
+  <!-- set global properties for this build -->
+  <!-- configuration properties -->
+  <!-- set the property 'config' to an other location if the config.h files are not located in the default dir -->
+  <property name="config" value="${basedir}/configurations"/>
+  <!-- set the property 'launcher' to an other name if the launcher has not the default name -->
+  <property name="launcher" value="Launcher"/>
+  <!-- set the property 'bin' to an other location if the resulting launcher should be located on an other location than the default dir -->
+  <property name="bin" value="${basedir}/bin"/>
+
+  <property name="platform" value="x86"/>
+
+  <property name="tools.microsoft.visualstudio.builder" value="devenv.exe"/>
+
+
+  <!-- do not external configurate the following internal properties -->
+  <property name="release" value="${basedir}/release"/>
+  <!-- do not external configurate the following internal properties -->
+  <property name="release.x64" value="${basedir}/x64/release"/>
+
+  <!-- init -->
+  <target name="init" description="initializes the Java NT Service Launcher build">
+    <condition property="dir.release" value="${release}">
+      <equals arg1="x86" arg2="${platform}"/>            
+    </condition>
+    <condition property="dir.release" value="${release.x64}">
+      <equals arg1="x64" arg2="${platform}"/>
+    </condition>
+    <condition property="cpplib" value="${tools.microsoft.visualstudio.lib}">
+      <equals arg1="x86" arg2="${platform}"/>
+    </condition>
+    <condition property="cpplib" value="${tools.microsoft.visualstudio.lib.x64}">
+      <equals arg1="x64" arg2="${platform}"/>
+    </condition>
+    <condition property="path" value="${tools.microsoft.visualstudio.path}">
+      <equals arg1="x86" arg2="${platform}"/>
+    </condition>
+    <condition property="path" value="${tools.microsoft.visualstudio.path.x64}">
+      <equals arg1="x64" arg2="${platform}"/>
+    </condition>
+    <condition property="targetConfig" value="Release">
+      <equals arg1="x86" arg2="${platform}"/>
+    </condition>
+    <condition property="targetConfig" value="Release|x64">
+      <equals arg1="x64" arg2="${platform}"/>
+    </condition>
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Delete the java NT Service Launcher -->
+    <delete dir="${bin}/${launcher}" failonerror="false"/>
+    <delete dir="${dir.release}" failonerror="false"/>
+  </target>
+
+  <target name="build" description="Builds the Java NT Service Launcher with Visual C++" depends="init">
+    <!-- Copies the config file of the service config.h -->
+    <copy file="${config}/${launcher}.h" tofile="${basedir}/config.h" overwrite="true"/>
+
+    <!-- Build visual C++ project -->
+    <exec executable="${tools.microsoft.visualstudio.builder}" failonerror="true">
+      <arg line="JavaNtServiceLauncher.sln /Rebuild ${targetConfig} /UseEnv"/>
+      <env key="include" path="${tools.microsoft.visualstudio.include}"/>
+      <env key="lib" path="${cpplib}"/>
+      <env key="path" path="${path}"/>
+    </exec>
+
+    <!-- copy resulting executable to bin directory -->
+    <copy file="${dir.release}/JavaNTServiceLauncher.exe" tofile="${bin}/${launcher}.exe"/>
+  </target>
+  
+  <!-- Checks out sources and builds the Java Launcher and the Java Console Launcher -->
+  <target name="JavaNtServiceLauncher" description="Build the Java Nt Service Launcher" depends="build"/>
+</project>
