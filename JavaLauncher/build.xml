@@ -106,7 +106,7 @@
   <!-- Build Java Launcher with Visual C++ -->
   <target name="buildConsoleLauncher" description="Builds the Java Console Launcher with Visual C++" depends="init">
     <!-- Copies the config file of the binary with no console to config.h -->
-    <copy file="${config}/${launcher}C.h" tofile="${basedir}/config.h" overwrite="true"/>
+    <copy file="${config}/${launcher}.h" tofile="${basedir}/config.h" overwrite="true"/>
 
     <!-- Copies the icon file of the binary to the icons dir -->
     <copy file="${icon}/${launcher}.ico" todir="${icons}"/>
