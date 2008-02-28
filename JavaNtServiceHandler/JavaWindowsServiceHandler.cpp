@@ -1,17 +1,17 @@
 /*-----------------------------------------------------------------------------------
 
-   Java Nt Service Handler
+   Java Widnows Service Handler
 
 -------------------------------------------------------------------------------------
 
-  Implements the native method of class ivyteam.server.NtServiceHandler
+  Implements the native method of class ch.ivyteam.server.win.WindowsServiceHandler
 
 --------------------------------------------------------------------------------------
 
-Project		: JavaNtServiceHandler
+Project		: JavaWindowsServiceHandler
 Version		: 1.0
-Compiler	: VC++ 5
-Java		: JDK1.3
+Compiler	: VC++ 2005
+Java		: JDK1.5
 Author		: Reto Weiss
 Copyright	: Ivyteam, 2001
 
@@ -28,8 +28,8 @@ History:
 #include <iostream>
 #include "..\JNILib\JNILib.h"
 
-#define JavaNtServiceHandler
-#include "ivyteam_server_NtServiceHandler.h"
+#define JavaWindowsServiceHandler
+#include "ch_ivyteam_server_win_WindowsServiceHandler.h"
 
 
 /*
@@ -43,7 +43,7 @@ SC_HANDLE GetServiceHandle(JNIEnv *jpEnv, jobject jpThis)
 	jpField = GetField(jpEnv, jpThis, "serviceHandle", "J");
 	if (jpField==NULL)
 	{
-		Throw(jpEnv, "ivyteam/server/NtServiceException", "serviceHandle field not found");
+		Throw(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "serviceHandle field not found");
 		return NULL;
 	}
 
@@ -52,11 +52,11 @@ SC_HANDLE GetServiceHandle(JNIEnv *jpEnv, jobject jpThis)
 }
 
 /*
- * Class:     ivyteam_server_NtServiceHandler
+ * Class:     ch_ivyteam_server_win_WindowsServiceHandler
  * Method:    openService
- * Signature: (Ljava/lang/String;)Livyteam/server/NtServiceHandler;
+ * Signature: (Ljava/lang/String;)Lch/ivyteam/server/win/WindowsServiceHandler;
  */
-JNIEXPORT jobject JNICALL Java_ivyteam_server_NtServiceHandler_openService
+JNIEXPORT jobject JNICALL Java_ch_ivyteam_server_win_WindowsServiceHandler_openService
   (JNIEnv *jpEnv, jclass jpClass, jstring jpStrServiceName)
 {
 	LPCSTR pcServiceName;
@@ -71,7 +71,7 @@ JNIEXPORT jobject JNICALL Java_ivyteam_server_NtServiceHandler_openService
 	jint jiStartKind;
 	jlong jlServiceHandle;
 	jobject jpServiceHandler, jpDependOnServices;
-	jmethodID jpConstructor, jpVectorAdd;
+	jmethodID jpConstructor, jpListAdd;
 
 	pcServiceName = jpEnv->GetStringUTFChars(jpStrServiceName, &isCopy);
 	
@@ -83,7 +83,7 @@ JNIEXPORT jobject JNICALL Java_ivyteam_server_NtServiceHandler_openService
  
 	if (hSCManager == NULL) 
 	{
-		ThrowWin32Msg(jpEnv, "ivyteam/server/NtServiceException", "Could not open service manager");
+		ThrowWin32Msg(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Could not open service manager");
 		jpEnv->ReleaseStringUTFChars(jpStrServiceName, pcServiceName);
 		return NULL;
 	}
@@ -96,7 +96,7 @@ JNIEXPORT jobject JNICALL Java_ivyteam_server_NtServiceHandler_openService
  
     if (hSCService == NULL) 
 	{
-		ThrowWin32Msg(jpEnv, "ivyteam/server/NtServiceException", "Could not open service");
+		ThrowWin32Msg(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Could not open service");
 		CloseServiceHandle(hSCManager);
 		jpEnv->ReleaseStringUTFChars(jpStrServiceName, pcServiceName);
 		return NULL;
@@ -122,7 +122,7 @@ JNIEXPORT jobject JNICALL Java_ivyteam_server_NtServiceHandler_openService
 
 	if (success == FALSE)
 	{
-		ThrowWin32Msg(jpEnv, "ivyteam/server/NtServiceException", "Could not query service configuration");
+		ThrowWin32Msg(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Could not query service configuration");
 		CloseServiceHandle(hSCService);
 		CloseServiceHandle(hSCManager);
 		jpEnv->ReleaseStringUTFChars(jpStrServiceName, pcServiceName);
@@ -139,22 +139,22 @@ JNIEXPORT jobject JNICALL Java_ivyteam_server_NtServiceHandler_openService
 	pcDependencies = lpServiceConfig->lpDependencies;
 
 	// create java.util.Vector to store depend on service names in it
-	jpDependOnServices = CreateObject(jpEnv, "java/util/Vector");
+	jpDependOnServices = CreateObject(jpEnv, "java/util/ArrayList");
 	if (jpDependOnServices == NULL)
 	{
 		CloseServiceHandle(hSCService);
 		CloseServiceHandle(hSCManager);
 		jpEnv->ReleaseStringUTFChars(jpStrServiceName, pcServiceName);
-		Throw(jpEnv, "ivyteam/server/NtServiceException", "Could not create Vector object");
+		Throw(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Could not create Vector object");
 		return NULL;
 	}
-	jpVectorAdd = GetMethod(jpEnv,jpDependOnServices , "add", "(Ljava/lang/Object;)Z");
-	if (jpVectorAdd == NULL)
+	jpListAdd = GetMethod(jpEnv,jpDependOnServices , "add", "(Ljava/lang/Object;)Z");
+	if (jpListAdd == NULL)
 	{
 		CloseServiceHandle(hSCService);
 		CloseServiceHandle(hSCManager);
 		jpEnv->ReleaseStringUTFChars(jpStrServiceName, pcServiceName);
-		Throw(jpEnv, "ivyteam/server/NtServiceException", "Could not get method add(Object) of Vector class");
+		Throw(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Could not get method add(Object) of Vector class");
 		return NULL;
 	}
 
@@ -162,7 +162,7 @@ JNIEXPORT jobject JNICALL Java_ivyteam_server_NtServiceHandler_openService
 	while ((pcDependencies!=NULL)&&(pcDependencies[0] != '\0'))
 	{	
 		// call add method on the vector
-		jpEnv->CallBooleanMethod(jpDependOnServices, jpVectorAdd, jpEnv->NewStringUTF(pcDependencies));
+		jpEnv->CallBooleanMethod(jpDependOnServices, jpListAdd, jpEnv->NewStringUTF(pcDependencies));
 		pcDependencies=pcDependencies+strlen(pcDependencies)+1;
 	}
 	
@@ -170,24 +170,24 @@ JNIEXPORT jobject JNICALL Java_ivyteam_server_NtServiceHandler_openService
 	LocalFree(lpServiceConfig); 
 	
 	// create service handler object
-	jpServiceHandler = CreateUninitObject(jpEnv, "ivyteam/server/NtServiceHandler");
+	jpServiceHandler = CreateUninitObject(jpEnv, "ch/ivyteam/server/win/WindowsServiceHandler");
 	if (jpServiceHandler == NULL)
 	{
 		CloseServiceHandle(hSCService);
 		CloseServiceHandle(hSCManager);
 		jpEnv->ReleaseStringUTFChars(jpStrServiceName, pcServiceName);
-		Throw(jpEnv, "ivyteam/server/NtServiceException", "Could not create NtServiceHandler object");
+		Throw(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Could not create NtServiceHandler object");
 		return NULL;
 	}
 	
 	// get constructor
-	jpConstructor = GetConstructor(jpEnv, jpServiceHandler, "(JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/util/Vector;)V");
+	jpConstructor = GetConstructor(jpEnv, jpServiceHandler, "(JLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/util/List;)V");
 	if (jpConstructor == NULL)
 	{
 		CloseServiceHandle(hSCService);
 		CloseServiceHandle(hSCManager);
 		jpEnv->ReleaseStringUTFChars(jpStrServiceName, pcServiceName);
-		Throw(jpEnv, "ivyteam/server/NtServiceException", "NtServiceHandler constructor not found");
+		Throw(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "NtServiceHandler constructor not found");
 		return NULL;
 	}
 	
@@ -210,11 +210,11 @@ JNIEXPORT jobject JNICALL Java_ivyteam_server_NtServiceHandler_openService
 }
 
 /*
- * Class:     ivyteam_server_NtServiceHandler
+ * Class:     ch_ivyteam_server_win_WindowsServiceHandler
  * Method:    getServiceNames
- * Signature: ()Ljava/util/Enumeration;
+ * Signature: ()Ljava/util/List;
  */
-JNIEXPORT jobject JNICALL Java_ivyteam_server_NtServiceHandler_getServiceNames
+JNIEXPORT jobject JNICALL Java_ch_ivyteam_server_win_WindowsServiceHandler_getServiceNames
   (JNIEnv *jpEnv, jclass jpClass)
 {
 	BOOL success;
@@ -222,31 +222,23 @@ JNIEXPORT jobject JNICALL Java_ivyteam_server_NtServiceHandler_getServiceNames
 	LPENUM_SERVICE_STATUS lpEnumServiceStatus;
 	SC_HANDLE hSCManager;
 	
-	jobject jpVector;
-	jmethodID jpAddElementMethod, jpElementsMethod;
+	jobject jpList;
+	jmethodID jpAddMethod;
 	jstring jpStrServiceName;
 
 	// create vector object
-	jpVector = CreateObject(jpEnv, "java/util/Vector");
-	if (jpVector==NULL)
+	jpList = CreateObject(jpEnv, "java/util/ArrayList");
+	if (jpList==NULL)
 	{
-		Throw(jpEnv, "ivyteam/server/NtServiceException", "Could not create java/util/Vector object");
+		Throw(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Could not create java/util/List object");
 		return NULL;
 	}
 
 	// get addElement method of vector
-	jpAddElementMethod = GetMethod(jpEnv, jpVector, "addElement", "(Ljava/lang/Object;)V");
-	if (jpAddElementMethod == NULL)
+	jpAddMethod = GetMethod(jpEnv, jpList, "add", "(Ljava/lang/Object;)Z");
+	if (jpAddMethod == NULL)
 	{
-		Throw(jpEnv, "ivyteam/server/NtServiceException", "Could not get addElement method of java/util/Vector object");
-		return NULL;
-	}
-
-	// get elements method of vector
-	jpElementsMethod = GetMethod(jpEnv, jpVector, "elements", "()Ljava/util/Enumeration;");
-	if (jpAddElementMethod == NULL)
-	{
-		Throw(jpEnv, "ivyteam/server/NtServiceException", "Could not get addElement method of java/util/Vector object");
+		Throw(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Could not get add method of java/util/List object");
 		return NULL;
 	}
 
@@ -258,7 +250,7 @@ JNIEXPORT jobject JNICALL Java_ivyteam_server_NtServiceHandler_getServiceNames
  
 	if (hSCManager == NULL) 
 	{
-		ThrowWin32Msg(jpEnv, "ivyteam/server/NtServiceException", "Could not open service manager");
+		ThrowWin32Msg(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Could not open service manager");
 		return NULL;
 	}
 
@@ -285,7 +277,7 @@ JNIEXPORT jobject JNICALL Java_ivyteam_server_NtServiceHandler_getServiceNames
 					&dwNextService);
 		if ((success == false)&&(GetLastError()!=ERROR_MORE_DATA))
 		{
-			ThrowWin32Msg(jpEnv, "ivyteam/server/NtServiceException", "Could not enumerate services");
+			ThrowWin32Msg(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Could not enumerate services");
 			CloseServiceHandle(hSCManager);
 			LocalFree(lpEnumServiceStatus);
 			return NULL;
@@ -298,28 +290,28 @@ JNIEXPORT jobject JNICALL Java_ivyteam_server_NtServiceHandler_getServiceNames
 			{
 				CloseServiceHandle(hSCManager);
 				LocalFree(lpEnumServiceStatus);
-				Throw(jpEnv, "ivyteam/server/NtServiceException", "Could not enumerate services");
+				Throw(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Could not enumerate services");
 				return NULL;
 			}
 
-			jpEnv->CallVoidMethod(jpVector, jpAddElementMethod, jpStrServiceName);
+			jpEnv->CallBooleanMethod(jpList, jpAddMethod, jpStrServiceName);
 		}
 	} while (success == false);
 
 	LocalFree(lpEnumServiceStatus);
 	CloseServiceHandle(hSCManager);
 
-	return jpEnv->CallObjectMethod(jpVector, jpElementsMethod);
+	return jpList;
 }
 
 
 
 /*
- * Class:     ivyteam_server_NtServiceHandler
+ * Class:     ch_ivyteam_server_win_WindowsServiceHandler
  * Method:    createService
- * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Livyteam/server/NtServiceHandler;
+ * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lch/ivyteam/server/win/WindowsServiceHandler;
  */
-JNIEXPORT jobject JNICALL Java_ivyteam_server_NtServiceHandler_createService
+JNIEXPORT jobject JNICALL Java_ch_ivyteam_server_win_WindowsServiceHandler_createService
   (JNIEnv *jpEnv, jclass jpClass, jstring jpStrServiceName, jstring jpStrDisplayName, jstring jpStrBinaryPathName)
 {
 	LPCSTR pcServiceName;
@@ -337,7 +329,7 @@ JNIEXPORT jobject JNICALL Java_ivyteam_server_NtServiceHandler_createService
  
 	if (hSCManager == NULL) 
 	{
-		ThrowWin32Msg(jpEnv, "ivyteam/server/NtServiceException", "Could not open service manager");
+		ThrowWin32Msg(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Could not open service manager");
 		return NULL;
 	}
 
@@ -364,7 +356,7 @@ JNIEXPORT jobject JNICALL Java_ivyteam_server_NtServiceHandler_createService
  
     if (hSCService == NULL) 
 	{
-		ThrowWin32Msg(jpEnv, "ivyteam/server/NtServiceException", "Could not create service");
+		ThrowWin32Msg(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Could not create service");
 		jpEnv->ReleaseStringUTFChars(jpStrServiceName, pcServiceName);
 		jpEnv->ReleaseStringUTFChars(jpStrDisplayName, pcDisplayName);
 		jpEnv->ReleaseStringUTFChars(jpStrBinaryPathName, pcBinaryPathName);
@@ -378,16 +370,16 @@ JNIEXPORT jobject JNICALL Java_ivyteam_server_NtServiceHandler_createService
 	jpEnv->ReleaseStringUTFChars(jpStrDisplayName, pcDisplayName);
 	jpEnv->ReleaseStringUTFChars(jpStrBinaryPathName, pcBinaryPathName);
 		
-	return Java_ivyteam_server_NtServiceHandler_openService(jpEnv, jpClass, jpStrServiceName);
+	return Java_ch_ivyteam_server_win_WindowsServiceHandler_openService(jpEnv, jpClass, jpStrServiceName);
 }
 
 
 /*
- * Class:     ivyteam_server_NtServiceHandler
+ * Class:     ch_ivyteam_server_win_WindowsServiceHandler
  * Method:    getServiceState
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_ivyteam_server_NtServiceHandler_getServiceState
+JNIEXPORT jint JNICALL Java_ch_ivyteam_server_win_WindowsServiceHandler_getServiceState
   (JNIEnv *jpEnv, jobject jpThis)
 {
 	SERVICE_STATUS serviceStatus;
@@ -399,7 +391,7 @@ JNIEXPORT jint JNICALL Java_ivyteam_server_NtServiceHandler_getServiceState
 
 	if (success == false)
 	{
-		ThrowWin32Msg(jpEnv, "ivyteam/server/NtServiceException", "Could not query service status");
+		ThrowWin32Msg(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Could not query service status");
 		return 0;
 	}
 
@@ -407,11 +399,11 @@ JNIEXPORT jint JNICALL Java_ivyteam_server_NtServiceHandler_getServiceState
 }
 
 /*
- * Class:     ivyteam_server_NtServiceHandler
+ * Class:     ch_ivyteam_server_win_WindowsServiceHandler
  * Method:    startService
- * Signature: ()I
+ * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_ivyteam_server_NtServiceHandler_startService
+JNIEXPORT void JNICALL Java_ch_ivyteam_server_win_WindowsServiceHandler_startService
   (JNIEnv *jpEnv, jobject jpThis)
 {
 	BOOL success;
@@ -423,17 +415,17 @@ JNIEXPORT void JNICALL Java_ivyteam_server_NtServiceHandler_startService
 
 	if (success == false)
 	{
-		ThrowWin32Msg(jpEnv, "ivyteam/server/NtServiceException", "Could not start service");
+		ThrowWin32Msg(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Could not start service");
 		return;
 	}
 }
 
 /*
- * Class:     ivyteam_server_NtServiceHandler
+ * Class:     ch_ivyteam_server_win_WindowsServiceHandler
  * Method:    stopService
- * Signature: ()I
+ * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_ivyteam_server_NtServiceHandler_stopService
+JNIEXPORT void JNICALL Java_ch_ivyteam_server_win_WindowsServiceHandler_stopService
   (JNIEnv *jpEnv, jobject jpThis)
 {
 	SERVICE_STATUS serviceStatus;
@@ -446,17 +438,17 @@ JNIEXPORT void JNICALL Java_ivyteam_server_NtServiceHandler_stopService
 
 	if (success == false)
 	{
-		ThrowWin32Msg(jpEnv, "ivyteam/server/NtServiceException", "Could not stop service");
+		ThrowWin32Msg(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Could not stop service");
 		return;
 	}
 }
 
 /*
- * Class:     ivyteam_server_NtServiceHandler
+ * Class:     ch_ivyteam_server_win_WindowsServiceHandler
  * Method:    close
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_ivyteam_server_NtServiceHandler_close
+JNIEXPORT void JNICALL Java_ch_ivyteam_server_win_WindowsServiceHandler_close
   (JNIEnv *jpEnv, jobject jpThis)
 {
 	
@@ -464,11 +456,11 @@ JNIEXPORT void JNICALL Java_ivyteam_server_NtServiceHandler_close
 }
 
 /*
- * Class:     ivyteam_server_NtServiceHandler
+ * Class:     ch_ivyteam_server_win_WindowsServiceHandler
  * Method:    setStartTypeNative
  * Signature: (I)V
  */
-JNIEXPORT void JNICALL Java_ivyteam_server_NtServiceHandler_setStartTypeNative
+JNIEXPORT void JNICALL Java_ch_ivyteam_server_win_WindowsServiceHandler_setStartTypeNative
   (JNIEnv *jpEnv, jobject jpThis, jint jiStartType)
 {
 	BOOL success;
@@ -486,7 +478,7 @@ JNIEXPORT void JNICALL Java_ivyteam_server_NtServiceHandler_setStartTypeNative
  
 	if (hSCManager == NULL) 
 	{
-		ThrowWin32Msg(jpEnv, "ivyteam/server/NtServiceException", "Could not open service manager");
+		ThrowWin32Msg(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Could not open service manager");
 		return;
 	}
 
@@ -495,7 +487,7 @@ JNIEXPORT void JNICALL Java_ivyteam_server_NtServiceHandler_setStartTypeNative
 	
 	if (hSCLock == NULL)
 	{
-		ThrowWin32Msg(jpEnv, "ivyteam/server/NtServiceException", "Could not lock service database");
+		ThrowWin32Msg(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Could not lock service database");
 		CloseServiceHandle(hSCManager);
 		return;
 	}
@@ -516,7 +508,7 @@ JNIEXPORT void JNICALL Java_ivyteam_server_NtServiceHandler_setStartTypeNative
 
 	if (success == FALSE)
 	{
-		ThrowWin32Msg(jpEnv, "ivyteam/server/NtServiceException", "Could not change service configuration");
+		ThrowWin32Msg(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Could not change service configuration");
 		// Do not return here because service database must be unlocked first
 	}
 
@@ -528,11 +520,11 @@ JNIEXPORT void JNICALL Java_ivyteam_server_NtServiceHandler_setStartTypeNative
 
 
 /*
- * Class:     ivyteam_server_NtServiceHandler
+ * Class:     ch_ivyteam_server_win_WindowsServiceHandler
  * Method:    setServiceUserNative
  * Signature: (Ljava/lang/String;Ljava/lang/String;)V
  */
-JNIEXPORT void JNICALL Java_ivyteam_server_NtServiceHandler_setServiceUserNative
+JNIEXPORT void JNICALL Java_ch_ivyteam_server_win_WindowsServiceHandler_setServiceUserNative
   (JNIEnv *jpEnv, jobject jpThis, jstring jpStrUserName, jstring jpStrPassword)
 {
 	BOOL success;
@@ -564,7 +556,7 @@ JNIEXPORT void JNICALL Java_ivyteam_server_NtServiceHandler_setServiceUserNative
  
 	if (hSCManager == NULL) 
 	{
-		ThrowWin32Msg(jpEnv, "ivyteam/server/NtServiceException", "Could not open service manager");
+		ThrowWin32Msg(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Could not open service manager");
 		return;
 	}
 
@@ -573,7 +565,7 @@ JNIEXPORT void JNICALL Java_ivyteam_server_NtServiceHandler_setServiceUserNative
 	
 	if (hSCLock == NULL)
 	{
-		ThrowWin32Msg(jpEnv, "ivyteam/server/NtServiceException", "Could not lock service database");
+		ThrowWin32Msg(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Could not lock service database");
 		CloseServiceHandle(hSCManager);	
 		return;
 	}
@@ -594,7 +586,7 @@ JNIEXPORT void JNICALL Java_ivyteam_server_NtServiceHandler_setServiceUserNative
 
 	if (success == FALSE)
 	{
-		ThrowWin32Msg(jpEnv, "ivyteam/server/NtServiceException", "Could not change service configuration");
+		ThrowWin32Msg(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Could not change service configuration");
 		// Do not return here because service database must be unlocked and strings must be released first
 	}
 
@@ -613,11 +605,11 @@ JNIEXPORT void JNICALL Java_ivyteam_server_NtServiceHandler_setServiceUserNative
 }
 
 /*
- * Class:     ivyteam_server_NtServiceHandler
+ * Class:     ch_ivyteam_server_win_WindowsServiceHandler
  * Method:    deleteService
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_ivyteam_server_NtServiceHandler_deleteService
+JNIEXPORT void JNICALL Java_ch_ivyteam_server_win_WindowsServiceHandler_deleteService
   (JNIEnv *jpEnv, jobject jpThis)
 {
 	SC_HANDLE hSCService;
@@ -626,24 +618,24 @@ JNIEXPORT void JNICALL Java_ivyteam_server_NtServiceHandler_deleteService
 
 	if (! DeleteService(hSCService) ) 
 	{
-		ThrowWin32Msg(jpEnv, "ivyteam/server/NtServiceException", "Could not delete service");
+		ThrowWin32Msg(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Could not delete service");
 	}
 	CloseServiceHandle(hSCService);
 }
 
 /*
- * Class:     ivyteam_server_NtServiceHandler
+ * Class:     ch_ivyteam_server_win_WindowsServiceHandler
  * Method:    setDependOnServices
- * Signature: (Ljava/util/Vector;)V
+ * Signature: (Ljava/util/List;)V
  */
-JNIEXPORT void JNICALL Java_ivyteam_server_NtServiceHandler_setDependOnServices
+JNIEXPORT void JNICALL Java_ch_ivyteam_server_win_WindowsServiceHandler_setDependOnServices
   (JNIEnv * jpEnv, jobject jpThis, jobject jpDependOnServices)
 {
 	BOOL success;
 	SC_HANDLE hSCService;
 	SC_HANDLE hSCManager;
 	SC_LOCK hSCLock;
-	jmethodID jpGetSize, jpElementAt;
+	jmethodID jpGetSize, jpGetMethod;
 	LPSTR pcDependencies;
 	LPCSTR* ppcDependencies;
 	jstring*  jppDependencies;
@@ -655,14 +647,14 @@ JNIEXPORT void JNICALL Java_ivyteam_server_NtServiceHandler_setDependOnServices
 	jpGetSize = GetMethod(jpEnv, jpDependOnServices, "size", "()I");
 	if (jpGetSize==NULL)
 	{
-		Throw(jpEnv, "ivyteam/server/NtServiceException", "Could not get method size() of class Vector");
+		Throw(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Could not get method size() of class Vector");
 		return;
 	}
 
-	jpElementAt = GetMethod(jpEnv, jpDependOnServices, "elementAt", "(I)Ljava/lang/Object;");
+	jpGetMethod = GetMethod(jpEnv, jpDependOnServices, "get", "(I)Ljava/lang/Object;");
 	if (jpGetSize==NULL)
 	{
-		Throw(jpEnv, "ivyteam/server/NtServiceException", "Could not get method elementAt(int) of class Vector");
+		Throw(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Could not get method elementAt(int) of class Vector");
 		return;
 	}
 
@@ -676,7 +668,7 @@ JNIEXPORT void JNICALL Java_ivyteam_server_NtServiceHandler_setDependOnServices
  
 	if (hSCManager == NULL) 
 	{
-		ThrowWin32Msg(jpEnv, "ivyteam/server/NtServiceException", "Could not open service manager");
+		ThrowWin32Msg(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Could not open service manager");
 		return;
 	}
 
@@ -685,7 +677,7 @@ JNIEXPORT void JNICALL Java_ivyteam_server_NtServiceHandler_setDependOnServices
 	
 	if (hSCLock == NULL)
 	{
-		ThrowWin32Msg(jpEnv, "ivyteam/server/NtServiceException", "Could not lock service database");
+		ThrowWin32Msg(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Could not lock service database");
 		CloseServiceHandle(hSCManager);
 		return;
 	}
@@ -701,7 +693,7 @@ JNIEXPORT void JNICALL Java_ivyteam_server_NtServiceHandler_setDependOnServices
 	// Get the java strings and c++ strings out of the vector
 	for (jint pos=0; pos < numberOfDependencies; pos++)
 	{
-		jppDependencies[pos] = (jstring)jpEnv->CallObjectMethod(jpDependOnServices, jpElementAt, pos);
+		jppDependencies[pos] = (jstring)jpEnv->CallObjectMethod(jpDependOnServices, jpGetMethod, pos);
 		ppcDependencies [pos] = jpEnv->GetStringUTFChars(jppDependencies[pos], &isCopy);
 		dependenciesSize += strlen(ppcDependencies[pos])+1;
 	}
@@ -737,7 +729,7 @@ JNIEXPORT void JNICALL Java_ivyteam_server_NtServiceHandler_setDependOnServices
 
 	if (success == FALSE)
 	{
-		ThrowWin32Msg(jpEnv, "ivyteam/server/NtServiceException", "Could not change service configuration");
+		ThrowWin32Msg(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Could not change service configuration");
 		// Do not return here because the service database must be unlocked and the strings and buffers must be released first
 	}
 
@@ -760,11 +752,11 @@ JNIEXPORT void JNICALL Java_ivyteam_server_NtServiceHandler_setDependOnServices
 
 
 /*
- * Class:     ivyteam_server_NtServiceHandler
+ * Class:     ch_ivyteam_server_win_WindowsServiceHandler
  * Method:    getExitCode
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_ivyteam_server_NtServiceHandler_getExitCode
+JNIEXPORT jint JNICALL Java_ch_ivyteam_server_win_WindowsServiceHandler_getExitCode
   (JNIEnv *jpEnv, jobject jpThis)
 {
 	SERVICE_STATUS serviceStatus;
@@ -776,7 +768,7 @@ JNIEXPORT jint JNICALL Java_ivyteam_server_NtServiceHandler_getExitCode
 
 	if (success == false)
 	{
-		ThrowWin32Msg(jpEnv, "ivyteam/server/NtServiceException", "Could not query service status");
+		ThrowWin32Msg(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Could not query service status");
 		return 0;
 	}
 

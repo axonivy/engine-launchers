@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="JavaNtServiceHandler"
-	ProjectGUID="{8189F8FD-6605-4BBD-AE81-7EB5A4832C58}"
+	Name="JavaWindowsServiceHandler"
+	ProjectGUID="{51D3FDE1-4CE4-4AB7-A56E-906A87A9621C}"
 	>
 	<Platforms>
 		<Platform
@@ -393,7 +393,7 @@
 			>
 		</File>
 		<File
-			RelativePath="JavaNtServiceHandler.cpp"
+			RelativePath=".\JavaWindowsServiceHandler.cpp"
 			>
 			<FileConfiguration
 				Name="Debug|Win32"

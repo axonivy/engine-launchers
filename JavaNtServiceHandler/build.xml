@@ -1,11 +1,11 @@
 <!--============================================================================
-=== This is the build file for the Java NT Service Handler projekt
+=== This is the build file for the Java Windows Service Handler projekt
 ===
 === Author Reto Weiss
 === Version ReW 12.12.2005 changed Version Control System from cs-rcs to subversion
 === Version ReW 19.4.2002
 =============================================================================-->
-<project name="JavaNtServiceHandler" default="JavaNtServiceHandler" basedir=".">
+<project name="JavaWindowsServiceHandler" default="JavaWindowsServiceHandler" basedir=".">
 
   <!-- set global properties for this build -->
   <property name="release" value="${basedir}/Release"/>
@@ -14,7 +14,7 @@
 
 
   <!-- init -->
-  <target name="init" description="Initialises the Java NT Service Handler Dll build">
+  <target name="init" description="Initialises the Java Windows Service Handler Dll build">
     <!-- Create the time stamp -->
     <tstamp/>
     <!-- Delete the library -->
@@ -22,21 +22,21 @@
     <delete dir="${release.x64}"/>
   </target>
 
-  <target name="build" description="Builds the Java NT Service Handler Dll with Visual C++" depends="init">
+  <target name="build" description="Builds the Java Windows Service Handler Dll with Visual C++" depends="init">
     <!-- Build visual C++ project -->
     <exec executable="${tools.microsoft.visualstudio.builder}" failonerror="true">
-        <arg line="JavaNtServiceHandler.sln /Rebuild Release /UseEnv"/>
+        <arg line="JavaWindowsServiceHandler.sln /Rebuild Release /UseEnv"/>
         <env key="include" path="${tools.microsoft.visualstudio.include}"/>
         <env key="lib" path="${tools.microsoft.visualstudio.lib}"/>
         <env key="path" path="${tools.microsoft.visualstudio.path}"/>
     </exec>
     <exec executable="${tools.microsoft.visualstudio.builder}" failonerror="true">
-      <arg line="JavaNtServiceHandler.sln /Rebuild Release|x64 /UseEnv"/>
+      <arg line="JavaWindowsServiceHandler.sln /Rebuild Release|x64 /UseEnv"/>
       <env key="include" path="${tools.microsoft.visualstudio.include}"/>
       <env key="lib" path="${tools.microsoft.visualstudio.lib.x64}"/>
       <env key="path" path="${tools.microsoft.visualstudio.path.x64}"/>
     </exec>
   </target>
 
-  <target name="JavaNtServiceHandler" description="Builds the Java NT Service Handler Dll" depends="build"/>
+  <target name="JavaWindowsServiceHandler" description="Builds the Java Windows Service Handler Dll" depends="build"/>
 </project>
