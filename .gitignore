@@ -3,6 +3,8 @@ JNILib/JNILib.ncb
 JNILib/JNILib.opt
 JNILib/JNILib.suo
 JNILib/JNILib.vcproj.SORECO.rwei.user
+JNILib/Release
+JNILib/x64
 JavaLauncher/Debug
 JavaLauncher/DebugConsole
 JavaLauncher/JavaLauncher.ncb
