@@ -1,0 +1,43 @@
+<!--============================================================================
+=== This is the build file for the Java Native Interface Library projekt
+===
+=== Author Reto Weiss
+=== Version ReW 12.12.2005 changed Version Control System from cs-rcs to subversion
+=== Version ReW 5.2.2004
+=============================================================================-->
+<project name="JNILib" default="JNILib" basedir=".">
+
+  <!-- set global properties for this build -->
+  <property name="release" value="${basedir}/Release"/>
+  <property name="release.x64" value="${basedir}/x64/Release"/>
+  <property name="tools.microsoft.visualstudio.builder" value="devenv.exe"/>
+  
+  <!-- init -->
+  <target name="init" description="Initialises the Jni library build">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Delete the library -->
+    <delete dir="${release}"/>
+    <delete dir="${release.x64}"/>
+  </target>
+
+  <!-- builds the library -->
+  <target name="build" description="Builds the jni library with Visual C++" depends="init">
+    <!-- Build visual C++ project -->
+    <exec executable="${tools.microsoft.visualstudio.builder}" failonerror="true">
+        <arg line="JNILib.sln /Rebuild Release /UseEnv"/>
+        <env key="include" path="${tools.microsoft.visualstudio.include}"/>
+        <env key="lib" path="${tools.microsoft.visualstudio.lib}"/>
+        <env key="path" path="${tools.microsoft.visualstudio.path}"/>
+    </exec>
+    <exec executable="${tools.microsoft.visualstudio.builder}" failonerror="true">
+      <arg line="JNILib.sln /Rebuild Release|x64 /UseEnv"/>
+      <env key="include" path="${tools.microsoft.visualstudio.include}"/>
+      <env key="lib" path="${tools.microsoft.visualstudio.lib.x64}"/>
+      <env key="path" path="${tools.microsoft.visualstudio.path.x64}"/>
+    </exec>
+  </target>
+
+  <target name="JNILib" description="Builds the jni libraray" depends="build">
+  </target>
+</project>
