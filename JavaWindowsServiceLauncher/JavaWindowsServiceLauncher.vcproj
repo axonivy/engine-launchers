@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="JavaNTServiceLauncher"
+	Name="JavaWindowsServiceLauncher"
 	ProjectGUID="{FB0C6A27-9E89-40FC-B49F-FAA246A1BC1C}"
 	>
 	<Platforms>
@@ -40,7 +40,7 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName=".\Debug/JavaNTServiceLauncher.tlb"
+				TypeLibraryName=".\Debug/JavaWindowsServiceLauncher.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -49,7 +49,7 @@
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				RuntimeLibrary="1"
-				PrecompiledHeaderFile=".\Debug/JavaNTServiceLauncher.pch"
+				PrecompiledHeaderFile=".\Debug/JavaWindowsServiceLauncher.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
@@ -71,11 +71,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="odbc32.lib odbccp32.lib ..\JVMLauncher\Debug\JVMLauncher.lib"
-				OutputFile=".\Debug/JavaNTServiceLauncher.exe"
+				OutputFile=".\Debug/JavaWindowsServiceLauncher.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\Debug/JavaNTServiceLauncher.pdb"
+				ProgramDatabaseFile=".\Debug/JavaWindowsServiceLauncher.pdb"
 				SubSystem="1"
 				StackReserveSize="524288"
 				LargeAddressAware="2"
@@ -93,7 +93,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Debug/JavaNTServiceLauncher.bsc"
+				OutputFile=".\Debug/JavaWindowsServiceLauncher.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -133,7 +133,7 @@
 			<Tool
 				Name="VCMIDLTool"
 				TargetEnvironment="3"
-				TypeLibraryName=".\Debug/JavaNTServiceLauncher.tlb"
+				TypeLibraryName=".\Debug/JavaWindowsServiceLauncher.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -182,7 +182,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Debug/JavaNTServiceLauncher.bsc"
+				OutputFile=".\Debug/JavaWindowsServiceLauncher.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -221,7 +221,7 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName=".\Release/JavaNTServiceLauncher.tlb"
+				TypeLibraryName=".\Release/JavaWindowsServiceLauncher.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -232,7 +232,7 @@
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
-				PrecompiledHeaderFile=".\Release/JavaNTServiceLauncher.pch"
+				PrecompiledHeaderFile=".\Release/JavaWindowsServiceLauncher.pch"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"
@@ -253,10 +253,10 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="odbc32.lib odbccp32.lib ..\JVMLauncher\Release\JVMLauncher.lib"
-				OutputFile=".\Release/JavaNTServiceLauncher.exe"
+				OutputFile=".\Release/JavaWindowsServiceLauncher.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				ProgramDatabaseFile=".\Release/JavaNTServiceLauncher.pdb"
+				ProgramDatabaseFile=".\Release/JavaWindowsServiceLauncher.pdb"
 				SubSystem="1"
 				StackReserveSize="524288"
 				LargeAddressAware="2"
@@ -274,7 +274,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Release/JavaNTServiceLauncher.bsc"
+				OutputFile=".\Release/JavaWindowsServiceLauncher.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -314,7 +314,7 @@
 			<Tool
 				Name="VCMIDLTool"
 				TargetEnvironment="3"
-				TypeLibraryName=".\Release/JavaNTServiceLauncher.tlb"
+				TypeLibraryName=".\Release/JavaWindowsServiceLauncher.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -363,7 +363,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Release/JavaNTServiceLauncher.bsc"
+				OutputFile=".\Release/JavaWindowsServiceLauncher.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -387,7 +387,7 @@
 			>
 		</File>
 		<File
-			RelativePath="JavaNTServiceLauncher.cpp"
+			RelativePath="JavaWindowsServiceLauncher.cpp"
 			>
 			<FileConfiguration
 				Name="Debug|Win32"

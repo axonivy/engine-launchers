@@ -1,11 +1,11 @@
-<!--============================================================================
-=== This is the build file for the Java NT Service Launcher projekt
+<!--============h================================================================
+=== This is the build file for the Java Windows Service Launcher projekt
 ===
 === Author Reto Weiss
 === Version ReW 12.12.2005 changed Version Control System from cs-rcs to subversion
 === Version ReW 23.4.2002
 =============================================================================-->
-<project name="JavaNtServiceLauncher" default="JavaNtServiceLauncher" basedir=".">
+<project name="JavaWindowsServiceHandler" default="JavaWindowsServiceHandler" basedir=".">
 
   <!-- set global properties for this build -->
   <!-- configuration properties -->
@@ -27,7 +27,7 @@
   <property name="release.x64" value="${basedir}/x64/release"/>
 
   <!-- init -->
-  <target name="init" description="initializes the Java NT Service Launcher build">
+  <target name="init" description="initializes the Java Windows Service Launcher build">
     <condition property="dir.release" value="${release}">
       <equals arg1="x86" arg2="${platform}"/>            
     </condition>
@@ -54,27 +54,27 @@
     </condition>
     <!-- Create the time stamp -->
     <tstamp/>
-    <!-- Delete the java NT Service Launcher -->
+    <!-- Delete the java Windows Service Launcher -->
     <delete dir="${bin}/${launcher}" failonerror="false"/>
     <delete dir="${dir.release}" failonerror="false"/>
   </target>
 
-  <target name="build" description="Builds the Java NT Service Launcher with Visual C++" depends="init">
+  <target name="build" description="Builds the Java Windows Service Launcher with Visual C++" depends="init">
     <!-- Copies the config file of the service config.h -->
     <copy file="${config}/${launcher}.h" tofile="${basedir}/config.h" overwrite="true"/>
 
     <!-- Build visual C++ project -->
     <exec executable="${tools.microsoft.visualstudio.builder}" failonerror="true">
-      <arg line="JavaNtServiceLauncher.sln /Rebuild ${targetConfig} /UseEnv"/>
+      <arg line="JavaWindowsServiceHandler.sln /Rebuild ${targetConfig} /UseEnv"/>
       <env key="include" path="${tools.microsoft.visualstudio.include}"/>
       <env key="lib" path="${cpplib}"/>
       <env key="path" path="${path}"/>
     </exec>
 
     <!-- copy resulting executable to bin directory -->
-    <copy file="${dir.release}/JavaNTServiceLauncher.exe" tofile="${bin}/${launcher}.exe"/>
+    <copy file="${dir.release}/JavaWindowsServiceHandler.exe" tofile="${bin}/${launcher}.exe"/>
   </target>
   
   <!-- Checks out sources and builds the Java Launcher and the Java Console Launcher -->
-  <target name="JavaNtServiceLauncher" description="Build the Java Nt Service Launcher" depends="build"/>
+  <target name="JavaWindowsServiceHandler" description="Build the Java Windows Service Launcher" depends="build"/>
 </project>

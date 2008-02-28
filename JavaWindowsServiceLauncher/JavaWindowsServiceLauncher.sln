@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JavaNTServiceLauncher", "JavaNTServiceLauncher.vcproj", "{FB0C6A27-9E89-40FC-B49F-FAA246A1BC1C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JavaWindowsServiceLauncher", "JavaWindowsServiceLauncher.vcproj", "{FB0C6A27-9E89-40FC-B49F-FAA246A1BC1C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
