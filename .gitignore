@@ -12,10 +12,6 @@ JavaLauncher/JavaLauncher.suo
 JavaLauncher/JavaLauncher.vcproj.SORECO.rwei.user
 JavaLauncher/Release
 JavaLauncher/ReleaseConsole
-JavaNTServiceLauncher/Debug
-JavaNTServiceLauncher/JavaNTServiceLauncher.ncb
-JavaNTServiceLauncher/JavaNTServiceLauncher.suo
-JavaNTServiceLauncher/JavaNTServiceLauncher.vcproj.SORECO.rwei.user
 JavaWindowsServiceHandler/Debug
 JavaWindowsServiceHandler/JavaNtServiceHandler.ncb
 JavaWindowsServiceHandler/JavaNtServiceHandler.suo
@@ -23,6 +19,10 @@ JavaWindowsServiceHandler/JavaNtServiceHandler.vcproj.SORECO.rwei.user
 JavaWindowsServiceHandler/JavaWindowsServiceHandler.ncb
 JavaWindowsServiceHandler/JavaWindowsServiceHandler.suo
 JavaWindowsServiceHandler/JavaWindowsServiceHandler.vcproj.SORECO.rwei.user
+JavaWindowsServiceLauncher/Debug
+JavaWindowsServiceLauncher/JavaNTServiceLauncher.ncb
+JavaWindowsServiceLauncher/JavaNTServiceLauncher.suo
+JavaWindowsServiceLauncher/JavaNTServiceLauncher.vcproj.SORECO.rwei.user
 JvmLauncher/Debug
 JvmLauncher/JVMLauncher.ncb
 JvmLauncher/JVMLauncher.opt
