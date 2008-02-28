@@ -43,7 +43,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Debug/JavaNtServiceHandler.tlb"
+				TypeLibraryName=".\Debug/JavaWindowsServiceHandler.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -52,7 +52,7 @@
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
 				RuntimeLibrary="1"
-				PrecompiledHeaderFile=".\Debug/JavaNtServiceHandler.pch"
+				PrecompiledHeaderFile=".\Debug/JavaWindowsServiceHandler.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
@@ -74,14 +74,14 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="odbc32.lib odbccp32.lib JNILib.lib"
-				OutputFile=".\Debug/JavaNtServiceHandler.dll"
+				OutputFile=".\Debug/JavaWindowsServiceHandler.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="..\JNILib\Debug"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\Debug/JavaNtServiceHandler.pdb"
+				ProgramDatabaseFile=".\Debug/JavaWindowsServiceHandler.pdb"
 				SubSystem="2"
-				ImportLibrary=".\Debug/JavaNtServiceHandler.lib"
+				ImportLibrary=".\Debug/JavaWindowsServiceHandler.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -96,7 +96,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Debug/JavaNtServiceHandler.bsc"
+				OutputFile=".\Debug/JavaWindowsServiceHandler.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -138,7 +138,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="3"
-				TypeLibraryName=".\Debug/JavaNtServiceHandler.tlb"
+				TypeLibraryName=".\Debug/JavaWindowsServiceHandler.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -185,7 +185,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Debug/JavaNtServiceHandler.bsc"
+				OutputFile=".\Debug/JavaWindowsServiceHandler.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -227,7 +227,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Release/JavaNtServiceHandler.tlb"
+				TypeLibraryName=".\Release/JavaWindowsServiceHandler.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -238,7 +238,7 @@
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
-				PrecompiledHeaderFile=".\Release/JavaNtServiceHandler.pch"
+				PrecompiledHeaderFile=".\Release/JavaWindowsServiceHandler.pch"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"
@@ -259,13 +259,13 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="odbc32.lib odbccp32.lib JNILib.lib"
-				OutputFile=".\Release/JavaNtServiceHandler.dll"
+				OutputFile=".\Release/JavaWindowsServiceHandler.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="..\JNILib\Release"
-				ProgramDatabaseFile=".\Release/JavaNtServiceHandler.pdb"
+				ProgramDatabaseFile=".\Release/JavaWindowsServiceHandler.pdb"
 				SubSystem="2"
-				ImportLibrary=".\Release/JavaNtServiceHandler.lib"
+				ImportLibrary=".\Release/JavaWindowsServiceHandler.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -280,7 +280,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Release/JavaNtServiceHandler.bsc"
+				OutputFile=".\Release/JavaWindowsServiceHandler.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -322,7 +322,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="3"
-				TypeLibraryName=".\Release/JavaNtServiceHandler.tlb"
+				TypeLibraryName=".\Release/JavaWindowsServiceHandler.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -369,7 +369,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Release/JavaNtServiceHandler.bsc"
+				OutputFile=".\Release/JavaWindowsServiceHandler.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
