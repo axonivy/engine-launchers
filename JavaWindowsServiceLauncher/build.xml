@@ -5,7 +5,7 @@
 === Version ReW 12.12.2005 changed Version Control System from cs-rcs to subversion
 === Version ReW 23.4.2002
 =============================================================================-->
-<project name="JavaWindowsServiceHandler" default="JavaWindowsServiceHandler" basedir=".">
+<project name="JavaWindowsServiceLauncher" default="JavaWindowsServiceLauncher" basedir=".">
 
   <!-- set global properties for this build -->
   <!-- configuration properties -->
@@ -65,16 +65,16 @@
 
     <!-- Build visual C++ project -->
     <exec executable="${tools.microsoft.visualstudio.builder}" failonerror="true">
-      <arg line="JavaWindowsServiceHandler.sln /Rebuild ${targetConfig} /UseEnv"/>
+      <arg line="JavaWindowsServiceLauncher.sln /Rebuild ${targetConfig} /UseEnv"/>
       <env key="include" path="${tools.microsoft.visualstudio.include}"/>
       <env key="lib" path="${cpplib}"/>
       <env key="path" path="${path}"/>
     </exec>
 
     <!-- copy resulting executable to bin directory -->
-    <copy file="${dir.release}/JavaWindowsServiceHandler.exe" tofile="${bin}/${launcher}.exe"/>
+    <copy file="${dir.release}/JavaWindowsServiceLauncher.exe" tofile="${bin}/${launcher}.exe"/>
   </target>
   
   <!-- Checks out sources and builds the Java Launcher and the Java Console Launcher -->
-  <target name="JavaWindowsServiceHandler" description="Build the Java Windows Service Launcher" depends="build"/>
+  <target name="JavaWindowsServiceLauncher" description="Build the Java Windows Service Launcher" depends="build"/>
 </project>
