@@ -30,6 +30,7 @@ History:
 
 #define JavaWindowsServiceHandler
 #include "ch_ivyteam_server_win_WindowsServiceHandler.h"
+#include "ch_ivyteam_server_win_WindowsService.h"
 
 
 /*
@@ -49,6 +50,25 @@ SC_HANDLE GetServiceHandle(JNIEnv *jpEnv, jobject jpThis)
 
 	jlServiceHandle = jpEnv->GetLongField(jpThis, jpField);
 	return reinterpret_cast<SC_HANDLE>(jlServiceHandle);
+}
+
+/*
+ * Gets the service status handle out of the java object
+ */
+SERVICE_STATUS_HANDLE GetServiceStatusHandle(JNIEnv *jpEnv, jobject jpThis)
+{
+	jlong jlServiceHandle;
+	jfieldID jpField;
+									   
+	jpField = GetField(jpEnv, jpThis, "serviceHandle", "J");
+	if (jpField==NULL)
+	{
+		Throw(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "serviceHandle field not found");
+		return NULL;
+	}
+
+	jlServiceHandle = jpEnv->GetLongField(jpThis, jpField);
+	return reinterpret_cast<SERVICE_STATUS_HANDLE>(jlServiceHandle);
 }
 
 /*
@@ -773,4 +793,85 @@ JNIEXPORT jint JNICALL Java_ch_ivyteam_server_win_WindowsServiceHandler_getExitC
 	}
 
 	return serviceStatus.dwWin32ExitCode;
+}
+
+
+/*
+ * Class:     ch_ivyteam_server_win_WindowsService
+ * Method:    setStatus0
+ * Signature: (Lch/ivyteam/server/win/WindowsServiceStatus;)V
+ */
+JNIEXPORT void JNICALL Java_ch_ivyteam_server_win_WindowsService_setStatus0
+  (JNIEnv *jpEnv, jobject jpThis, jobject jpWindowsServiceStatus)
+{
+  SERVICE_STATUS serviceStatus;
+  jfieldID jpField;
+  SERVICE_STATUS_HANDLE handle;
+
+  jpField = GetField(jpEnv, jpWindowsServiceStatus, "serviceType", "I");
+  if (jpField==NULL)
+  {
+	Throw(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Field serviceType field not found");
+	return;
+  }
+  serviceStatus.dwServiceType = (DWORD)jpEnv->GetIntField(jpWindowsServiceStatus, jpField);
+
+  jpField = GetField(jpEnv, jpWindowsServiceStatus, "currentState", "I");
+  if (jpField==NULL)
+  {
+	Throw(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Field currentState field not found");
+	return;
+  }
+  serviceStatus.dwCurrentState = (DWORD)jpEnv->GetIntField(jpWindowsServiceStatus, jpField);
+
+  jpField = GetField(jpEnv, jpWindowsServiceStatus, "controlsAccepted", "I");
+  if (jpField==NULL)
+  {
+	Throw(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Field controlsAccepted field not found");
+	return;
+  }
+  serviceStatus.dwControlsAccepted = (DWORD)jpEnv->GetIntField(jpWindowsServiceStatus, jpField);
+
+  jpField = GetField(jpEnv, jpWindowsServiceStatus, "win32ExitCode", "I");
+  if (jpField==NULL)
+  {
+	Throw(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Field win32ExitCode field not found");
+	return;
+  }
+  serviceStatus.dwWin32ExitCode = (DWORD)jpEnv->GetIntField(jpWindowsServiceStatus, jpField);
+
+  jpField = GetField(jpEnv, jpWindowsServiceStatus, "serviceSpecificExitCode", "I");
+  if (jpField==NULL)
+  {
+	Throw(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Field serviceSpecificExitCode field not found");
+	return;
+  }
+  serviceStatus.dwServiceSpecificExitCode = (DWORD)jpEnv->GetIntField(jpWindowsServiceStatus, jpField);
+
+  jpField = GetField(jpEnv, jpWindowsServiceStatus, "checkPoint", "I");
+  if (jpField==NULL)
+  {
+	Throw(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Field checkPoint field not found");
+	return;
+  }
+  serviceStatus.dwCheckPoint = (DWORD)jpEnv->GetIntField(jpWindowsServiceStatus, jpField);
+
+  jpField = GetField(jpEnv, jpWindowsServiceStatus, "waitHint", "I");
+  if (jpField==NULL)
+  {
+	Throw(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "Field waitHint field not found");
+	return;
+  }
+  serviceStatus.dwWaitHint = (DWORD)jpEnv->GetIntField(jpWindowsServiceStatus, jpField);
+
+  handle = GetServiceStatusHandle(jpEnv, jpThis);
+  if (handle == NULL)
+  {
+	  return;
+  }
+
+  if (SetServiceStatus(handle, &serviceStatus)==0)
+  {	
+	ThrowWin32Msg(jpEnv, "ch/ivyteam/server/win/WindowsServiceException", "SetServiceStatus failed");
+  }
 }

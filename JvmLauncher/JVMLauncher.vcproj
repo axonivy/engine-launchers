@@ -396,6 +396,10 @@
 			>
 		</File>
 		<File
+			RelativePath=".\JVMLauncher.rc"
+			>
+		</File>
+		<File
 			RelativePath="LaunchConfiguration.cpp"
 			>
 			<FileConfiguration
@@ -553,6 +557,23 @@
 		</File>
 		<File
 			RelativePath=".\Log.h"
+			>
+		</File>
+		<File
+			RelativePath=".\messages.mc"
+			>
+			<FileConfiguration
+				Name="Debug|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="mc -h $(InputDir) -r $(InputDir) $(InputFileName)"
+					Outputs="MSG00001.bin"
+				/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath=".\resource.h"
 			>
 		</File>
 		<File

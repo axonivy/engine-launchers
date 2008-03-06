@@ -23,6 +23,7 @@ History:
 #define JVMLauncher
 
 #include "LaunchException.h"
+#include "Log.h"
 #include <assert.h>
 #include <stdio.h>
 
@@ -102,7 +103,7 @@ CLaunchException::CLaunchException(DWORD dwErrorCode, JNIEnv* pJavaNativeInterfa
 			dwLength = strlen(pcThrowableMessageAndStackTrace);
 		}
 	}
-	dwLength = strlen(pcMessage)+1000;
+	dwLength += strlen(pcMessage)+1000;
 	m_pcMessage = new char[dwLength];
 	vsprintf_s(m_pcMessage, dwLength, pcMessage, args);
 	if (pcThrowableMessageAndStackTrace != NULL)
@@ -122,27 +123,34 @@ LPSTR CLaunchException::getJavaExceptionMessageAndStackTrace(JNIEnv* pJavaNative
 	LPSTR pcBuffer;
 	jint iSize;
 
+	CLog::debug("getJavaExceptionMessageAndStackTrace()");
 	if (javaException != NULL)
 	{
+		pJavaNativeInterface->ExceptionDescribe();
 		clazz = pJavaNativeInterface->GetObjectClass(javaException);
 		if (clazz == NULL)
 		{
+			CLog::error("Could not evaluate class of java exception");
 			return NULL;
 		}
-		method = pJavaNativeInterface->GetMethodID(clazz, "getMessage()", "(V)Ljava/lang/String;");
+		method = pJavaNativeInterface->GetMethodID(clazz, "toString", "()Ljava/lang/String;");
 		if (method == NULL)
 		{
+			CLog::error("Could not get method getMessage of java exception");
 			return NULL;
 		}
+		pJavaNativeInterface->ExceptionClear();
 		message = (jstring)pJavaNativeInterface->CallObjectMethod(javaException, method);
 		if (message == NULL)
 		{
+			CLog::error("Could not call method getMessage of java exception");
 			return NULL;
 		}
 		iSize = pJavaNativeInterface->GetStringUTFLength(message);
 		bytes = pJavaNativeInterface->GetStringUTFChars(message, NULL);
 		if (bytes == NULL)
 		{
+			CLog::error("Could not get method message string of java exception");
 			return NULL;
 		}
 		pcBuffer = new char[iSize+1];

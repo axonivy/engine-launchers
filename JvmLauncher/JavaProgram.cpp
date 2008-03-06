@@ -438,7 +438,7 @@ jmethodID CJavaProgram::getJavaStaticMethod(JNIEnv* pJavaNativeInterface, jclass
     methodId = pJavaNativeInterface->GetStaticMethodID(clazz, pcMethodName, pcSignature);
     if (methodId == NULL)
 	{
-		throw CLaunchException(JVMLauncherErrorCodes.COULD_NOT_FIND_MAIN_METHOD,
+		throw CLaunchException(JVMLauncherErrorCodes.COULD_NOT_FIND_METHOD,
 			pJavaNativeInterface,
 			"Could not find static java method %s", pcMethodName);
     }
@@ -451,7 +451,7 @@ jmethodID CJavaProgram::getJavaMethod(JNIEnv* pJavaNativeInterface, jclass clazz
     methodId = pJavaNativeInterface->GetMethodID(clazz, pcMethodName, pcSignature);
     if (methodId == NULL)
 	{
-		throw CLaunchException(JVMLauncherErrorCodes.COULD_NOT_FIND_MAIN_METHOD,
+		throw CLaunchException(JVMLauncherErrorCodes.COULD_NOT_FIND_METHOD,
 			pJavaNativeInterface,
 			"Could not find java method %s", pcMethodName);
     }
@@ -958,3 +958,113 @@ void CJavaProgram::initializeHeapPermMaxSizeMemoryOption(DWORD dwHeapMaxSize, CV
 		options.addOption(pcOption, NULL);
 	}
 }
+
+/*
+ * Reports an error to the system event log
+ * @param ex the exception to report
+ */ 
+void CJavaProgram::reportError(CLaunchException ex)
+{
+	HANDLE hEventSource;
+	char pcEventSourceName[256];
+	LPCSTR pcMessage;
+	CLog::debug("Report error to windows event log"); 
+
+	if (m_launchConfiguration.getApplicationName() != NULL)
+	{
+		strcpy_s(pcEventSourceName, 256, m_launchConfiguration.getApplicationName());
+		strcat_s(pcEventSourceName, 256, " Launchers");
+	}
+	else if (m_launchConfiguration.getWindowsServiceName() != NULL)
+	{
+		strcpy_s(pcEventSourceName, 256, m_launchConfiguration.getWindowsServiceName());
+		strcat_s(pcEventSourceName, 256, " Service Launcher");
+	}
+	else
+	{
+		strcpy_s(pcEventSourceName, 256, "JVMLauncher");
+	}
+	registerEventSource(pcEventSourceName);
+	hEventSource = RegisterEventSource(NULL, pcEventSourceName);
+	if (hEventSource == NULL)
+	{
+		CLog::error("Could not register an event source (windows error: 0x%08X)", GetLastError());
+		return;
+	}
+
+	pcMessage = ex.getMessage();
+	if (!ReportEvent(
+		hEventSource, 
+		EVENTLOG_ERROR_TYPE, 
+		0, 
+		ex.getErrorCode(), 
+		NULL, 
+		1,  
+		0, 
+		(LPCSTR*)&pcMessage, 
+		NULL))
+	{
+		CLog::error("Could not report event (windows error: 0x%08X)", GetLastError());	
+	}
+	DeregisterEventSource(hEventSource);
+}
+
+void CJavaProgram::registerEventSource(LPCSTR pcEventSourceName)
+{
+  LPCSTR prefix = "SYSTEM\\CurrentControlSet\\Services\\EventLog\\Application\\";
+  DWORD disposition;
+  HKEY hKey = 0;
+  char subkey[256];
+  DWORD value;
+  
+  strcpy_s(subkey, 256, prefix);
+  strcat_s(subkey, 256, pcEventSourceName);
+ 
+  CLog::info("Create registry entry '%s' for event log if it does not exists", subkey);
+
+  if (RegCreateKeyEx(HKEY_LOCAL_MACHINE, subkey, 0, NULL, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE, NULL,
+	  &hKey, &disposition) != ERROR_SUCCESS)
+  {
+	  CLog::error("Could not create registry entry %s", subkey);
+	  return;
+  }
+  		
+  if (disposition == REG_CREATED_NEW_KEY)
+  {
+    HMODULE hmodule = GetModuleHandle("JVMLauncher.dll");
+    if (hmodule == NULL) 
+	{
+		CLog::error("Could not evaluate module handle");
+		RegCloseKey(hKey);
+		return;
+	}
+    char modpath[_MAX_PATH];
+    DWORD modlen = GetModuleFileName(hmodule, modpath, _MAX_PATH - 1);
+    if (modlen > 0) {
+        modpath[modlen] = 0;
+		if (RegSetValueEx(hKey, "EventMessageFile", 0, REG_EXPAND_SZ, 
+			(LPBYTE)modpath, (strlen(modpath) + 1)) != ERROR_SUCCESS)
+		{
+			CLog::error("Could not set registry value EventMessageFile");
+		}
+		if (RegSetValueEx(hKey, "CategoryMessageFile", 0, REG_EXPAND_SZ, 
+			(LPBYTE)modpath, (strlen(modpath) + 1)) != ERROR_SUCCESS)
+		{
+			CLog::error("Could not set registry value CategoryMessageFile");
+		}
+    }
+	value=7;
+	if (RegSetValueEx(hKey, "TypesSupported", 0, REG_DWORD, (LPBYTE)&value, sizeof(DWORD))!= ERROR_SUCCESS)
+	{
+		CLog::error("Could not set registry value TypesSupported");
+	}
+	value=6;
+	if (RegSetValueEx(hKey, "CategoryCount", 0, REG_DWORD, (LPBYTE)&value, sizeof(DWORD)) != ERROR_SUCCESS)
+	{
+		CLog::error("Could not set registry value CategoryCount");
+	}
+  }
+  RegCloseKey(hKey);
+  return;
+}
+

@@ -29,6 +29,7 @@ JavaWindowsServiceLauncher/JavaWindowsServiceLauncher.vcproj.SORECO.rwei.user
 JavaWindowsServiceLauncher/Release
 JavaWindowsServiceLauncher/x64
 JvmLauncher/Debug
+JvmLauncher/JVMLauncher.aps
 JvmLauncher/JVMLauncher.ncb
 JvmLauncher/JVMLauncher.opt
 JvmLauncher/JVMLauncher.plg
@@ -36,3 +37,4 @@ JvmLauncher/JVMLauncher.suo
 JvmLauncher/JVMLauncher.vcproj.SORECO.rwei.user
 JvmLauncher/Release
 JvmLauncher/x64
+/temp

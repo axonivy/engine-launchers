@@ -39,6 +39,7 @@ void _main(int argc, char* argv[])
 	}
 	catch(CLaunchException ex)
 	{
+		pProgram->reportError(ex);
 		delete pProgram;
 		throw ex;
 	}

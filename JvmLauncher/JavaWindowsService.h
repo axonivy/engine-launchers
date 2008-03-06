@@ -50,26 +50,32 @@ private:
 	/* The java class which represents the windows service */
 	jclass					m_javaServiceClass;	
 
-	/* The java method to start the windows service */
-	jmethodID				m_startServiceMethod;
+	/** The java windows service object */
+	jobject				    m_javaService;
 
-	/* The java method to stop the windows service */
-	jmethodID				m_stopServiceMethod;	
+	/* The main java method of the windows service */
+	jmethodID				m_mainServiceMethod;
 
-	/* The java method to pause the windows service */
-	jmethodID				m_pauseServiceMethod;	
+	/* The control java method of the windows service */
+	jmethodID				m_controlServiceMethod;	
 
-	/* The java method to continue the windows service */
-	jmethodID				m_continueServiceMethod;	
-
-	/* the java mehtod to shutdown the windows service */
-	jmethodID				m_shutdownServiceMethod;	
+	/** The constructor of the service */
+	jmethodID				m_serviceConstructor;
 
 	/* Handle to the event used to signal that java startup thread has startuped the java windows service */
 	HANDLE					m_hEvent;
 
+	/* Handle to the java startup thread */
+	HANDLE					m_hJavaThread;
+
 	/* The exception thrown if java startup thread fails */
 	CLaunchException*		m_pStartupException;
+
+	/* The number of arguments */
+	DWORD m_argc;
+
+	/** The arguments */
+	LPSTR* m_argv;
 
 	/* 
 	 * This method is called by the static startupWindowsService method
@@ -111,29 +117,9 @@ private:
 	void control(DWORD operationCode);
 
 	/*
-	 * Pauses the windows service 
+	 * Calls the main method in the java windows service class
 	 */
-	void pause();
-
-	/*
-	 * Continues the windows service 
-	 */
-	void continue_();
-	
-	/*
-	 * stops the windows serivce 
-	 */
-	void stop();
-
-	/*
-	 * shutdowns the windows service
-	 */
-	void shutdown();
-
-	/*
-	 * Starts the windows service
-	 */
-	void start();
+	void callJavaMain();
 
 	/*
 	 * This method is called by the static exitWindowsService method
@@ -141,6 +127,16 @@ private:
 	 */
 	void exit(jint javaExitCode);
 
+	/*
+	 * Reports a start progress 
+	 */
+	void reportStartProgress();
+
+	/*
+	 * Reports a start error 
+	 * @param ex the launch exception to report
+	 */
+	void reportStop(CLaunchException ex);	
 public:
 	/*
 	 * Constructor 

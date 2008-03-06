@@ -32,6 +32,7 @@ History:
 #include "LaunchConfiguration.h"
 #include "LaunchConfigurationFile.h"
 #include "JavaVirtualMaschine.h"
+#include "LaunchException.h"
 
 class JVMLauncherExport CJavaProgram
 {
@@ -93,16 +94,6 @@ private:
 	 * @throws CLaunchException if an error occurs 
 	 */
 	bool checkIsAlreadyRunning();
-
-	/*
-	 * Converts the c-style option into an java string array
-	 * @param pJavaNativeInterface the java native interface
-	 * @param argc the number of Options
-	 * @param argv the option
-	 * @return java string array with the option
-	 * @throws CLaunchException if conversion fails
-	 */
-	jobjectArray convert2JavaStringArray(JNIEnv* pJavaNativeInterface, int argc, LPSTR argv[]);
 
 	/*
 	 * Converts a c-style string to a java string
@@ -186,6 +177,12 @@ private:
 	 */
 	void printMemoryOverview(MEMORYSTATUSEX& memInfo);
 
+	/*
+	 * Register an event source for the event log
+	 * @param pcEventSourceName the name of the event source to register
+	 */
+	void registerEventSource(LPCSTR pcEventSourceName);
+
 protected:
 	/* The launch configuration that defines the options of the java virtual maschine and the main class */
 	CLaunchConfiguration m_launchConfiguration;
@@ -245,6 +242,22 @@ protected:
 	 * @throw CLaunchException if java method could not be found 
 	 */
 	jmethodID getJavaMethod(JNIEnv* pJavaNativeInterface, jclass clazz, LPCSTR pcMethodName, LPCSTR pcSignature);
+
+	/*
+	 * Reports an error to the system event log
+	 * @param ex the exception to report
+	 */ 
+	void reportError(CLaunchException ex);
+
+	/*
+	 * Converts the c-style option into an java string array
+	 * @param pJavaNativeInterface the java native interface
+	 * @param argc the number of Options
+	 * @param argv the option
+	 * @return java string array with the option
+	 * @throws CLaunchException if conversion fails
+	 */
+	jobjectArray convert2JavaStringArray(JNIEnv* pJavaNativeInterface, int argc, LPSTR argv[]);
 
 public:
 	/*

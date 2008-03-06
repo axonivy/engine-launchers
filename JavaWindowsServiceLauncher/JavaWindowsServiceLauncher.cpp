@@ -75,6 +75,7 @@ int main(int argc, char* argv[])
 	{
 		if (pJavaWindowsService != NULL)
 		{
+			pJavaWindowsService->reportError(ex);
 			delete pJavaWindowsService;
 		}
 		CLog::error(ex.getMessage());
