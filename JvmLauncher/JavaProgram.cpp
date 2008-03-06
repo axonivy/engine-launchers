@@ -590,9 +590,9 @@ DWORD CJavaProgram::initializeHeapMaxSizeMemoryOption(MEMORYSTATUSEX& memInfo, C
 			// does not seem to work with large values -> limit to 1.2 GByte
 			// ReW 30.3.2005 Spezial version for SWM with 1.45 GByte because they 
 			// have the 3GB Switch of Windows Server 2000 activated
-			if (dwLimitMemory > 1200)
+			if (dwLimitMemory > 1100)
 			{
-				dwLimitMemory = 1200;
+				dwLimitMemory = 1100;
 			}
 		} 
 #endif
