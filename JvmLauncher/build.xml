@@ -26,7 +26,7 @@
   </target>
   
   <target name="changeResource" description="Changes the resource file" depends="init">
-    <replace file="resource.rc">
+    <replace file="JVMLauncher.rc">
       <replacefilter token="@Vendor@" value="${vendor.name}"/>
       <replacefilter token="@Version@" value="${build.version.revision}"/>
       <replacefilter token="@Copyright@" value="${application.copyright}"/>
