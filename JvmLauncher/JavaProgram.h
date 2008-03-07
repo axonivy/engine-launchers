@@ -244,12 +244,6 @@ protected:
 	jmethodID getJavaMethod(JNIEnv* pJavaNativeInterface, jclass clazz, LPCSTR pcMethodName, LPCSTR pcSignature);
 
 	/*
-	 * Reports an error to the system event log
-	 * @param ex the exception to report
-	 */ 
-	void reportError(CLaunchException ex);
-
-	/*
 	 * Converts the c-style option into an java string array
 	 * @param pJavaNativeInterface the java native interface
 	 * @param argc the number of Options
@@ -326,6 +320,12 @@ public:
 	 * @param argv the arguments passed to the java program
 	 */
 	virtual void main(int argc, LPSTR argv[]);
+
+	/*
+	 * Reports an error to the system event log
+	 * @param ex the exception to report
+	 */ 
+	void reportError(CLaunchException ex);
 
 	/*
 	 * Destructor

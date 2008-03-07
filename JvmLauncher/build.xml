@@ -24,8 +24,19 @@
     <!-- Delete the library -->
     <delete dir="${release_x64}"/>
   </target>
+  
+  <target name="changeResource" description="Changes the resource file" depends="init">
+    <replace file="resource.rc">
+      <replacefilter token="@Vendor@" value="${vendor.name}"/>
+      <replacefilter token="@Version@" value="${build.version.revision}"/>
+      <replacefilter token="@Copyright@" value="${application.copyright}"/>
+      <replacefilter token="@BuildDate@" value="${build.date.iso}"/>
+      <replacefilter token="@ProductName@" value="${application.name} Server"/>
+      <replacefilter token="0,0,0,0" value="${build.version.major},${build.version.minor},${build.patch},${build.revision}"/>
+    </replace>
+  </target>
 
-  <target name="build" description="Builds the Jvm Launcher Dll with Visual C++" depends="init">
+  <target name="build" description="Builds the Jvm Launcher Dll with Visual C++" depends="changeResource">
     <!-- Build visual C++ project for 32 bit -->
     <exec executable="${tools.microsoft.visualstudio.builder}" failonerror="true">
         <arg line="JVMLauncher.sln /Rebuild Release /UseEnv"/>
