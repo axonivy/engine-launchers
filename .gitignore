@@ -12,6 +12,9 @@ JavaLauncher/JavaLauncher.suo
 JavaLauncher/JavaLauncher.vcproj.SORECO.rwei.user
 JavaLauncher/Release
 JavaLauncher/ReleaseConsole
+JavaLauncher/config.h
+JavaLauncher/icons/XpertIvyServer.ico
+JavaLauncher/res.aps
 JavaWindowsServiceHandler/Debug
 JavaWindowsServiceHandler/JavaNtServiceHandler.ncb
 JavaWindowsServiceHandler/JavaNtServiceHandler.suo
@@ -20,6 +23,7 @@ JavaWindowsServiceHandler/JavaWindowsServiceHandler.aps
 JavaWindowsServiceHandler/JavaWindowsServiceHandler.ncb
 JavaWindowsServiceHandler/JavaWindowsServiceHandler.suo
 JavaWindowsServiceHandler/JavaWindowsServiceHandler.vcproj.SORECO.rwei.user
+JavaWindowsServiceLauncher/*.aps
 JavaWindowsServiceLauncher/Debug
 JavaWindowsServiceLauncher/JavaNTServiceLauncher.ncb
 JavaWindowsServiceLauncher/JavaNTServiceLauncher.suo

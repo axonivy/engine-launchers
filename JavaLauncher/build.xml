@@ -34,7 +34,7 @@
   <property name="executable" value="JavaLauncher.exe"/>
   <property name="executebleConsole" value="JavaLauncherC.exe"/>
   <property name="tools.microsoft.visualstudio.builder" value="devenv.exe"/>
-
+  
   <!-- init -->
   <target name="init" description="Initializes the Java Launcher build">
     <condition property="dir.release" value="${release}">
@@ -83,9 +83,21 @@
     <delete dir="${dir.release}" failonerror="false"/>
     <delete dir="${dir.releaseConsole}" failonerror="false"/>
   </target>
+  
+  <target name="changeResource" description="Changes the resource file" depends="init">
+    <replace file="res.rc">
+      <replacefilter token="@Vendor@" value="${vendor.name}"/>
+      <replacefilter token="@Version@" value="${build.version.revision}"/>
+      <replacefilter token="@Copyright@" value="${application.copyright}"/>
+      <replacefilter token="@BuildDate@" value="${build.date.iso}"/>
+      <replacefilter token="@ProductName@" value="${application.name} Server"/>
+      <replacefilter token="@Launcher@" value="${launcher}"/>
+      <replacefilter token="0,0,0,0" value="${build.version.major},${build.version.minor},${build.patch},${svn.revision}"/>
+    </replace>
+  </target>
 
   <!-- Build Java Launcher with Visual C++ -->
-  <target name="buildLauncher" description="Builds the Java Launcher with Visual C++" depends="init">
+  <target name="buildLauncher" description="Builds the Java Launcher with Visual C++" depends="changeResource">
     <!-- Copies the config file of the binary with no console to config.h -->
     <copy file="${config}/${launcher}.h" tofile="${basedir}/config.h" overwrite="true"/>
 
@@ -104,7 +116,7 @@
   </target>
 
   <!-- Build Java Launcher with Visual C++ -->
-  <target name="buildConsoleLauncher" description="Builds the Java Console Launcher with Visual C++" depends="init">
+  <target name="buildConsoleLauncher" description="Builds the Java Console Launcher with Visual C++" depends="changeResource">
     <!-- Copies the config file of the binary with no console to config.h -->
     <copy file="${config}/${launcher}.h" tofile="${basedir}/config.h" overwrite="true"/>
 

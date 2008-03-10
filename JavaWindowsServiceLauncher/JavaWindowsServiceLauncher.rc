@@ -84,7 +84,7 @@ BEGIN
         	VALUE "CompanyName", "@Vendor@"
             VALUE "FileDescription", "@ProductName@ Windows Service Launcher"
             VALUE "FileVersion", "@Version@"
-            VALUE "InternalName", "@Launcher@.exe"
+            VALUE "InternalName", "@Launcher@"
             VALUE "LegalCopyright", "@Copyright@"
             VALUE "OriginalFilename", "@Launcher@.exe"
             VALUE "PrivateBuild", "Build Date @BuildDate@"
