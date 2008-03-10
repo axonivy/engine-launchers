@@ -4,6 +4,7 @@
 	Version="8.00"
 	Name="JavaWindowsServiceHandler"
 	ProjectGUID="{51D3FDE1-4CE4-4AB7-A56E-906A87A9621C}"
+	RootNamespace="JavaWindowsServiceHandler"
 	>
 	<Platforms>
 		<Platform
@@ -427,6 +428,14 @@
 					PreprocessorDefinitions=""
 				/>
 			</FileConfiguration>
+		</File>
+		<File
+			RelativePath=".\JavaWindowsServiceHandler.rc"
+			>
+		</File>
+		<File
+			RelativePath=".\resource.h"
+			>
 		</File>
 	</Files>
 	<Globals>

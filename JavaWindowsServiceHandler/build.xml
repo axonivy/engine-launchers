@@ -21,8 +21,19 @@
     <delete dir="${release}"/>
     <delete dir="${release.x64}"/>
   </target>
+  
+    <target name="changeResource" description="Changes the resource file" depends="init">
+    <replace file="JavaWindowsServiceHandler.rc">
+      <replacefilter token="@Vendor@" value="${vendor.name}"/>
+      <replacefilter token="@Version@" value="${build.version.revision}"/>
+      <replacefilter token="@Copyright@" value="${application.copyright}"/>
+      <replacefilter token="@BuildDate@" value="${build.date.iso}"/>
+      <replacefilter token="@ProductName@" value="${application.name} Server"/>
+      <replacefilter token="0,0,0,0" value="${build.version.major},${build.version.minor},${build.patch},${svn.revision}"/>
+    </replace>
+  </target>
 
-  <target name="build" description="Builds the Java Windows Service Handler Dll with Visual C++" depends="init">
+  <target name="build" description="Builds the Java Windows Service Handler Dll with Visual C++" depends="changeResource">
     <!-- Build visual C++ project -->
     <exec executable="${tools.microsoft.visualstudio.builder}" failonerror="true">
         <arg line="JavaWindowsServiceHandler.sln /Rebuild Release /UseEnv"/>
