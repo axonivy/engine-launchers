@@ -32,7 +32,7 @@
       <replacefilter token="@Copyright@" value="${application.copyright}"/>
       <replacefilter token="@BuildDate@" value="${build.date.iso}"/>
       <replacefilter token="@ProductName@" value="${application.name} Server"/>
-      <replacefilter token="0,0,0,0" value="${build.version.major},${build.version.minor},${build.patch},${build.revision}"/>
+      <replacefilter token="0,0,0,0" value="${build.version.major},${build.version.minor},${build.patch},${svn.revision}"/>
     </replace>
   </target>
 
