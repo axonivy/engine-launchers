@@ -4,6 +4,7 @@
 	Version="8.00"
 	Name="JavaWindowsServiceLauncher"
 	ProjectGUID="{FB0C6A27-9E89-40FC-B49F-FAA246A1BC1C}"
+	RootNamespace="JavaWindowsServiceLauncher"
 	>
 	<Platforms>
 		<Platform
@@ -421,6 +422,10 @@
 					PreprocessorDefinitions=""
 				/>
 			</FileConfiguration>
+		</File>
+		<File
+			RelativePath=".\JavaWindowsServiceLauncher.rc"
+			>
 		</File>
 	</Files>
 	<Globals>
