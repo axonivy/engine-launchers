@@ -85,7 +85,7 @@ BEGIN
         BLOCK "080004b0"
         BEGIN
             VALUE "CompanyName", "@Vendor@"
-            VALUE "FileDescription", "Java Virtual Maschine Launcher Dynamic Link Library"
+            VALUE "FileDescription", "Java Virtual Maschine Launcher"
             VALUE "FileVersion", "@Version@"
             VALUE "InternalName", "JVMLauncher"
             VALUE "LegalCopyright", "@Copyright@"

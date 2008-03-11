@@ -62,8 +62,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,1
- PRODUCTVERSION 1,0,0,1
+ FILEVERSION 0,0,0,0
+ PRODUCTVERSION 0,0,0,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -79,7 +79,7 @@ BEGIN
         BLOCK "080704b0"
         BEGIN
         	VALUE "CompanyName", "@Vendor@"
-            VALUE "FileDescription", "@ProductName@ Java Launcher"
+            VALUE "FileDescription", "@LauncherDescription@"
             VALUE "FileVersion", "@Version@"
             VALUE "InternalName", "@Launcher@"
             VALUE "LegalCopyright", "@Copyright@"

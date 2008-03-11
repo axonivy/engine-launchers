@@ -18,6 +18,8 @@
   <property name="config" value="${basedir}/configurations"/>
   <!-- set the property 'launcher' to an other name if the launcher has not the default name -->
   <property name="launcher" value="Launcher"/>
+  <!-- set the property 'launcher.description' to an other description if the launcher has not the default description -->
+  <property name="launcher.description" value="Launcher Description"/>
   <!-- set the property 'bin' to an other location if the resulting launcher should be located on an other location than the default dir -->
   <property name="bin" value="${basedir}/bin"/>
   <!-- the platform to build either x86 or x64 -->
@@ -92,6 +94,7 @@
       <replacefilter token="@BuildDate@" value="${build.date.iso}"/>
       <replacefilter token="@ProductName@" value="${application.name} Server"/>
       <replacefilter token="@Launcher@" value="${launcher}"/>
+      <replacefilter token="@LauncherDescription@" value="${launcher.description}"/>
       <replacefilter token="0,0,0,0" value="${build.version.major},${build.version.minor},${build.patch},${svn.revision}"/>
     </replace>
   </target>
