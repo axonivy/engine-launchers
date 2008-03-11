@@ -84,19 +84,39 @@
     <delete file="${bin}/${launcher}C.exe" failonerror="false"/>
     <delete dir="${dir.release}" failonerror="false"/>
     <delete dir="${dir.releaseConsole}" failonerror="false"/>
+    
   </target>
   
-  <target name="changeResource" description="Changes the resource file" depends="init">
-    <replace file="res.rc">
-      <replacefilter token="@Vendor@" value="${vendor.name}"/>
-      <replacefilter token="@Version@" value="${build.version.revision}"/>
-      <replacefilter token="@Copyright@" value="${application.copyright}"/>
-      <replacefilter token="@BuildDate@" value="${build.date.iso}"/>
-      <replacefilter token="@ProductName@" value="${application.name} Server"/>
-      <replacefilter token="@Launcher@" value="${launcher}"/>
-      <replacefilter token="@LauncherDescription@" value="${launcher.description}"/>
-      <replacefilter token="0,0,0,0" value="${build.version.major},${build.version.minor},${build.patch},${svn.revision}"/>
-    </replace>
+  <!-- check if res.rc was already copied to res.rc.copy -->
+  <target name="existsResourceCopy" depends="init">
+    <!-- check if res.rc.copy does not exists -->
+    <condition property="project.copy.resource">
+      <not>
+      	<available file="res.rc.copy"/>
+      </not>
+    </condition>  
+  </target>
+  
+  <!-- copy res.rc to res.rc.copy if not yet copied -->
+  <target name="copyResource" depends="existsResourceCopy" if="project.copy.resource">
+    <!-- copy resource -->
+    <copy file="res.rc" tofile="res.rc.copy" />
+  </target>
+  
+  <!-- change resource -->
+  <target name="changeResource" description="Changes the resource file" depends="copyResource">
+    <copy file="res.rc.copy" tofile="res.rc" overwrite="yes">
+      <filterset>
+	      <filter token="@Vendor@" value="${vendor.name}"/>
+	      <filter token="@Version@" value="${build.version.revision}"/>
+	      <filter token="@Copyright@" value="${application.copyright}"/>
+	      <filter token="@BuildDate@" value="${build.date.iso}"/>
+	      <filter token="@ProductName@" value="${application.name} Server"/>
+	      <filter token="@Launcher@" value="${launcher}"/>
+	      <filter token="@LauncherDescription@" value="${launcher.description}"/>
+	      <filter token="0,0,0,0" value="${build.version.major},${build.version.minor},${build.patch},${svn.revision}"/>
+      </filterset>
+    </copy>
   </target>
 
   <!-- Build Java Launcher with Visual C++ -->
