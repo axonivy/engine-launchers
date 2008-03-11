@@ -105,18 +105,17 @@
   
   <!-- change resource -->
   <target name="changeResource" description="Changes the resource file" depends="copyResource">
-    <copy file="res.rc.copy" tofile="res.rc" overwrite="yes">
-      <filterset>
-	      <filter token="@Vendor@" value="${vendor.name}"/>
-	      <filter token="@Version@" value="${build.version.revision}"/>
-	      <filter token="@Copyright@" value="${application.copyright}"/>
-	      <filter token="@BuildDate@" value="${build.date.iso}"/>
-	      <filter token="@ProductName@" value="${application.name} Server"/>
-	      <filter token="@Launcher@" value="${launcher}"/>
-	      <filter token="@LauncherDescription@" value="${launcher.description}"/>
-	      <filter token="0,0,0,0" value="${build.version.major},${build.version.minor},${build.patch},${svn.revision}"/>
-      </filterset>
-    </copy>
+    <copy file="res.rc.copy" tofile="res.rc" overwrite="yes"/>
+    <replace file="res.rc">
+      <replacefilter token="@Vendor@" value="${vendor.name}"/>
+      <replacefilter token="@Version@" value="${build.version.revision}"/>
+      <replacefilter token="@Copyright@" value="${application.copyright}"/>
+      <replacefilter token="@BuildDate@" value="${build.date.iso}"/>
+      <replacefilter token="@ProductName@" value="${application.name} Server"/>
+      <replacefilter token="@Launcher@" value="${launcher}"/>
+      <replacefilter token="@LauncherDescription@" value="${launcher.description}"/>
+      <replacefilter token="0,0,0,0" value="${build.version.major},${build.version.minor},${build.patch},${svn.revision}"/>
+    </replace>
   </target>
 
   <!-- Build Java Launcher with Visual C++ -->
