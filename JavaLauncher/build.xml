@@ -7,7 +7,7 @@
 =============================================================================-->
 <project name="JavaLauncher" default="JavaLauncher" basedir=".">
 
-  <property file="${user.home}/ant.env.properties" />
+  <property file="${user.home}/ant_env.properties" />
   <property file="../../ant.properties" />
 
   <!-- set global properties for this build -->
@@ -24,8 +24,6 @@
   <property name="bin" value="${basedir}/bin"/>
   <!-- the platform to build either x86 or x64 -->
   <property name="platform" value="x86"/>
-
-
 
   <!-- do not external configurate the following internal properties -->
   <property name="icons" value="${basedir}/icons"/>
@@ -75,7 +73,6 @@
     <condition property="targetConfigConsole" value="Release Console">
       <equals arg1="x86" arg2="${platform}"/>
     </condition>
-    <echoproperties/>
 	 
     <!-- Create the time stamp -->
     <tstamp/>
@@ -160,5 +157,7 @@
   <target name="build" description="Builds the Java Launcher and the Java Console Launcher" depends="buildLauncher, buildConsoleLauncher"/>
 
   <!-- Checks out sources and builds the Java Launcher and the Java Console Launcher -->
-  <target name="JavaLauncher" description="Build the Java Launcher" depends="build"/>
+  <target name="JavaLauncher" description="Build the Java Launcher" depends="build">
+		<echo>Do the Java launcher for ${launcher.description}</echo>
+  </target>
 </project>

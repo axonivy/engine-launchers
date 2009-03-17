@@ -7,7 +7,7 @@
 =============================================================================-->
 <project name="JVMLauncher" default="JvmLauncher" basedir=".">
 
-  <property file="${user.home}/ant.env.properties" />
+  <property file="${user.home}/ant_env.properties" />
   <property file="../../ant.properties" />
 
   <!-- set global properties for this build -->
