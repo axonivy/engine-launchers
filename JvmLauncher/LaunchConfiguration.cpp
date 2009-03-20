@@ -225,6 +225,11 @@ CLaunchConfiguration CLaunchConfiguration::overwrite(CLaunchConfiguration launch
 	{
 		overwrittenLaunchConfiguration.setHeapTenuredToYoungRatio(launchConfiguration.getHeapTenuredToYoungRatio());
 	}
+	
+	if (launchConfiguration.getHeapMaxPermSize() != DISABLED)
+	{
+		overwrittenLaunchConfiguration.setHeapMaxPermSize(launchConfiguration.getHeapMaxPermSize());
+	}
 
 	if (launchConfiguration.getJreDirectory() != NULL)
 	{

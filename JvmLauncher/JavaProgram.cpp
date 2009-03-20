@@ -949,11 +949,6 @@ void CJavaProgram::initializeHeapPermMaxSizeMemoryOption(DWORD dwHeapMaxSize, CV
 	if (m_launchConfiguration.getHeapMaxPermSize()!= CLaunchConfiguration::DISABLED)
 	{
 		dwHeapPermMaxSize = m_launchConfiguration.getHeapMaxPermSize();
-		if (dwHeapPermMaxSize > dwHeapMaxSize)
-		{
-			dwHeapPermMaxSize = dwHeapMaxSize;
-			CLog::warn("ivy.heap.perm.max.size was higher than ivy.heap.max.size. Set it to same value as ivy.heap.max.size");
-		}
 		sprintf_s(pcOption, 100, "-XX:MaxPermSize=%lum", dwHeapPermMaxSize);
 		options.addOption(pcOption, NULL);
 	}
