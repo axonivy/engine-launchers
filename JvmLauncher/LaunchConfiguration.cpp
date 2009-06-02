@@ -153,7 +153,8 @@ CLaunchConfiguration CLaunchConfiguration::getServerApplicationDefault()
 {
 	CLaunchConfiguration launchConfiguration;
 	launchConfiguration.setHeapMaxRatio(80);	// 80% of physical memory
-	launchConfiguration.setHeapStartSize(64); // 64 MBytes
+	launchConfiguration.setHeapStartSize(128);
+	launchConfiguration.setHeapMaxPermSize(128);
 	launchConfiguration.setJvmType(ServerHotspotJVM); // use server hotspot
 	launchConfiguration.setAdditionalVmOptions("-Xverify:none -XX:-OmitStackTraceInFastThrow");
 	launchConfiguration.setGarbageCollectorOptions("-XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSParallelRemarkEnabled -XX:+DisableExplicitGC");
