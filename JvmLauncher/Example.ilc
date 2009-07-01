@@ -92,7 +92,7 @@
 #
 #ivy.garbage.collector.options=
 #
-# The name of the windows service (Only for windows service launcher).
+# The name of the windows service (Only for windows service launcher and only when service is registrated by the command line call).
 #
 #ivy.windows.service.name=
 #
