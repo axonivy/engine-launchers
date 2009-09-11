@@ -65,6 +65,9 @@ CJavaVirtualMaschine* CJavaVirtualMaschine::createJavaVirtualMaschine(
     vmInvocationFunctions.pFctCreateJavaVM = NULL; 
 	vmInvocationFunctions.pFctGetDefaultJavaVMInitArgs = NULL;
 
+	CLog::info("Loading prerequired libraries of java virtual maschine %s", pcJvmPath);
+	loadPrerequiredLibraries(pcJvmPath);
+
 	CLog::info("Loading java virtual maschine %s", pcJvmPath);
 
 	loadJavaVirtualMaschineLibrary(pcJvmPath, &vmInvocationFunctions);
@@ -143,6 +146,35 @@ void CJavaVirtualMaschine::loadJavaVirtualMaschineLibrary(LPCSTR pcJvmPath, Java
 		throw CLaunchException(JVMLauncherErrorCodes.COULD_NOT_LOAD_JVM, GetLastError(),
 			"Can not find address of function JNI_GetDefaultJavaVMInitArgs in java virtual maschine library %s", pcJvmPath);
     }
+}
+
+void CJavaVirtualMaschine::loadPrerequiredLibraries(LPCSTR pcJvmPath)
+{    
+	HINSTANCE handle;
+	
+	char pcPrerequiredLibraryPath[MAX_PATH];
+	LPSTR pcSearch;
+
+	// load msvcr71.dll which is required by the jvm version 1.6
+	// see http://www.duckware.com/tech/java6msvcr71.html for more details why this is necessary
+	// also see sun bug #6509291
+	strncpy(pcPrerequiredLibraryPath, pcJvmPath, strnlen(pcJvmPath, MAX_PATH));
+
+	pcSearch = strrchr(pcPrerequiredLibraryPath, '\\');
+	if (pcSearch !=  NULL)
+	{
+		*pcSearch='\0';
+		pcSearch = strrchr(pcPrerequiredLibraryPath, '\\');
+		if (pcSearch !=  NULL)
+		{
+			*pcSearch='\0';
+			strcat(pcPrerequiredLibraryPath, "\\msvcr71.dll");
+			if (GetFileAttributes(pcPrerequiredLibraryPath) != INVALID_FILE_ATTRIBUTES) // file exists
+			{
+				LoadLibrary(pcPrerequiredLibraryPath);
+			}
+		}
+	}
 }
 
 void CJavaVirtualMaschine::waitForAndDestroy()

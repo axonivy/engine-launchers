@@ -106,6 +106,13 @@ private:
 	 * @throws CLaunchException if java virtual maschine can not be loaded
 	 */
 	static void loadJavaVirtualMaschineLibrary(LPCSTR pcJvmPath, JavaVirtualMaschineInvocationFunctions *pVmInvocationFunctions);
+
+	/*
+     * Loads all libraries that are required by the java virtual maschine library
+	 * @param pcJvmPath the path to the java virtual maschine
+	 * @throws CLaunchException if java virtual maschine can not be loaded
+	 */
+	static void loadPrerequiredLibraries(LPCSTR pcJvmPath);
 };
 
 #endif
