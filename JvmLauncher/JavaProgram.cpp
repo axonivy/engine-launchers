@@ -512,6 +512,19 @@ void CJavaProgram::initializeVmOptions(CVmOptions& options, LPCSTR pcApplication
 	initializeGarbageCollectorOptions(options);
 	initializeClassPathOption(options, pcApplicationDirectory);
 	initializeAdditionalVmOptions(options);
+	initializeCommandVmOptions(options);
+}
+
+/*
+ * This enables JPS and VisualVM to display the main class for the jvm process instance
+ */
+void CJavaProgram::initializeCommandVmOptions(CVmOptions& options)
+{
+	char pcCommand[200];
+	
+	strcpy_s(pcCommand, 200, "-Dsun.java.command=");
+	strcat_s(pcCommand, 200, m_launchConfiguration.getMainJavaClass());
+	options.addOption(pcCommand, NULL);
 }
 
 void CJavaProgram::initializeMemoryOptions(CVmOptions& options)

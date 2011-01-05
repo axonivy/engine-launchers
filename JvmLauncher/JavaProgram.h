@@ -52,6 +52,12 @@ private:
 	void initializeAdditionalVmOptions(CVmOptions& options);
 
 	/*
+	 * Initializes command vm options
+	 * @param options the vm options to initialize with the additional vm Options
+	 */
+	void initializeCommandVmOptions(CVmOptions& options);
+
+	/*
 	 * Initializes the class path option
 	 * @param options the java vm options to initialize with the classpath
 	 * @param pcApplicationDirectory the application directory
