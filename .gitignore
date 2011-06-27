@@ -23,6 +23,8 @@ JavaWindowsServiceHandler/JavaWindowsServiceHandler.aps
 JavaWindowsServiceHandler/JavaWindowsServiceHandler.ncb
 JavaWindowsServiceHandler/JavaWindowsServiceHandler.suo
 JavaWindowsServiceHandler/JavaWindowsServiceHandler.vcproj.SORECO.rwei.user
+JavaWindowsServiceHandler/Release
+JavaWindowsServiceHandler/x64
 JavaWindowsServiceLauncher/*.aps
 JavaWindowsServiceLauncher/Debug
 JavaWindowsServiceLauncher/JavaNTServiceLauncher.ncb
