@@ -155,7 +155,7 @@ void CJavaVirtualMaschine::loadPrerequiredLibraries(LPCSTR pcJvmPath)
 	char pcPrerequiredLibraryPath[MAX_PATH];
 	LPSTR pcSearch;
 
-	// load msvcr71.dll which is required by the jvm version 1.6
+	// load msvcr100.dll which is required by the jvm version 1.7
 	// see http://www.duckware.com/tech/java6msvcr71.html for more details why this is necessary
 	// also see sun bug #6509291
 	strncpy(pcPrerequiredLibraryPath, pcJvmPath, strnlen(pcJvmPath, MAX_PATH));
@@ -168,7 +168,7 @@ void CJavaVirtualMaschine::loadPrerequiredLibraries(LPCSTR pcJvmPath)
 		if (pcSearch !=  NULL)
 		{
 			*pcSearch='\0';
-			strcat(pcPrerequiredLibraryPath, "\\msvcr71.dll");
+			strcat(pcPrerequiredLibraryPath, "\\msvcr100.dll");
 			if (GetFileAttributes(pcPrerequiredLibraryPath) != INVALID_FILE_ATTRIBUTES) // file exists
 			{
 				LoadLibrary(pcPrerequiredLibraryPath);
