@@ -743,6 +743,8 @@ void CJavaProgram::initializeClassPathOption(CVmOptions& options, LPCSTR pcAppli
 	addJarsToClasspath(pcClassPath, maxClassPathLength, pcApplicationDirectory, "lib\\patch");
 	// Add jars in shared directory
 	addJarsToClasspath(pcClassPath, maxClassPathLength, pcApplicationDirectory, "lib\\shared");
+	// Add jars in clientlib directory
+	addJarsToClasspath(pcClassPath, maxClassPathLength, pcApplicationDirectory, "clientlib\\signed");
 	// Add jars in aux directory
 	pcAuxDirectory = m_launchConfiguration.getAuxDirectory();
 	if (pcAuxDirectory == NULL)
