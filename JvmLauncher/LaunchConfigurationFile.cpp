@@ -28,6 +28,8 @@ ivy.garbage.collector.options   Garbage collector arguments
 ivy.windows.service.name		The name of the windows service
 ivy.application.name			The name of the application
 ivy.application.singleton		Is the application a singleton (true, false)
+ivy.management.port	            The jmx port
+ivy.management.autodiscovery    Is JPS active (true, false)
 
 The following properties are still supported but deprecated:
 
@@ -260,6 +262,14 @@ void CLaunchConfigurationFile::analyseNameValuePair(CLaunchConfiguration* pLaunc
 	else if (strcmp(pcName, "ivy.application.singleton")==0)
 	{
 		pLaunchConfiguration->setSingleton(toBoolean(pcName, pcValue));
+	}
+	else if (strcmp(pcName, "ivy.management.port")==0)
+	{
+		pLaunchConfiguration->setManagementPort(toNumber(pcName, pcValue));
+	}
+	else if (strcmp(pcName, "ivy.management.autodiscovery")==0)
+	{
+		pLaunchConfiguration->setAutoDiscovery(toBoolean(pcName, pcValue));
 	}
 	else
 	{

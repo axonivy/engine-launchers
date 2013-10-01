@@ -112,6 +112,13 @@ private:
 	/* Additional vm options */
 	LPSTR m_pcAdditionalVmOptions;
 
+	// --- Managment Settings ---
+
+	/** -1 means disable jmx */
+	DWORD m_dwManagementPort;
+
+	bool m_bAutoDiscovery;
+
 public:
 	/* Value that means that a launch configuration property is DISABLED */
 	static const DWORD DISABLED = -1;
@@ -214,6 +221,12 @@ public:
 
 	bool isSingleton();
 	void setSingleton(bool isSingleton);
+
+	DWORD getManagementPort();
+	void setManagementPort(DWORD dwManagementPort);
+
+	bool isAutoDiscovery();
+	void setAutoDiscovery(bool bAutoDiscovery);
 
 	/*
 	 * Assign operator

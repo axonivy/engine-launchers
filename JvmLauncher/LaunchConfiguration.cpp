@@ -29,7 +29,7 @@ CLaunchConfiguration::CLaunchConfiguration(LPCSTR pcMainJavaClass)
   m_dwHeapMaxFreeRatio(DISABLED), m_dwHeapMaxRatio(DISABLED), m_dwHeapMaxSize(DISABLED), m_dwHeapMaxYoungSize(DISABLED), m_dwHeapMinFreeRatio(DISABLED), m_dwHeapMinYoungSize(DISABLED),
   m_dwHeapStartSize(DISABLED), m_dwHeapTenuredToYoungRatio(DISABLED), m_dwHeapMaxPermSize(DISABLED),
   m_jvmType(Disabled), m_pcAuxDirectory(NULL), m_pcJreDirectory(NULL), m_pcMainJavaMethod(NULL), m_pcWindowsServiceName(NULL),
-  m_pcApplicationName(NULL), m_bSingleton(false)
+  m_pcApplicationName(NULL), m_bSingleton(false), m_dwManagementPort(DISABLED), m_bAutoDiscovery(true)
 {
 	setMainJavaClass(pcMainJavaClass);
 }
@@ -40,7 +40,7 @@ CLaunchConfiguration::CLaunchConfiguration()
   m_dwHeapMaxFreeRatio(DISABLED), m_dwHeapMaxRatio(DISABLED), m_dwHeapMaxSize(DISABLED), m_dwHeapMaxYoungSize(DISABLED), m_dwHeapMinFreeRatio(DISABLED), m_dwHeapMinYoungSize(DISABLED),
   m_dwHeapStartSize(DISABLED), m_dwHeapTenuredToYoungRatio(DISABLED), m_dwHeapMaxPermSize(DISABLED),
   m_jvmType(Disabled), m_pcAuxDirectory(NULL), m_pcJreDirectory(NULL), m_pcMainJavaMethod(NULL),  m_pcWindowsServiceName(NULL),
-  m_pcApplicationName(NULL), m_bSingleton(false)
+  m_pcApplicationName(NULL), m_bSingleton(false), m_dwManagementPort(DISABLED), m_bAutoDiscovery(true)
 {
 }
 
@@ -64,7 +64,9 @@ CLaunchConfiguration::CLaunchConfiguration(const CLaunchConfiguration &copy)
   m_pcJreDirectory(NULL),
   m_pcMainJavaMethod(NULL),
   m_pcWindowsServiceName(NULL),
-  m_pcAdditionalVmOptions(NULL)
+  m_pcAdditionalVmOptions(NULL),
+  m_dwManagementPort(copy.m_dwManagementPort), 
+  m_bAutoDiscovery(copy.m_bAutoDiscovery)
 {
 	if (copy.m_pcMainJavaClass != NULL)
 	{
@@ -267,6 +269,15 @@ CLaunchConfiguration CLaunchConfiguration::overwrite(CLaunchConfiguration launch
 		overwrittenLaunchConfiguration.setSingleton(launchConfiguration.isSingleton());
 	}
 
+	if (launchConfiguration.isAutoDiscovery() != isAutoDiscovery())
+	{
+		overwrittenLaunchConfiguration.setAutoDiscovery(launchConfiguration.isAutoDiscovery());
+	}
+
+	if (launchConfiguration.getManagementPort() != DISABLED)
+	{
+		overwrittenLaunchConfiguration.setManagementPort(launchConfiguration.getManagementPort());
+	}
 	return overwrittenLaunchConfiguration;
 }
 
@@ -534,6 +545,26 @@ void CLaunchConfiguration::setSingleton(bool isSingleton)
 	m_bSingleton = isSingleton;
 }
 
+bool CLaunchConfiguration::isAutoDiscovery()
+{
+	return m_bAutoDiscovery;
+}
+
+void CLaunchConfiguration::setAutoDiscovery(bool bAutoDiscovery)
+{
+	m_bAutoDiscovery = bAutoDiscovery;
+}
+
+DWORD CLaunchConfiguration::getManagementPort()
+{
+	return m_dwManagementPort;
+}
+
+void CLaunchConfiguration::setManagementPort(DWORD dwManagementPort)
+{
+	m_dwManagementPort = dwManagementPort;
+}
+
 CLaunchConfiguration& CLaunchConfiguration::operator=(const CLaunchConfiguration& rightValue)
 {
 	if (this != &rightValue)
@@ -590,6 +621,8 @@ CLaunchConfiguration& CLaunchConfiguration::operator=(const CLaunchConfiguration
 		m_dwHeapMaxPermSize = rightValue.m_dwHeapMaxPermSize;
 		m_jvmType = rightValue.m_jvmType;
 		m_bSingleton = rightValue.m_bSingleton;
+		m_bAutoDiscovery = rightValue.m_bAutoDiscovery;
+		m_dwManagementPort = rightValue.m_dwManagementPort;
 		if (rightValue.m_pcMainJavaClass != NULL)
 		{
 			setMainJavaClass(rightValue.m_pcMainJavaClass);

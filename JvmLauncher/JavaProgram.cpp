@@ -510,6 +510,7 @@ void CJavaProgram::initializeVmOptions(CVmOptions& options, LPCSTR pcApplication
 {
 	initializeMemoryOptions(options);
 	initializeGarbageCollectorOptions(options);
+	initializeManagementVmOptions(options);
 	initializeClassPathOption(options, pcApplicationDirectory);
 	initializeAdditionalVmOptions(options);
 	initializeCommandVmOptions(options);
@@ -525,6 +526,32 @@ void CJavaProgram::initializeCommandVmOptions(CVmOptions& options)
 	strcpy_s(pcCommand, 200, "-Dsun.java.command=");
 	strcat_s(pcCommand, 200, m_launchConfiguration.getMainJavaClass());
 	options.addOption(pcCommand, NULL);
+}
+
+void CJavaProgram::initializeManagementVmOptions(CVmOptions& options)
+{
+	if (m_launchConfiguration.getManagementPort() != CLaunchConfiguration::DISABLED)
+	{
+		char pcOption[100];
+		DWORD dwJmxPort = m_launchConfiguration.getManagementPort();
+		sprintf_s(pcOption, 100, "-Dcom.sun.management.jmxremote.port=%lu", dwJmxPort);
+		options.addOption(pcOption, NULL);
+
+		strcpy_s(pcOption, 100, "-Dcom.sun.management.jmxremote.login.config=jmx");
+		options.addOption(pcOption, NULL);
+
+		strcpy_s(pcOption, 100, "-Djava.security.auth.login.config=configuration/jaas.config");
+		options.addOption(pcOption, NULL);
+
+		strcpy_s(pcOption, 100, "-Dcom.sun.management.jmxremote.ssl=false");
+		options.addOption(pcOption, NULL);
+
+		if (m_launchConfiguration.isAutoDiscovery())
+		{
+			strcpy_s(pcOption, 100, "-Dcom.sun.management.jmxremote.autodiscovery=true");
+			options.addOption(pcOption, NULL);
+		}
+	}
 }
 
 void CJavaProgram::initializeMemoryOptions(CVmOptions& options)
