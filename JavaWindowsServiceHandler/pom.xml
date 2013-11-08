@@ -8,6 +8,7 @@
 		<relativePath>../</relativePath>
 	</parent>
 	<artifactId>ch.ivyteam.cpp.javaWindowsServiceHandler</artifactId>
+	<packaging>pom</packaging>
 
 	<build>
 		<plugins>

@@ -8,6 +8,7 @@
 		<relativePath>../</relativePath>
 	</parent>
 	<artifactId>ch.ivyteam.cpp.javaLauncher</artifactId>
+	<packaging>pom</packaging>
 
 	<properties>
 		<BIN_X64>target/win/x64/bin</BIN_X64>

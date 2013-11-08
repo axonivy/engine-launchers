@@ -8,6 +8,7 @@
 		<relativePath>../</relativePath>
 	</parent>
 	<artifactId>ch.ivyteam.cpp.LauncherPacker</artifactId>
+	<packaging>pom</packaging>
 
 	<build>
 		<plugins>
@@ -25,8 +26,8 @@
 						<id>cpp.pack</id>
 						<configuration>
 							<target>
-								<zip basedir="${OUTPUT_X64}" destfile="${OUTPUT_X64}/../x64ServerLaunchers_${svn.revision}.zip" />
-								<zip basedir="${OUTPUT_X86}" destfile="${OUTPUT_X86}/../x86ServerLaunchers_${svn.revision}.zip" />
+								<zip basedir="${OUTPUT_X64}" destfile="${OUTPUT_X64}/../x64ServerLaunchers.zip" />
+								<zip basedir="${OUTPUT_X86}" destfile="${OUTPUT_X86}/../x86ServerLaunchers.zip" />
 							</target>
 						</configuration>
 					</execution>
