@@ -4,6 +4,7 @@ JNILib/JNILib.opt
 JNILib/JNILib.suo
 JNILib/JNILib.vcproj.SORECO.rwei.user
 JNILib/Release
+JNILib/target
 JNILib/x64
 JavaLauncher/Debug
 JavaLauncher/DebugConsole
@@ -13,8 +14,13 @@ JavaLauncher/JavaLauncher.vcproj.SORECO.rwei.user
 JavaLauncher/Release
 JavaLauncher/ReleaseConsole
 JavaLauncher/config.h
+JavaLauncher/configurations/Thumbs.db
+JavaLauncher/icons/*.ico
 JavaLauncher/icons/XpertIvyServer.ico
 JavaLauncher/res.aps
+JavaLauncher/res.rc.copy
+JavaLauncher/target
+JavaLauncher/x64
 JavaWindowsServiceHandler/Debug
 JavaWindowsServiceHandler/JavaNtServiceHandler.ncb
 JavaWindowsServiceHandler/JavaNtServiceHandler.suo
@@ -24,6 +30,7 @@ JavaWindowsServiceHandler/JavaWindowsServiceHandler.ncb
 JavaWindowsServiceHandler/JavaWindowsServiceHandler.suo
 JavaWindowsServiceHandler/JavaWindowsServiceHandler.vcproj.SORECO.rwei.user
 JavaWindowsServiceHandler/Release
+JavaWindowsServiceHandler/target
 JavaWindowsServiceHandler/x64
 JavaWindowsServiceLauncher/*.aps
 JavaWindowsServiceLauncher/Debug
@@ -34,6 +41,7 @@ JavaWindowsServiceLauncher/JavaWindowsServiceLauncher.ncb
 JavaWindowsServiceLauncher/JavaWindowsServiceLauncher.suo
 JavaWindowsServiceLauncher/JavaWindowsServiceLauncher.vcproj.SORECO.rwei.user
 JavaWindowsServiceLauncher/Release
+JavaWindowsServiceLauncher/target
 JavaWindowsServiceLauncher/x64
 JvmLauncher/Debug
 JvmLauncher/JVMLauncher.aps
@@ -43,5 +51,8 @@ JvmLauncher/JVMLauncher.plg
 JvmLauncher/JVMLauncher.suo
 JvmLauncher/JVMLauncher.vcproj.SORECO.rwei.user
 JvmLauncher/Release
+JvmLauncher/target
 JvmLauncher/x64
+LauncherPacker/target
+/target
 /temp

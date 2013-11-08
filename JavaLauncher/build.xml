@@ -8,12 +8,12 @@
 <project name="JavaLauncher" default="JavaLauncher" basedir=".">
 
   <property file="${user.home}/ant_env.properties" />
-  <property file="../../ant.properties" />
+  <property file="../ant.properties" />
 
   <!-- set global properties for this build -->
   <!-- configuration properties -->
   <!-- set the property 'icon' to an other location if the icon is not located in the default dir -->
-  <property name="icon" value="${basedir}/icons"/>
+  <property name="icon" value="${basedir}/configurations"/>
   <!-- set the property 'config' to an other location if the config.h files are not located in the default dir -->
   <property name="config" value="${basedir}/configurations"/>
   <!-- set the property 'launcher' to an other name if the launcher has not the default name -->

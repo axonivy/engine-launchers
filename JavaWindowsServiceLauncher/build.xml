@@ -7,6 +7,9 @@
 =============================================================================-->
 <project name="JavaWindowsServiceLauncher" default="JavaWindowsServiceLauncher" basedir=".">
 
+  <property file="${user.home}/ant_env.properties" />
+  <property file="../ant.properties" />
+
   <!-- set global properties for this build -->
   <!-- configuration properties -->
   <!-- set the property 'config' to an other location if the config.h files are not located in the default dir -->
@@ -60,6 +63,7 @@
   </target>
   
   <target name="changeResource" description="Changes the resource file" depends="init">
+	<copy file="JavaWindowsServiceLauncher.rc.template" tofile="JavaWindowsServiceLauncher.rc" overwrite="yes"/>
     <replace file="JavaWindowsServiceLauncher.rc">
       <replacefilter token="@Vendor@" value="${vendor.name}"/>
       <replacefilter token="@Version@" value="${build.version.revision}"/>
