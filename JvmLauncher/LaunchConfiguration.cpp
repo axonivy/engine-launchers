@@ -29,7 +29,7 @@ CLaunchConfiguration::CLaunchConfiguration(LPCSTR pcMainJavaClass)
   m_dwHeapMaxFreeRatio(DISABLED), m_dwHeapMaxRatio(DISABLED), m_dwHeapMaxSize(DISABLED), m_dwHeapMaxYoungSize(DISABLED), m_dwHeapMinFreeRatio(DISABLED), m_dwHeapMinYoungSize(DISABLED),
   m_dwHeapStartSize(DISABLED), m_dwHeapTenuredToYoungRatio(DISABLED), m_dwHeapMaxPermSize(DISABLED),
   m_jvmType(Disabled), m_pcAuxDirectory(NULL), m_pcJreDirectory(NULL), m_pcMainJavaMethod(NULL), m_pcWindowsServiceName(NULL),
-  m_pcApplicationName(NULL), m_bSingleton(false), m_dwManagementPort(DISABLED), m_bAutoDiscovery(true)
+  m_pcApplicationName(NULL), m_bSingleton(false), m_dwManagementPort(DISABLED), m_bAutoDiscovery(true), m_pcServerStopArgument(NULL)
 {
 	setMainJavaClass(pcMainJavaClass);
 }
@@ -40,7 +40,7 @@ CLaunchConfiguration::CLaunchConfiguration()
   m_dwHeapMaxFreeRatio(DISABLED), m_dwHeapMaxRatio(DISABLED), m_dwHeapMaxSize(DISABLED), m_dwHeapMaxYoungSize(DISABLED), m_dwHeapMinFreeRatio(DISABLED), m_dwHeapMinYoungSize(DISABLED),
   m_dwHeapStartSize(DISABLED), m_dwHeapTenuredToYoungRatio(DISABLED), m_dwHeapMaxPermSize(DISABLED),
   m_jvmType(Disabled), m_pcAuxDirectory(NULL), m_pcJreDirectory(NULL), m_pcMainJavaMethod(NULL),  m_pcWindowsServiceName(NULL),
-  m_pcApplicationName(NULL), m_bSingleton(false), m_dwManagementPort(DISABLED), m_bAutoDiscovery(true)
+  m_pcApplicationName(NULL), m_bSingleton(false), m_dwManagementPort(DISABLED), m_bAutoDiscovery(true), m_pcServerStopArgument(NULL)
 {
 }
 
@@ -66,7 +66,8 @@ CLaunchConfiguration::CLaunchConfiguration(const CLaunchConfiguration &copy)
   m_pcWindowsServiceName(NULL),
   m_pcAdditionalVmOptions(NULL),
   m_dwManagementPort(copy.m_dwManagementPort), 
-  m_bAutoDiscovery(copy.m_bAutoDiscovery)
+  m_bAutoDiscovery(copy.m_bAutoDiscovery),
+  m_pcServerStopArgument(NULL)
 {
 	if (copy.m_pcMainJavaClass != NULL)
 	{
@@ -100,7 +101,10 @@ CLaunchConfiguration::CLaunchConfiguration(const CLaunchConfiguration &copy)
 	{
 		setAdditionalVmOptions(copy.m_pcAdditionalVmOptions);
 	}
-
+	if (copy.m_pcServerStopArgument != NULL)
+	{
+		setServerStopArgument(copy.m_pcServerStopArgument);
+	}
 }
 
 CLaunchConfiguration::~CLaunchConfiguration()
@@ -136,6 +140,10 @@ CLaunchConfiguration::~CLaunchConfiguration()
 	if (m_pcAdditionalVmOptions != NULL)
 	{
 		delete m_pcAdditionalVmOptions;
+	}
+	if (m_pcServerStopArgument != NULL)
+	{
+		delete m_pcServerStopArgument;
 	}
 }
 
@@ -278,6 +286,12 @@ CLaunchConfiguration CLaunchConfiguration::overwrite(CLaunchConfiguration launch
 	{
 		overwrittenLaunchConfiguration.setManagementPort(launchConfiguration.getManagementPort());
 	}
+
+	if (launchConfiguration.getServerStopArgument() != NULL)
+	{
+		overwrittenLaunchConfiguration.setServerStopArgument(launchConfiguration.getServerStopArgument());
+	}
+
 	return overwrittenLaunchConfiguration;
 }
 
@@ -565,6 +579,24 @@ void CLaunchConfiguration::setManagementPort(DWORD dwManagementPort)
 	m_dwManagementPort = dwManagementPort;
 }
 
+LPCSTR CLaunchConfiguration::getServerStopArgument()
+{
+	return m_pcServerStopArgument;
+}
+
+void CLaunchConfiguration::setServerStopArgument(LPCSTR pcServerStopArgument)
+{
+	assert(pcServerStopArgument != NULL);
+
+	if (m_pcServerStopArgument != NULL)
+	{
+		delete m_pcServerStopArgument;
+	}
+
+	m_pcServerStopArgument = new char[strlen(pcServerStopArgument)+1];
+	strcpy_s(m_pcServerStopArgument, strlen(pcServerStopArgument)+1, pcServerStopArgument);
+}
+
 CLaunchConfiguration& CLaunchConfiguration::operator=(const CLaunchConfiguration& rightValue)
 {
 	if (this != &rightValue)
@@ -608,6 +640,11 @@ CLaunchConfiguration& CLaunchConfiguration::operator=(const CLaunchConfiguration
 		{
 			delete m_pcAdditionalVmOptions;
 			m_pcAdditionalVmOptions = NULL;
+		}
+		if (m_pcServerStopArgument != NULL)
+		{
+			delete m_pcServerStopArgument;
+			m_pcServerStopArgument = NULL;
 		}
 		m_dwHeapEdenToSurvivorRatio = rightValue.m_dwHeapEdenToSurvivorRatio;
 		m_dwHeapMaxFreeRatio = rightValue.m_dwHeapMaxFreeRatio; 
@@ -654,6 +691,10 @@ CLaunchConfiguration& CLaunchConfiguration::operator=(const CLaunchConfiguration
 		if (rightValue.m_pcAdditionalVmOptions != NULL)
 		{
 			setAdditionalVmOptions(rightValue.m_pcAdditionalVmOptions);
+		}
+		if (rightValue.m_pcServerStopArgument != NULL)
+		{
+			setServerStopArgument(rightValue.m_pcServerStopArgument);
 		}
 	}
 	return *this;

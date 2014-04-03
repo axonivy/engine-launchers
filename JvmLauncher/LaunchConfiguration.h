@@ -119,6 +119,8 @@ private:
 
 	bool m_bAutoDiscovery;
 
+	LPSTR m_pcServerStopArgument;
+
 public:
 	/* Value that means that a launch configuration property is DISABLED */
 	static const DWORD DISABLED = -1;
@@ -227,6 +229,9 @@ public:
 
 	bool isAutoDiscovery();
 	void setAutoDiscovery(bool bAutoDiscovery);
+
+	LPCSTR getServerStopArgument();
+	void setServerStopArgument(LPCSTR pcServerStopArgument);
 
 	/*
 	 * Assign operator

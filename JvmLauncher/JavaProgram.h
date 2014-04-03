@@ -236,6 +236,21 @@ protected:
 	void initializeVmOptions(CVmOptions& options, LPCSTR pcApplicationDirectory);
 
 	/*
+	 * Disables the mangament option if the arguments contains a server stop argument
+	 * @param argc the number of arguments
+	 * @param argv the arguments
+	 */
+	void disableManagementOptionForServerStop(int argc, LPSTR argv[]);
+
+	/*
+	 * Checks if the given arguments contains the server stop argument 
+	 * @param argc the number of arguments
+	 * @param argv the arguments
+	 * @return true / false
+	 */
+	bool CJavaProgram::containsServerStopArgument(int argc, LPSTR argv[]);
+
+	/*
 	 * Loads a java class
 	 * @param pJavaNativeInterface the java native interface to use to load the class
 	 * @param pcClassName the name of the class 

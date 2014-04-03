@@ -242,6 +242,8 @@ void CJavaProgram::main(int argc, LPSTR argv[])
 	CLog::info("Setting current directory to '%s'.", pcApplicationDirectory);
 	/* Set the current directory */
 	SetCurrentDirectory(pcApplicationDirectory);
+	
+	disableManagementOptionForServerStop(argc, argv);
 
 	initializeVmOptions(vmOptions, pcApplicationDirectory);
 
@@ -514,6 +516,42 @@ void CJavaProgram::initializeVmOptions(CVmOptions& options, LPCSTR pcApplication
 	initializeClassPathOption(options, pcApplicationDirectory);
 	initializeAdditionalVmOptions(options);
 	initializeCommandVmOptions(options);
+}
+
+void CJavaProgram::disableManagementOptionForServerStop(int argc, LPSTR argv[])
+{
+	if (m_launchConfiguration.getManagementPort() == CLaunchConfiguration::DISABLED || 
+		argc < 1 || 
+		m_launchConfiguration.getServerStopArgument() == NULL)
+	{
+		return;
+	}
+	if (containsServerStopArgument(argc, argv))
+	{
+		m_launchConfiguration.setManagementPort(CLaunchConfiguration::DISABLED);
+		return;
+	}
+}
+
+bool CJavaProgram::containsServerStopArgument(int argc, LPSTR argv[])
+{
+	for (int pos = 0; pos < argc; pos++)
+	{
+		LPSTR arg = argv[pos];
+		if (strncmp(arg, "-", 1)==0)
+		{
+			arg = arg+1;
+		}
+		if (strncmp(arg, "-", 1)==0)
+		{
+			arg = arg+1;
+		}
+		if (_stricmp(arg, m_launchConfiguration.getServerStopArgument())==0)
+		{
+			return true;
+		}		
+	}
+	return false;
 }
 
 /*

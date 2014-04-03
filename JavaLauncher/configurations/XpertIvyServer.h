@@ -13,6 +13,7 @@ CLaunchConfiguration getLaunchConfiguration()
 	config = CLaunchConfiguration::getServerApplicationDefault();
 	config.setApplicationName("XpertIvyServer");
 	config.setMainJavaClass("ch.ivyteam.ivy.server.ServerLauncher");
+	config.setServerStopArgument("stop");
 	return config;
 }
 
