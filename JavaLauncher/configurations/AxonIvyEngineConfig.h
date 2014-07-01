@@ -4,14 +4,14 @@
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
 
-#define APPICON "icons\\XpertIvyServerConfig.ico"
+#define APPICON "icons\\AxonIvyEngineConfig.ico"
 
 CLaunchConfiguration getLaunchConfiguration()
 {
 	CLaunchConfiguration config;
 
 	config = CLaunchConfiguration::getServerApplicationDefault();
-	config.setApplicationName("XpertIvyServerConfig");
+	config.setApplicationName("AxonIvyEngineConfig");
 	config.setMainJavaClass("ch.ivyteam.ivy.server.configuration.ui.ServerConfigurationUILauncher");
 	return config;
 }

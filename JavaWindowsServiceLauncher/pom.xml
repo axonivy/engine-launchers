@@ -25,13 +25,13 @@
 						<id>cpp.build</id>
 						<configuration>
 							<target>
-								<!-- XpertIvyServiceLauncher.exe -->
+								<!-- AxonIvyEngineService.exe -->
 								<ant dir="." target="build">
-									<property name="launcher" value="XpertIvyServerService" />
+									<property name="launcher" value="AxonIvyEngineService" />
 									<property name="bin" value="${BIN_X86}" />
 								</ant>
 								<ant dir="." target="build">
-									<property name="launcher" value="XpertIvyServerService" />
+									<property name="launcher" value="AxonIvyEngineService" />
 									<property name="bin" value="${BIN_X64}" />
 									<property name="platform" value="x64" />
 								</ant>

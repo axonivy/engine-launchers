@@ -108,7 +108,7 @@
       <replacefilter token="@Version@" value="${build.version.revision}"/>
       <replacefilter token="@Copyright@" value="${application.copyright}"/>
       <replacefilter token="@BuildDate@" value="${build.date.iso}"/>
-      <replacefilter token="@ProductName@" value="${application.name} Server"/>
+      <replacefilter token="@ProductName@" value="${application.name} Engine"/>
       <replacefilter token="@Launcher@" value="${launcher}"/>
       <replacefilter token="@LauncherDescription@" value="${launcher.description}"/>
       <replacefilter token="0,0,0,0" value="${build.version.major},${build.version.minor},${build.patch},${svn.revision}"/>

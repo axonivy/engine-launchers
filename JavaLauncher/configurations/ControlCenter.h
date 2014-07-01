@@ -4,14 +4,14 @@
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
 
-#define APPICON "icons\\ServerControlCenter.ico"
+#define APPICON "icons\\ControlCenter.ico"
 
 CLaunchConfiguration getLaunchConfiguration()
 {
 	CLaunchConfiguration config;
 
 	config = CLaunchConfiguration::getGuiApplicationDefault();
-	config.setApplicationName("ServerControlCenter");
+	config.setApplicationName("ControlCenter");
 	config.setMainJavaClass("ch.ivyteam.server.control.center.ServerControlCenter");
 	return config;
 }

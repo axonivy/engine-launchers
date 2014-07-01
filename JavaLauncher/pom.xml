@@ -25,29 +25,29 @@
 						<id>cpp.build</id>
 						<configuration>
 							<target>
-								<!-- XpertIvyServer.exe -->
+								<!-- AxonIvyEngine.exe -->
 								<ant dir="." target="build">
-									<property name="launcher" value="XpertIvyServer" />
-									<property name="launcher.description" value="Xpert.ivy Server" />
+									<property name="launcher" value="AxonIvyEngine" />
+									<property name="launcher.description" value="Axon.ivy Engine" />
 									<property name="bin" value="${BIN_X64}" />
 									<property name="platform" value="x64" />
 								</ant>
 								<ant dir="." target="build">
-									<property name="launcher" value="XpertIvyServer" />
-									<property name="launcher.description" value="Xpert.ivy Server" />
+									<property name="launcher" value="AxonIvyEngine" />
+									<property name="launcher.description" value="Axon.ivy Engine" />
 									<property name="bin" value="${BIN_X86}" />
 								</ant>
 							
-								<!-- XpertIvyServerConfig.exe -->
+								<!-- AxonIvyEngineConfig.exe -->
 								<ant dir="." target="build">
-									<property name="launcher" value="XpertIvyServerConfig" />
-									<property name="launcher.description" value="Xpert.ivy Server Configuration" />
+									<property name="launcher" value="AxonIvyEngineConfig" />
+									<property name="launcher.description" value="Axon.ivy Engine Configuration" />
 									<property name="bin" value="${BIN_X64}" />
 									<property name="platform" value="x64" />
 								</ant>
 								<ant dir="." target="build">
-									<property name="launcher" value="XpertIvyServerConfig" />
-									<property name="launcher.description" value="Xpert.ivy Server Configuration" />
+									<property name="launcher" value="AxonIvyEngineConfig" />
+									<property name="launcher.description" value="Axon.ivy Engine Configuration" />
 									<property name="bin" value="${BIN_X86}" />
 								</ant>
 
@@ -64,16 +64,16 @@
 									<property name="bin" value="${BIN_X86}" />
 								</ant>
 
-								<!-- ServerControlCenter.exe -->
+								<!-- ControlCenter.exe -->
 								<ant dir="." target="build">
-									<property name="launcher" value="ServerControlCenter" />
-									<property name="launcher.description" value="Xpert.ivy Server Control Center" />
+									<property name="launcher" value="ControlCenter" />
+									<property name="launcher.description" value="Axon.ivy Engine Control Center" />
 									<property name="bin" value="${BIN_X64}" />
 									<property name="platform" value="x64" />
 								</ant>
 								<ant dir="." target="build">
-									<property name="launcher" value="ServerControlCenter" />
-									<property name="launcher.description" value="Xpert.ivy Server Control Center" />
+									<property name="launcher" value="ControlCenter" />
+									<property name="launcher.description" value="Axon.ivy Engine Control Center" />
 									<property name="bin" value="${BIN_X86}" />
 								</ant>
 							</target>
