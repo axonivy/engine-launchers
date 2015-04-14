@@ -306,25 +306,13 @@ LPSTR CJavaProgram::getJvmPath(LPCSTR pcApplicationDirectory, LPSTR pcJvmPathBuf
 		{
 			*pcEndOfJrePath = '\0';
 			// no
-			// in < jdk 1.4 the client hotspot vm is located in the bin\hotspot directory
-			strcat_s(pcJvmPathBuffer, dwBufferLength, "\\bin\\hotspot\\jvm.dll");
+			// use the server JRE
+			strcat_s(pcJvmPathBuffer, dwBufferLength, "\\bin\\server\\jvm.dll");
 		}
-	}
-	else if (m_launchConfiguration.getJvmType()==ServerHotspotJVM)
-	{
-		strcat_s(pcJvmPathBuffer, dwBufferLength, "\\bin\\server\\jvm.dll");
 	}
 	else
 	{
-		pcEndOfJrePath = pcJvmPathBuffer+strlen(pcJvmPathBuffer);
-		strcat_s(pcJvmPathBuffer, dwBufferLength, "\\bin\\classic\\jvm.dll");
-		if (_access(pcJvmPathBuffer, 0)!=0)
-		{
-			*pcEndOfJrePath = '\0';
-			// no
-			// in > jdk 1.4 the default vm is the hotspot vm
-			strcat_s(pcJvmPathBuffer, dwBufferLength, "\\bin\\client\\jvm.dll");
-		}
+		strcat_s(pcJvmPathBuffer, dwBufferLength, "\\bin\\server\\jvm.dll");
 	}
 	return pcJvmPathBuffer;
 }

@@ -33,7 +33,7 @@ History:
 /*
  * JVM type enumeration
  */
-typedef enum{Disabled=-1, ClassicJVM=0, ClientHotspotJVM=1, ServerHotspotJVM=2} JVMType;
+typedef enum{Disabled=-1, ClientHotspotJVM=1, ServerHotspotJVM=2} JVMType;
 
 
 /*

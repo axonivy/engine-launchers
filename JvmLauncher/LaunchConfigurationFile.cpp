@@ -207,11 +207,7 @@ void CLaunchConfigurationFile::analyseNameValuePair(CLaunchConfiguration* pLaunc
 	else if ((strcmp(pcName, "ivy.JvmType")==0)||
 		     (strcmp(pcName, "ivy.jvm.type")==0))
 	{
-		if (strcmp(pcValue, "ClassicJVM")==0)
-		{
-			pLaunchConfiguration->setJvmType(ClassicJVM);
-		}
-		else if(strcmp(pcValue, "ServerHotspotJVM")==0)
+		if(strcmp(pcValue, "ServerHotspotJVM")==0)
 		{
 			pLaunchConfiguration->setJvmType(ServerHotspotJVM);
 		}
