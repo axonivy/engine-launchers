@@ -15,11 +15,16 @@
 # ===========================================================================
 # The following properties are still supported but deprecated:
 #
-# ivy.StartMem          Start heap size (-Xms) in mega bytes. Deprecated.
-# ivy.MaxMem            Max heap size (-Xmx) in permille of the physical memory. Deprecated.
-# ivy.JvmType           Same as ivy.jvm.type. Deprecated.
-# ivy.AuxDirectory      Same as ivy.dir.aux. Deprecated.
-# ivy.MainClassName     Same as ivy.java.main.class. Deprecated.
+# ivy.StartMem              Start heap size (-Xms) in mega bytes. Deprecated.
+# ivy.MaxMem                Max heap size (-Xmx) in permille of the physical memory. Deprecated.
+# ivy.JvmType               Same as ivy.jvm.type. Deprecated.
+# ivy.AuxDirectory          Same as ivy.dir.aux. Deprecated.
+# ivy.MainClassName         Same as ivy.java.main.class. Deprecated.
+#
+# ===========================================================================
+# The following properties are still accepted but have no longer any effect:
+#
+# ivy.heap.perm.max.size    Not used anymore in Java 8. Deprecated.
 #
 # ===========================================================================
 # The following properties are supported by ivyTeam launch configuration:
@@ -69,14 +74,9 @@
 #ivy.heap.tenured.young.ratio=	
 #
 #
-# Max permanent heap size (-XX:MaxPermSize) in mega bytes.
-#
-#ivy.heap.perm.max.size=
-#
-#
 # The java virtual machine type to use (ClientHotspotJVM, ServerHotspotJVM).
 #
-# ivy.jvm.type=ClientHotspotJVM
+#ivy.jvm.type=ClientHotspotJVM
 #
 #
 # The directory where the ivyTeam jars are located.
