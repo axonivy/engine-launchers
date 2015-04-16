@@ -177,13 +177,6 @@ private:
 	void initializeHeapTenuredYoungRatioMemoryOption( CVmOptions& option);
 
 	/*
-	 * Initializes the heap perm max size vm argument
-	 * @param dwHeapMaxSize the max heap size initialized
-	 * @param option the vm options to initialize
-	 */
-	void initializeHeapPermMaxSizeMemoryOption(DWORD dwHeapMaxSize, CVmOptions& option);
-
-	/*
 	 * Prints a print memory information overview to the debug out
 	 * @param memInfo the memory information
 	 */

@@ -17,7 +17,6 @@ ivy.heap.young.max.size			Max young heap size (-XX:MaxNewSize) in mega bytes.
 ivy.heap.young.min.size			Min young heap size (-XX:NewSize) in mega bytes.
 ivy.heap.eden.survivor.ratio	Survivor heap size as ratio between the eden and the survivor heap size (-XX:SurvivorRatio).
 ivy.heap.tenured.young.ratio	Young heap size as ratio between the tenured and the young heap size (-XX:NewRatio).
-ivy.heap.perm.max.size			Max permanent heap size (-XX:MaxPermSize) in mega bytes.
 ivy.jvm.type					The java virtual machine type to use (ClientHotspotJVM, ServerHotspotJVM).
 ivy.dir.aux						The directory where the ivyTeam jars are located.
 ivy.dir.jre						The directory where the java runtime environment is located.
@@ -39,6 +38,9 @@ ivy.JvmType				Same as ivy.jvm.type. Deprecated.
 ivy.AuxDirectory		Same as ivy.dir.aux. Deprecated.
 ivy.MainClassName		Same as ivy.java.main.class. Deprecated.
 
+The following properties are still accepted but have no longer any effect:
+
+ivy.heap.perm.max.size  Not used anymore in Java 8. Deprecated.
 
 --------------------------------------------------------------------------------------
 
@@ -202,7 +204,8 @@ void CLaunchConfigurationFile::analyseNameValuePair(CLaunchConfiguration* pLaunc
 	}
 	else if (strcmp(pcName, "ivy.heap.perm.max.size")==0)
 	{
-		pLaunchConfiguration->setHeapMaxPermSize(toNumber(pcName, pcValue));
+		printf("The property ivy.heap.perm.max.size has no effect anymore\n");
+		// has no effect anymore (since Java 8), left in for compatiblity
 	}
 	else if ((strcmp(pcName, "ivy.JvmType")==0)||
 		     (strcmp(pcName, "ivy.jvm.type")==0))

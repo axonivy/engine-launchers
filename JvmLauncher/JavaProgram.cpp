@@ -617,9 +617,6 @@ void CJavaProgram::initializeMemoryOptions(CVmOptions& options)
 
 	// initialize heap tenured young ratio
 	initializeHeapTenuredYoungRatioMemoryOption(options);
-
-	// initialize heap max perm size
-	initializeHeapPermMaxSizeMemoryOption(dwHeapMaxSize, options);
 }
 
 DWORD CJavaProgram::initializeHeapMaxSizeMemoryOption(MEMORYSTATUSEX& memInfo, CVmOptions& options)
@@ -1003,19 +1000,6 @@ void CJavaProgram::initializeHeapTenuredYoungRatioMemoryOption( CVmOptions& opti
 	{
 		dwHeapTenuredYoungRatio = m_launchConfiguration.getHeapTenuredToYoungRatio();
 		sprintf_s(pcOption, 100, "-XX:NewRatio=%lu", dwHeapTenuredYoungRatio);
-		options.addOption(pcOption, NULL);
-	}
-}
-
-void CJavaProgram::initializeHeapPermMaxSizeMemoryOption(DWORD dwHeapMaxSize, CVmOptions& options)
-{
-	DWORD dwHeapPermMaxSize;
-	char pcOption[100];
-
-	if (m_launchConfiguration.getHeapMaxPermSize()!= CLaunchConfiguration::DISABLED)
-	{
-		dwHeapPermMaxSize = m_launchConfiguration.getHeapMaxPermSize();
-		sprintf_s(pcOption, 100, "-XX:MaxPermSize=%lum", dwHeapPermMaxSize);
 		options.addOption(pcOption, NULL);
 	}
 }

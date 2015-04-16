@@ -100,9 +100,6 @@ private:
 	   -1 means disabled. -XX:SurvivorRatio */
 	DWORD m_dwHeapEdenToSurvivorRatio;
 
-	/* The maximum of the permanent size in mega  bytes.-1 means disabled. -XX:MaxPermSize */
-	DWORD m_dwHeapMaxPermSize;
-
 	// --- JVM Settings ---
 
 	/* The java virtual machine type */
@@ -202,9 +199,6 @@ public:
 
 	DWORD getHeapEdenToSurvivorRatio();
 	void setHeapEdenToSurvivorRatio(DWORD dwHeapEdenToSurvivorRatio);
-
-	DWORD getHeapMaxPermSize();
-	void setHeapMaxPermSize(DWORD dwHeapMaxPermSize);
 	
 	JVMType getJvmType();
 	void setJvmType(JVMType jvmType);

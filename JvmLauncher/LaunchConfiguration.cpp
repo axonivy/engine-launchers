@@ -27,7 +27,7 @@ History:
 CLaunchConfiguration::CLaunchConfiguration(LPCSTR pcMainJavaClass)
 : m_pcAdditionalVmOptions(NULL), m_pcGarbageCollectorOptions(NULL), m_dwHeapEdenToSurvivorRatio(DISABLED),
   m_dwHeapMaxFreeRatio(DISABLED), m_dwHeapMaxRatio(DISABLED), m_dwHeapMaxSize(DISABLED), m_dwHeapMaxYoungSize(DISABLED), m_dwHeapMinFreeRatio(DISABLED), m_dwHeapMinYoungSize(DISABLED),
-  m_dwHeapStartSize(DISABLED), m_dwHeapTenuredToYoungRatio(DISABLED), m_dwHeapMaxPermSize(DISABLED),
+  m_dwHeapStartSize(DISABLED), m_dwHeapTenuredToYoungRatio(DISABLED),
   m_jvmType(Disabled), m_pcAuxDirectory(NULL), m_pcJreDirectory(NULL), m_pcMainJavaMethod(NULL), m_pcWindowsServiceName(NULL),
   m_pcApplicationName(NULL), m_bSingleton(false), m_dwManagementPort(DISABLED), m_bAutoDiscovery(true), m_pcServerStopArgument(NULL)
 {
@@ -38,7 +38,7 @@ CLaunchConfiguration::CLaunchConfiguration()
 : m_pcMainJavaClass(NULL),
   m_pcAdditionalVmOptions(NULL), m_pcGarbageCollectorOptions(NULL), m_dwHeapEdenToSurvivorRatio(DISABLED),
   m_dwHeapMaxFreeRatio(DISABLED), m_dwHeapMaxRatio(DISABLED), m_dwHeapMaxSize(DISABLED), m_dwHeapMaxYoungSize(DISABLED), m_dwHeapMinFreeRatio(DISABLED), m_dwHeapMinYoungSize(DISABLED),
-  m_dwHeapStartSize(DISABLED), m_dwHeapTenuredToYoungRatio(DISABLED), m_dwHeapMaxPermSize(DISABLED),
+  m_dwHeapStartSize(DISABLED), m_dwHeapTenuredToYoungRatio(DISABLED),
   m_jvmType(Disabled), m_pcAuxDirectory(NULL), m_pcJreDirectory(NULL), m_pcMainJavaMethod(NULL),  m_pcWindowsServiceName(NULL),
   m_pcApplicationName(NULL), m_bSingleton(false), m_dwManagementPort(DISABLED), m_bAutoDiscovery(true), m_pcServerStopArgument(NULL)
 {
@@ -54,7 +54,6 @@ CLaunchConfiguration::CLaunchConfiguration(const CLaunchConfiguration &copy)
   m_dwHeapMinYoungSize(copy.m_dwHeapMinYoungSize),
   m_dwHeapStartSize(copy.m_dwHeapStartSize), 
   m_dwHeapTenuredToYoungRatio(copy.m_dwHeapTenuredToYoungRatio), 
-  m_dwHeapMaxPermSize(copy.m_dwHeapMaxPermSize),
   m_jvmType(copy.m_jvmType),
   m_bSingleton(copy.m_bSingleton),
   m_pcApplicationName(NULL),
@@ -164,7 +163,6 @@ CLaunchConfiguration CLaunchConfiguration::getServerApplicationDefault()
 	CLaunchConfiguration launchConfiguration;
 	launchConfiguration.setHeapMaxRatio(80);	// 80% of physical memory
 	launchConfiguration.setHeapStartSize(128);
-	launchConfiguration.setHeapMaxPermSize(128);
 	launchConfiguration.setJvmType(ServerHotspotJVM); // use server hotspot
 	launchConfiguration.setAdditionalVmOptions("-Xverify:none -XX:-OmitStackTraceInFastThrow");
 	launchConfiguration.setGarbageCollectorOptions("-XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSParallelRemarkEnabled -XX:+CMSClassUnloadingEnabled -Dsun.rmi.dgc.server.gcInterval=600000 -Dsun.rmi.dgc.client.gcInterval=600000");
@@ -235,11 +233,6 @@ CLaunchConfiguration CLaunchConfiguration::overwrite(CLaunchConfiguration launch
 	if (launchConfiguration.getHeapTenuredToYoungRatio() != DISABLED)
 	{
 		overwrittenLaunchConfiguration.setHeapTenuredToYoungRatio(launchConfiguration.getHeapTenuredToYoungRatio());
-	}
-	
-	if (launchConfiguration.getHeapMaxPermSize() != DISABLED)
-	{
-		overwrittenLaunchConfiguration.setHeapMaxPermSize(launchConfiguration.getHeapMaxPermSize());
 	}
 
 	if (launchConfiguration.getJreDirectory() != NULL)
@@ -457,16 +450,6 @@ void CLaunchConfiguration::setHeapEdenToSurvivorRatio(DWORD dwHeapEdenToSurvivor
 	m_dwHeapEdenToSurvivorRatio = dwHeapEdenToSurvivorRatio;
 }
 
-DWORD CLaunchConfiguration::getHeapMaxPermSize()
-{
-	return m_dwHeapMaxPermSize;
-}
-
-void CLaunchConfiguration::setHeapMaxPermSize(DWORD dwHeapMaxPermSize)
-{
-	m_dwHeapMaxPermSize = dwHeapMaxPermSize;
-}
-
 JVMType CLaunchConfiguration::getJvmType()
 {
 	return m_jvmType;
@@ -655,7 +638,6 @@ CLaunchConfiguration& CLaunchConfiguration::operator=(const CLaunchConfiguration
 		m_dwHeapMinYoungSize = rightValue.m_dwHeapMinYoungSize;
 		m_dwHeapStartSize = rightValue.m_dwHeapStartSize;
 		m_dwHeapTenuredToYoungRatio = rightValue.m_dwHeapTenuredToYoungRatio;
-		m_dwHeapMaxPermSize = rightValue.m_dwHeapMaxPermSize;
 		m_jvmType = rightValue.m_jvmType;
 		m_bSingleton = rightValue.m_bSingleton;
 		m_bAutoDiscovery = rightValue.m_bAutoDiscovery;
