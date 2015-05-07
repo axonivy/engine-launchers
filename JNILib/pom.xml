@@ -5,7 +5,7 @@
 		<groupId>Xpert.ivy</groupId>
 		<artifactId>ch.ivyteam.cpp</artifactId>
 		<version>6.0.0-SNAPSHOT</version>
-		<relativePath>../</relativePath>
+		<relativePath>../build.maven/cpp</relativePath>
 	</parent>
 	<artifactId>ch.ivyteam.cpp.jniLib</artifactId>
 	<packaging>pom</packaging>
@@ -17,6 +17,14 @@
 				<artifactId>maven-antrun-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<configuration><skip>true</skip></configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 	
 </project>

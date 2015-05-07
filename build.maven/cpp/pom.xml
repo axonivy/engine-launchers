@@ -1,0 +1,103 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>Xpert.ivy</groupId>
+	<artifactId>ch.ivyteam.cpp</artifactId>
+	<version>6.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<properties>
+		<OUTPUT_X64>../target/win/x64</OUTPUT_X64>
+		<OUTPUT_X86>../target/win/x86</OUTPUT_X86>
+		<maven.test.skip>true</maven.test.skip>
+	</properties>
+
+	<distributionManagement>
+		<!-- Used to deploy artifacts -->
+		<repository>
+			<id>zugpronexus.snapshots</id>
+			<name>Internal Build Integration Repository</name>
+			<url>http://zugpronexus:8081/nexus/content/repositories/build-snapshots/</url>
+		</repository>
+	</distributionManagement>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.google.code.maven-svn-revision-number-plugin</groupId>
+				<artifactId>svn-revision-number-maven-plugin</artifactId>
+				<version>1.13</version>
+				<executions>
+					<execution>
+						<goals><goal>revision</goal></goals>
+					</execution>
+				</executions>
+				<configuration>
+					<entries>
+						<entry><prefix>svn</prefix></entry>
+					</entries>
+				</configuration>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-antrun-plugin</artifactId>
+					<version>1.7</version>
+					<executions>
+						<execution>
+							<id>cpp.delete.existing.compilations</id>
+							<phase>clean</phase>
+							<goals><goal>run</goal></goals>
+							<configuration>
+								<target>
+									<delete dir="Release"/>
+									<delete dir="x64"/>
+								</target>
+							</configuration>
+						</execution>
+						<execution>
+							<id>cpp.build</id>
+							<phase>compile</phase>
+							<goals><goal>run</goal></goals>
+							<configuration>
+								<target>
+									<property file="${user.home}/ant_env.properties" />
+									<property file="../ant.properties" />
+									<property name="tools.microsoft.visualstudio.builder" value="devenv.exe"/>
+									
+									<fileset id="solution" dir=".">
+										<include name="*.sln"/>
+									</fileset>
+									<property name="file.solution" refid="solution"/>
+								
+									<!-- Build visual C++ project for 32 bit -->
+									<exec executable="${tools.microsoft.visualstudio.builder}" failonerror="true">
+										<arg line="${file.solution} /Rebuild Release /UseEnv"/>
+										<env key="include" path="${tools.microsoft.visualstudio.include}"/>
+										<env key="lib" path="${tools.microsoft.visualstudio.lib}"/>
+										<env key="path" path="${tools.microsoft.visualstudio.path}"/>
+									</exec>
+									<!-- Build visual C++ project for 64 bit -->
+									<exec executable="${tools.microsoft.visualstudio.builder}" failonerror="true">
+										<arg line="${file.solution} /Rebuild Release|x64 /UseEnv"/>
+										<env key="include" path="${tools.microsoft.visualstudio.include}"/>
+										<env key="lib" path="${tools.microsoft.visualstudio.lib.x64}"/>
+										<env key="path" path="${tools.microsoft.visualstudio.path.x64}"/>
+									</exec>
+								</target>
+							</configuration>
+						</execution>
+						<execution>
+							<id>cpp.pack</id>
+							<phase>package</phase>
+							<goals><goal>run</goal></goals>
+							<configuration><!-- skipped: delegate to sub modules --></configuration>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>
