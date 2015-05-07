@@ -7,8 +7,8 @@
 =============================================================================-->
 <project name="JavaWindowsServiceLauncher" default="JavaWindowsServiceLauncher" basedir=".">
 
-  <property file="${user.home}/ant_env.properties" />
   <property file="../ant.properties" />
+  <property file="../visual_studio.properties" />								
 
   <!-- set global properties for this build -->
   <!-- configuration properties -->

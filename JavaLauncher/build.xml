@@ -7,9 +7,9 @@
 =============================================================================-->
 <project name="JavaLauncher" default="JavaLauncher" basedir=".">
 
-  <property file="${user.home}/ant_env.properties" />
   <property file="../ant.properties" />
-
+  <property file="../visual_studio.properties" />					
+	
   <!-- set global properties for this build -->
   <!-- configuration properties -->
   <!-- set the property 'icon' to an other location if the icon is not located in the default dir -->
