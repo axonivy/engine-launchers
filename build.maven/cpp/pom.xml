@@ -7,6 +7,14 @@
 	<packaging>pom</packaging>
 
 	<properties>
+		<tools.microsoft.visualstudio.8>C:/Program Files (x86)/Microsoft Visual Studio 8</tools.microsoft.visualstudio.8>
+		<tools.microsoft.visualstudio.8.builder>${tools.microsoft.visualstudio.8}/Common7/IDE/devenv.exe</tools.microsoft.visualstudio.8.builder>
+		<tools.microsoft.visualstudio.8.include>${tools.microsoft.visualstudio.8}/VC/PlatformSDK/include;${tools.microsoft.visualstudio.8}/VC/atlmfc/include;${tools.microsoft.visualstudio.8}/VC/include;${tools.jdk}/include;${tools.jdk}/include/win32</tools.microsoft.visualstudio.8.include>
+		<tools.microsoft.visualstudio.8.lib>${tools.microsoft.visualstudio.8}/VC/PlatformSDK/lib;${tools.microsoft.visualstudio.8}/VC/atlmfc/lib;${tools.microsoft.visualstudio.8}/VC/lib;</tools.microsoft.visualstudio.8.lib>
+		<tools.microsoft.visualstudio.8.lib.x64>${tools.microsoft.visualstudio.8}/VC/PlatformSDK/lib/amd64;${tools.microsoft.visualstudio.8}/VC/atlmfc/lib/amd64;${tools.microsoft.visualstudio.8}/VC/lib/amd64;</tools.microsoft.visualstudio.8.lib.x64>
+		<tools.microsoft.visualstudio.8.path>c:/WINDOWS/system32;c:/WINDOWS;${tools.microsoft.visualstudio.8}/VC/bin;${tools.microsoft.visualstudio.8}/Common7/IDE;${tools.microsoft.visualstudio.8}/Common7/Tools/Bin;</tools.microsoft.visualstudio.8.path>
+		<tools.microsoft.visualstudio.8.path.x64>${tools.microsoft.visualstudio.8}/VC/bin/x86_amd64;${tools.microsoft.visualstudio.8.path}</tools.microsoft.visualstudio.8.path.x64>
+	
 		<OUTPUT_X64>../target/win/x64</OUTPUT_X64>
 		<OUTPUT_X86>../target/win/x86</OUTPUT_X86>
 		<maven.test.skip>true</maven.test.skip>
@@ -63,7 +71,6 @@
 							<goals><goal>run</goal></goals>
 							<configuration>
 								<target>
-									<property file="${user.home}/ant_env.properties" />
 									<property file="../ant.properties" />
 									<property name="tools.microsoft.visualstudio.builder" value="devenv.exe"/>
 									
