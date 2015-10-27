@@ -106,14 +106,11 @@
 #
 # Garbage collector arguments:
 # Example configuration (for more information see: EngineGuide -> Configuration -> GC Optimization):
-# * GC settings optimized for RIA without explicit full gc every 10 minutes
-#ivy.garbage.collector.options=-XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSParallelRemarkEnabled -XX:+CMSClassUnloadingEnabled -XX:CMSInitiatingOccupancyFraction=20 -XX:+DisableExplicitGC
 # * GC optimized for JSF
 #ivy.garbage.collector.options=-XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSParallelRemarkEnabled -XX:+CMSClassUnloadingEnabled -XX:+DisableExplicitGC
-# * With an empty configuration the GC strategy is optimized for RIA (as shown on the next line). A full gc is triggered every 10 minutes to prevent OutOfMemoryException on RIA clients.
-#ivy.garbage.collector.options=-XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSParallelRemarkEnabled -XX:+CMSClassUnloadingEnabled -Dsun.rmi.dgc.server.gcInterval=600000 -Dsun.rmi.dgc.client.gcInterval=600000
+# * With an empty configuration the GC strategy is optimized for RIA (as shown bellow). A full concurrent gc is triggered every 10 minutes to prevent OutOfMemoryException on RIA clients.
 #
-#ivy.garbage.collector.options=
+#ivy.garbage.collector.options=-XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSParallelRemarkEnabled -XX:+CMSClassUnloadingEnabled -XX:+ExplicitGCInvokesConcurrent -Dsun.rmi.dgc.server.gcInterval=600000 -Dsun.rmi.dgc.client.gcInterval=600000
 #
 #
 # To enable access to the java mangement extension (JMX) server from remote hosts, or from other users on the same machine (e.g. windows service), uncomment the following property line.
