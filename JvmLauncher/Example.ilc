@@ -108,7 +108,7 @@
 # Example configuration (for more information see: EngineGuide -> Configuration -> GC Optimization):
 # * GC optimized for JSF
 #ivy.garbage.collector.options=-XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSParallelRemarkEnabled -XX:+CMSClassUnloadingEnabled -XX:+DisableExplicitGC
-# * With an empty configuration the GC strategy is optimized for RIA (as shown bellow). A full concurrent gc is triggered every 10 minutes to prevent OutOfMemoryException on RIA clients.
+# * With an empty configuration the GC strategy is optimized for RIA (as shown below). A full concurrent gc is triggered every 10 minutes to prevent OutOfMemoryException on RIA clients.
 #
 #ivy.garbage.collector.options=-XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSParallelRemarkEnabled -XX:+CMSClassUnloadingEnabled -XX:+ExplicitGCInvokesConcurrent -Dsun.rmi.dgc.server.gcInterval=600000 -Dsun.rmi.dgc.client.gcInterval=600000
 #
