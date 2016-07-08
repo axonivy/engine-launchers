@@ -4,7 +4,7 @@
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
 
-#define APPICON "icons\\AxonIvyEngineConfig.ico"
+#define APPICON "icons\\EngineConfig.ico"
 
 CLaunchConfiguration getLaunchConfiguration()
 {
