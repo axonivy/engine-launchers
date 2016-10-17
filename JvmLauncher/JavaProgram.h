@@ -202,6 +202,11 @@ protected:
 	LPSTR getJvmPath(LPCSTR pcApplicationDirectory, LPSTR pcJvmPathBuffer, DWORD dwBufferLength);
 
 	/*
+	 * Evaluates the JRE directory (the bundled or from the System properties)
+	 */
+	void CJavaProgram::evaluateJreDirectory(LPSTR pcJvmPathBuffer, DWORD dwBufferLength);
+
+	/*
 	 * Gets the application directory
 	 * @param pcApplicationDirectoryBuffer the buffer where to store the application directory
 	 * @param dwBufferLength the length of the bufffer

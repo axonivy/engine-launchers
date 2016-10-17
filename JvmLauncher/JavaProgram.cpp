@@ -29,6 +29,7 @@ History:
 #include <io.h>
 
 #define MAX_CLASSPATH_LENGTH 10000
+#define MODE_DIRECTORY_EXISTS 00
 
 typedef struct 
 {
@@ -295,6 +296,8 @@ LPSTR CJavaProgram::getJvmPath(LPCSTR pcApplicationDirectory, LPSTR pcJvmPathBuf
 		// default path
 		strcpy_s(pcJvmPathBuffer, dwBufferLength, pcApplicationDirectory);
 		strcat_s(pcJvmPathBuffer, dwBufferLength, "\\jre");
+
+		evaluateJreDirectory(pcJvmPathBuffer, dwBufferLength);
 	}
 	if (m_launchConfiguration.getJvmType()==ClientHotspotJVM)
 	{
@@ -315,6 +318,41 @@ LPSTR CJavaProgram::getJvmPath(LPCSTR pcApplicationDirectory, LPSTR pcJvmPathBuf
 		strcat_s(pcJvmPathBuffer, dwBufferLength, "\\bin\\server\\jvm.dll");
 	}
 	return pcJvmPathBuffer;
+}
+
+void CJavaProgram::evaluateJreDirectory(LPSTR pcJvmPathBuffer, DWORD dwBufferLength)
+{
+	if (_access(pcJvmPathBuffer, MODE_DIRECTORY_EXISTS) == 0)
+	{
+		//The default jre/ directory exists
+		CLog::debug("Using JRE found in: %s", pcJvmPathBuffer);
+		return;
+	}
+	CLog::info("JRE directory does not exist, looking for JRE_HOME or JAVA_HOME environment variables.");
+
+	// CHECK JRE_HOME
+	size_t lengthOfEnvVar;
+
+	getenv_s(&lengthOfEnvVar, pcJvmPathBuffer, dwBufferLength, "JRE_HOME");
+	if (lengthOfEnvVar != 0)
+	{
+		CLog::info("JRE_HOME is set, using JRE from %s.", pcJvmPathBuffer);
+		return;
+	}
+
+	// CHECK JAVA_HOME
+	getenv_s(&lengthOfEnvVar, pcJvmPathBuffer, dwBufferLength, "JAVA_HOME");
+
+	if (lengthOfEnvVar != 0)
+	{
+		strcat_s(pcJvmPathBuffer, dwBufferLength, "\\jre");
+		CLog::info("JAVA_HOME is set, using JRE from %s.", pcJvmPathBuffer);
+		return;
+	}
+
+	throw CLaunchException(JVMLauncherErrorCodes.COULD_NOT_FIND_JRE,
+						GetLastError(),
+						"No JRE has been found. Use an Engine bundled with a JRE or set the JRE_HOME or JAVA_HOME environment variable.");
 }
 
 void CJavaProgram::callJavaMain(CJavaVirtualMaschine* pJvm, int argc, LPSTR argv[])
