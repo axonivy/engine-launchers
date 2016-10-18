@@ -346,7 +346,14 @@ void CJavaProgram::evaluateJreDirectory(LPSTR pcJvmPathBuffer, DWORD dwBufferLen
 	if (lengthOfEnvVar != 0)
 	{
 		strcat_s(pcJvmPathBuffer, dwBufferLength, "\\jre");
-		CLog::info("JAVA_HOME is set, using JRE from %s.", pcJvmPathBuffer);
+		// Check if JAVA_HOME contains jre/ folder, if yes, we use this folder
+		if (_access(pcJvmPathBuffer, MODE_DIRECTORY_EXISTS) == 0)
+		{
+			CLog::info("JAVA_HOME is set to JDK, using JRE from %s.", pcJvmPathBuffer);
+			return;
+		}
+		getenv_s(&lengthOfEnvVar, pcJvmPathBuffer, dwBufferLength, "JAVA_HOME");
+		CLog::info("JAVA_HOME is set to JRE, using JRE from %s.", pcJvmPathBuffer);
 		return;
 	}
 
