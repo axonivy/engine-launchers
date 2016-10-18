@@ -328,15 +328,15 @@ void CJavaProgram::evaluateJreDirectory(LPSTR pcJvmPathBuffer, DWORD dwBufferLen
 		CLog::debug("Using JRE found in: %s", pcJvmPathBuffer);
 		return;
 	}
-	CLog::info("JRE directory does not exist, looking for JRE_HOME or JAVA_HOME environment variables.");
+	CLog::info("JRE directory does not exist, looking for IVY_JAVA_HOME or JAVA_HOME environment variables.");
 
-	// CHECK JRE_HOME
+	// CHECK IVY_JAVA_HOME
 	size_t lengthOfEnvVar;
 
-	getenv_s(&lengthOfEnvVar, pcJvmPathBuffer, dwBufferLength, "JRE_HOME");
+	getenv_s(&lengthOfEnvVar, pcJvmPathBuffer, dwBufferLength, "IVY_JAVA_HOME");
 	if (lengthOfEnvVar != 0)
 	{
-		CLog::info("JRE_HOME is set, using JRE from %s.", pcJvmPathBuffer);
+		CLog::info("IVY_JAVA_HOME is set, using JRE from %s.", pcJvmPathBuffer);
 		return;
 	}
 
@@ -352,7 +352,7 @@ void CJavaProgram::evaluateJreDirectory(LPSTR pcJvmPathBuffer, DWORD dwBufferLen
 
 	throw CLaunchException(JVMLauncherErrorCodes.COULD_NOT_FIND_JRE,
 						GetLastError(),
-						"No JRE has been found. Use an Engine bundled with a JRE or set the JRE_HOME or JAVA_HOME environment variable.");
+						"No JRE has been found. Use an Engine bundled with a JRE or set the IVY_JAVA_HOME or JAVA_HOME environment variable.");
 }
 
 void CJavaProgram::callJavaMain(CJavaVirtualMaschine* pJvm, int argc, LPSTR argv[])
