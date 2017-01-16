@@ -75,7 +75,10 @@
     </condition>
 	 
     <!-- Create the time stamp -->
-    <tstamp/>
+	<tstamp>
+		<format property="build.date.iso" pattern="yyyy-MM-dd" locale="en"/>
+		<format property="build.date.year" pattern="yyyy" locale="en"/>
+	</tstamp>
     <!-- Delete the binaries -->
     <delete file="${bin}/${launcher}.exe" failonerror="false"/>
     <delete file="${bin}/${launcher}C.exe" failonerror="false"/>
@@ -106,12 +109,12 @@
     <replace file="res.rc">
       <replacefilter token="@Vendor@" value="${vendor.name}"/>
       <replacefilter token="@Version@" value="${build.version.revision}"/>
-      <replacefilter token="@Copyright@" value="${application.copyright}"/>
+      <replacefilter token="@Copyright@" value="${application.copyright.prefix}${build.date.year} ${vendor.name}"/>
       <replacefilter token="@BuildDate@" value="${build.date.iso}"/>
       <replacefilter token="@ProductName@" value="${application.name} Engine"/>
       <replacefilter token="@Launcher@" value="${launcher}"/>
       <replacefilter token="@LauncherDescription@" value="${launcher.description}"/>
-      <replacefilter token="0,0,0,0" value="${build.version.major},${build.version.minor},${build.patch},${svn.revision}"/>
+      <replacefilter token="0,0,0,0" value="${build.version.major},${build.version.minor},${build.version.service},${svn.revision}"/>
     </replace>
   </target>
 

@@ -56,7 +56,10 @@
       <equals arg1="x64" arg2="${platform}"/>
     </condition>
     <!-- Create the time stamp -->
-    <tstamp/>
+	<tstamp>
+		<format property="build.date.iso" pattern="yyyy-MM-dd" locale="en"/>
+		<format property="build.date.year" pattern="yyyy" locale="en"/>
+	</tstamp>
     <!-- Delete the java Windows Service Launcher -->
     <delete dir="${bin}/${launcher}" failonerror="false"/>
     <delete dir="${dir.release}" failonerror="false"/>
@@ -67,11 +70,11 @@
     <replace file="JavaWindowsServiceLauncher.rc">
       <replacefilter token="@Vendor@" value="${vendor.name}"/>
       <replacefilter token="@Version@" value="${build.version.revision}"/>
-      <replacefilter token="@Copyright@" value="${application.copyright}"/>
+      <replacefilter token="@Copyright@" value="${application.copyright.prefix}${build.date.year} ${vendor.name}"/>
       <replacefilter token="@BuildDate@" value="${build.date.iso}"/>
-      <replacefilter token="@ProductName@" value="${application.name} Server"/>
-      <replacefilter token="@Launcher@" value="${launcher}.exe"/>
-      <replacefilter token="0,0,0,0" value="${build.version.major},${build.version.minor},${build.patch},${svn.revision}"/>
+      <replacefilter token="@ProductName@" value="${application.name} Engine"/>
+      <replacefilter token="@Launcher@" value="${launcher}"/>
+      <replacefilter token="0,0,0,0" value="${build.version.major},${build.version.minor},${build.version.service},${svn.revision}"/>
     </replace>
   </target>
 
