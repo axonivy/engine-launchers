@@ -9,11 +9,13 @@
 CLaunchConfiguration getLaunchConfiguration()
 {
 	CLaunchConfiguration config;
-
 	config = CLaunchConfiguration::getServerApplicationDefault();
 	config.setApplicationName("AxonIvyEngine");
-	config.setMainJavaClass("ch.ivyteam.ivy.server.ServerLauncher");
+	config.setOsgiApplicationName("ch.ivyteam.ivy.server.exec.engine");
 	config.setServerStopArgument("stop");
+#ifndef _WINDOWS
+	config.setConsole(true);
+#endif
 	return config;
 }
 

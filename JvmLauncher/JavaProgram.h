@@ -33,6 +33,7 @@ History:
 #include "LaunchConfigurationFile.h"
 #include "JavaVirtualMaschine.h"
 #include "LaunchException.h"
+#include "JavaMainArguments.h"
 
 class JVMLauncherExport CJavaProgram
 {
@@ -71,6 +72,14 @@ private:
 	void initializeClassPathOption(CVmOptions& options, LPCSTR pcApplicationDirectory);
 
 	/*
+	 * Adds the osgi launcher jar file in the plugins directory to the classpath
+	 * @param pcClasspath the classpath buffer 
+	 * @param dwClasspathLength the length of the classpath buffer
+	 * @param pcApplicationDirectory application directory
+	 */
+	void addOsgiLauncherJarToClasspath(LPSTR& pcClasspath, DWORD& dwClasspathLength, LPCSTR pcApplicationDirectory);
+
+	/*
 	 * Adds all jars found in the relative lib directory to the classpath 
 	 * @param pcClasspath the classpath buffer 
 	 * @param dwClasspathLength the length of the classpath buffer
@@ -106,6 +115,12 @@ private:
 	 * @throws CLaunchException if an error occurs 
 	 */
 	bool checkIsAlreadyRunning();
+
+	/*
+	 * Checks if the application must run as osgi application
+	 * @return true if the application must run as osgi application
+	 */
+	bool launchAsOsgiApplication();
 
 	/*
 	 * Converts a c-style string to a java string
@@ -187,6 +202,19 @@ private:
 	 * @param pcEventSourceName the name of the event source to register
 	 */
 	void registerEventSource(LPCSTR pcEventSourceName);
+
+	/*
+	 * Adds the OSGI java main arguments to java main arguments.
+	 * @param javaMainArguments out variable, javaMainArguments
+	 */
+	void addOsgiJavaMainArguments(JavaMainArguments* pJavaMainArguments);
+
+	/*
+	 * Logs the java main class with its arguments.
+	 * @param mainJavaClass java main class
+	 * @param javaMainArguments java main arguments
+	 */
+	void logStartingJavaClass(LPCSTR pcMainJavaClass, JavaMainArguments& javaMainArguments);
 
 protected:
 	/* The launch configuration that defines the options of the java virtual maschine and the main class */

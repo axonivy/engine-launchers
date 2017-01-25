@@ -25,6 +25,7 @@ History:
 #include "LaunchException.h"
 #include "Log.h"
 #include "VmOptions.h"
+#include "StringUtils.h"
 #include <assert.h>
 #include <io.h>
 
@@ -215,6 +216,10 @@ bool CJavaProgram::checkIsAlreadyRunning()
 	}
 }
 
+bool CJavaProgram::launchAsOsgiApplication()
+{
+	return !(StringUtils::isEmpty(m_launchConfiguration.getOsgiApplicationName()));
+}
 
 void CJavaProgram::main(int argc, LPSTR argv[])
 {
@@ -375,23 +380,14 @@ void CJavaProgram::callJavaMain(CJavaVirtualMaschine* pJvm, int argc, LPSTR argv
 		mainClass, 
 		(m_launchConfiguration.getMainJavaMethod()==NULL) ? "main" : m_launchConfiguration.getMainJavaMethod(),
 		"([Ljava/lang/String;)V");
+
+	JavaMainArguments javaMainArguments(argc, argv);
+	addOsgiJavaMainArguments(&javaMainArguments);
 	
-    /* Build argument array */
-
-	if (argc>0)
-	{
-		CLog::info("Starting java class '%s' with arguments:", m_launchConfiguration.getMainJavaClass() );
-	}
-	else
-	{
-		CLog::info("Starting java class '%s'", m_launchConfiguration.getMainJavaClass() );
-	}
-	for (int pos = 0; pos < argc; pos++)
-	{
-		CLog::info(" [%i] %s", pos, argv[pos]);
-	}
-	mainArguments = convert2JavaStringArray(pJvm->getJavaNativeInterface(), argc, argv);
-
+	logStartingJavaClass(m_launchConfiguration.getMainJavaClass(), javaMainArguments);
+	
+	mainArguments = convert2JavaStringArray(pJvm->getJavaNativeInterface(), javaMainArguments.getCount(), javaMainArguments.getArguments());
+	
     /* Invoke main method. */
     pJvm->getJavaNativeInterface()->CallStaticVoidMethod(mainClass, mainMethod, mainArguments);
     if (pJvm->getJavaNativeInterface()->ExceptionCheck()) {
@@ -399,6 +395,34 @@ void CJavaProgram::callJavaMain(CJavaVirtualMaschine* pJvm, int argc, LPSTR argv
 			pJvm->getJavaNativeInterface(),
 			"Java main method throws Exception");
     }
+}
+
+void CJavaProgram::addOsgiJavaMainArguments(JavaMainArguments* pJavaMainArguments)
+{
+	if (launchAsOsgiApplication())
+	{
+		pJavaMainArguments->addArgument("-nl");
+		pJavaMainArguments->addArgument("en");
+		pJavaMainArguments->addArgument("-application");
+		pJavaMainArguments->addArgument((LPSTR) m_launchConfiguration.getOsgiApplicationName());
+		if (m_launchConfiguration.isConsole())
+		{
+			pJavaMainArguments->addArgument("-console");	
+		}
+	}
+}
+
+void CJavaProgram::logStartingJavaClass(LPCSTR pcMainJavaClass, JavaMainArguments& javaMainArguments)
+{
+	CLog::info("Starting java class '%s'", pcMainJavaClass);
+	if (javaMainArguments.getCount() > 0)
+	{
+		CLog::info("With arguments:");
+		for (int pos = 0; pos < javaMainArguments.getCount(); pos++)
+		{
+			CLog::info(" [%i] %s", pos, javaMainArguments.getArgument(pos));
+		}
+	}
 }
 
 jobjectArray CJavaProgram::convert2JavaStringArray(JNIEnv* pJavaNativeInterface, int argc, LPSTR argv[])
@@ -817,7 +841,6 @@ void CJavaProgram::addToClasspath(LPSTR& pcClasspath, DWORD& dwClasspathLength, 
 	strcat_s(pcClasspath, dwClasspathLength, ";");
 }
 
-
 void CJavaProgram::initializeClassPathOption(CVmOptions& options, LPCSTR pcApplicationDirectory)
 {
 	char pcClassesDir[MAX_PATH];
@@ -828,25 +851,66 @@ void CJavaProgram::initializeClassPathOption(CVmOptions& options, LPCSTR pcAppli
 	/* Prepare a string which takes the classpath */
     strcpy_s(pcClassPath, maxClassPathLength, "-Djava.class.path=");
 
-	/* Add the classes directory first */
-	strcpy_s(pcClassesDir, MAX_PATH, pcApplicationDirectory);
-	strcat_s(pcClassesDir, MAX_PATH, "\\lib\\classes");
-
-	addToClasspath(pcClassPath, maxClassPathLength, pcClassesDir, NULL);
-
-	// Add jars in patch directory
-	addJarsToClasspath(pcClassPath, maxClassPathLength, pcApplicationDirectory, "lib\\patch");
-	// Add jars in shared directory
-	addJarsToClasspath(pcClassPath, maxClassPathLength, pcApplicationDirectory, "lib\\shared");
-	// Add jars in aux directory
-	pcAuxDirectory = m_launchConfiguration.getAuxDirectory();
-	if (pcAuxDirectory == NULL)
+	if (launchAsOsgiApplication())
 	{
-		pcAuxDirectory = "lib\\ivy";
+		CLog::debug("Start OSGI application: %s", m_launchConfiguration.getOsgiApplicationName());
+		addOsgiLauncherJarToClasspath(pcClassPath, maxClassPathLength, pcApplicationDirectory);
+		addJarsToClasspath(pcClassPath, maxClassPathLength, pcApplicationDirectory, "lib\\patch");
 	}
-	addJarsToClasspath(pcClassPath, maxClassPathLength, pcApplicationDirectory, pcAuxDirectory);
+	else
+	{		
+		/* Add the classes directory first */
+		strcpy_s(pcClassesDir, MAX_PATH, pcApplicationDirectory);
+		strcat_s(pcClassesDir, MAX_PATH, "\\lib\\classes");
+
+		addToClasspath(pcClassPath, maxClassPathLength, pcClassesDir, NULL);
+
+		// Add jars in patch directory
+		addJarsToClasspath(pcClassPath, maxClassPathLength, pcApplicationDirectory, "lib\\patch");
+		// Add jars in shared directory
+		addJarsToClasspath(pcClassPath, maxClassPathLength, pcApplicationDirectory, "lib\\shared");
+		// Add jars in aux directory
+		pcAuxDirectory = m_launchConfiguration.getAuxDirectory();
+		if (pcAuxDirectory == NULL)
+		{
+			pcAuxDirectory = "lib\\ivy";
+		}
+		addJarsToClasspath(pcClassPath, maxClassPathLength, pcApplicationDirectory, pcAuxDirectory);	
+	}
 
 	options.addOption(pcClassPath, NULL);
+}
+
+void CJavaProgram::addOsgiLauncherJarToClasspath(LPSTR& pcClasspath, DWORD& dwClasspathLength, LPCSTR pcApplicationDirectory)
+{
+	char pcPluginsDirectoy[MAX_PATH];
+	char pcJarFileFilter[MAX_PATH];
+    WIN32_FIND_DATA jar_file;    
+	HANDLE hFile;
+
+	/* Create the library directory */
+	strcpy_s(pcPluginsDirectoy, MAX_PATH, pcApplicationDirectory);
+	strcat_s(pcPluginsDirectoy, MAX_PATH, "\\plugins\\");
+	
+	/* Create the *.jar search string */
+	strcpy_s(pcJarFileFilter, MAX_PATH, pcPluginsDirectoy);
+	strcat_s(pcJarFileFilter, MAX_PATH, "org.eclipse.equinox.launcher_*.jar");
+
+	/* find org.eclipse.equinox.launcher_*.jar files in the lib directory */
+	bool found = false;
+    hFile = FindFirstFile( pcJarFileFilter, &jar_file );
+	if (hFile != INVALID_HANDLE_VALUE)
+	{
+		addToClasspath(pcClasspath, dwClasspathLength, pcPluginsDirectoy, jar_file.cFileName);
+		FindClose( hFile );
+	}
+	else
+	{
+		CLog::error("Could not found jar file %s in directory %s", pcJarFileFilter, pcPluginsDirectoy);
+		throw CLaunchException(JVMLauncherErrorCodes.COULD_NOT_FIND_OSGI_LAUNCHER_JAR,
+						GetLastError(),
+						"Could not found OSGI launcher jar");
+	}
 }
 
 void CJavaProgram::addJarsToClasspath(LPSTR& pcClasspath, DWORD& dwClasspathLength, LPCSTR pcApplicationDirectory, LPCSTR pcRelativeLibDirectory)
@@ -1157,4 +1221,3 @@ void CJavaProgram::registerEventSource(LPCSTR pcEventSourceName)
   RegCloseKey(hKey);
   return;
 }
-

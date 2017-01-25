@@ -28,7 +28,7 @@ CLaunchConfiguration::CLaunchConfiguration(LPCSTR pcMainJavaClass)
 : m_pcAdditionalVmOptions(NULL), m_pcGarbageCollectorOptions(NULL), m_dwHeapEdenToSurvivorRatio(DISABLED),
   m_dwHeapMaxFreeRatio(DISABLED), m_dwHeapMaxRatio(DISABLED), m_dwHeapMaxSize(DISABLED), m_dwHeapMaxYoungSize(DISABLED), m_dwHeapMinFreeRatio(DISABLED), m_dwHeapMinYoungSize(DISABLED),
   m_dwHeapStartSize(DISABLED), m_dwHeapTenuredToYoungRatio(DISABLED),
-  m_jvmType(Disabled), m_pcAuxDirectory(NULL), m_pcJreDirectory(NULL), m_pcMainJavaMethod(NULL), m_pcWindowsServiceName(NULL),
+  m_jvmType(Disabled), m_pcAuxDirectory(NULL), m_pcJreDirectory(NULL), m_pcMainJavaMethod(NULL), m_pcOsgiApplicationName(NULL), m_bConsole(false), m_pcWindowsServiceName(NULL),
   m_pcApplicationName(NULL), m_bSingleton(false), m_dwManagementPort(DISABLED), m_bAutoDiscovery(true), m_pcServerStopArgument(NULL)
 {
 	setMainJavaClass(pcMainJavaClass);
@@ -39,7 +39,7 @@ CLaunchConfiguration::CLaunchConfiguration()
   m_pcAdditionalVmOptions(NULL), m_pcGarbageCollectorOptions(NULL), m_dwHeapEdenToSurvivorRatio(DISABLED),
   m_dwHeapMaxFreeRatio(DISABLED), m_dwHeapMaxRatio(DISABLED), m_dwHeapMaxSize(DISABLED), m_dwHeapMaxYoungSize(DISABLED), m_dwHeapMinFreeRatio(DISABLED), m_dwHeapMinYoungSize(DISABLED),
   m_dwHeapStartSize(DISABLED), m_dwHeapTenuredToYoungRatio(DISABLED),
-  m_jvmType(Disabled), m_pcAuxDirectory(NULL), m_pcJreDirectory(NULL), m_pcMainJavaMethod(NULL),  m_pcWindowsServiceName(NULL),
+  m_jvmType(Disabled), m_pcAuxDirectory(NULL), m_pcJreDirectory(NULL), m_pcMainJavaMethod(NULL), m_pcOsgiApplicationName(NULL), m_bConsole(false), m_pcWindowsServiceName(NULL),
   m_pcApplicationName(NULL), m_bSingleton(false), m_dwManagementPort(DISABLED), m_bAutoDiscovery(true), m_pcServerStopArgument(NULL)
 {
 }
@@ -62,6 +62,8 @@ CLaunchConfiguration::CLaunchConfiguration(const CLaunchConfiguration &copy)
   m_pcGarbageCollectorOptions(NULL),
   m_pcJreDirectory(NULL),
   m_pcMainJavaMethod(NULL),
+  m_pcOsgiApplicationName(NULL),
+  m_bConsole(copy.m_bConsole),
   m_pcWindowsServiceName(NULL),
   m_pcAdditionalVmOptions(NULL),
   m_dwManagementPort(copy.m_dwManagementPort), 
@@ -87,6 +89,10 @@ CLaunchConfiguration::CLaunchConfiguration(const CLaunchConfiguration &copy)
 	if (copy.m_pcMainJavaMethod != NULL)
 	{
 		setMainJavaMethod(copy.m_pcMainJavaMethod);
+	}
+	if (copy.m_pcOsgiApplicationName != NULL)
+	{
+		setOsgiApplicationName(copy.m_pcOsgiApplicationName);
 	}
 	if (copy.m_pcWindowsServiceName != NULL)
 	{
@@ -128,6 +134,10 @@ CLaunchConfiguration::~CLaunchConfiguration()
 	{
 		delete m_pcMainJavaMethod;
 	}
+	if (m_pcOsgiApplicationName != NULL)
+	{
+		delete m_pcOsgiApplicationName;
+	}
 	if (m_pcWindowsServiceName != NULL)
 	{
 		delete m_pcWindowsServiceName;
@@ -149,18 +159,19 @@ CLaunchConfiguration::~CLaunchConfiguration()
 CLaunchConfiguration CLaunchConfiguration::getGuiApplicationDefault()
 {
 	CLaunchConfiguration launchConfiguration;
+	launchConfiguration.setMainJavaClass("org.eclipse.equinox.launcher.Main");
 	launchConfiguration.setHeapMaxRatio(80);	// 80% of physical memory
 	launchConfiguration.setHeapStartSize(64); // 64 MBytes
 	launchConfiguration.setJvmType(ClientHotspotJVM); // use client hotspot
 	launchConfiguration.setAdditionalVmOptions("-Xverify:none -XX:-OmitStackTraceInFastThrow");
 	launchConfiguration.setGarbageCollectorOptions("-XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSParallelRemarkEnabled -XX:+DisableExplicitGC");
-
 	return launchConfiguration;
 }
 
 CLaunchConfiguration CLaunchConfiguration::getServerApplicationDefault()
 {
 	CLaunchConfiguration launchConfiguration;
+	launchConfiguration.setMainJavaClass("org.eclipse.equinox.launcher.Main");
 	launchConfiguration.setHeapMaxRatio(80);	// 80% of physical memory
 	launchConfiguration.setHeapStartSize(128);
 	launchConfiguration.setJvmType(ServerHotspotJVM); // use server hotspot
@@ -253,6 +264,11 @@ CLaunchConfiguration CLaunchConfiguration::overwrite(CLaunchConfiguration launch
 	if (launchConfiguration.getMainJavaMethod() != NULL)
 	{
 		overwrittenLaunchConfiguration.setMainJavaMethod(launchConfiguration.getMainJavaMethod());
+	}
+
+	if (launchConfiguration.getOsgiApplicationName() != NULL)
+	{
+		overwrittenLaunchConfiguration.setOsgiApplicationName(launchConfiguration.getOsgiApplicationName());
 	}
 
 	if (launchConfiguration.getWindowsServiceName() != NULL)
@@ -358,6 +374,34 @@ void CLaunchConfiguration::setMainJavaMethod(LPCSTR pcMainJavaMethod)
 
 	m_pcMainJavaMethod = new char[strlen(pcMainJavaMethod)+1];
 	strcpy_s(m_pcMainJavaMethod, strlen(pcMainJavaMethod)+1, pcMainJavaMethod);
+}
+
+LPCSTR CLaunchConfiguration::getOsgiApplicationName()
+{
+	return m_pcOsgiApplicationName;
+}
+
+void CLaunchConfiguration::setOsgiApplicationName(LPCSTR pcOsgiApplicationName)
+{
+	assert(pcOsgiApplicationName != NULL);
+
+	if (m_pcOsgiApplicationName != NULL)
+	{
+		delete m_pcOsgiApplicationName;
+	}
+
+	m_pcOsgiApplicationName = new char[strlen(pcOsgiApplicationName)+1];
+	strcpy_s(m_pcOsgiApplicationName, strlen(pcOsgiApplicationName)+1, pcOsgiApplicationName);
+}
+
+bool CLaunchConfiguration::isConsole()
+{
+	return m_bConsole;
+}
+
+void CLaunchConfiguration::setConsole(bool bConsole)
+{
+	m_bConsole = bConsole;
 }
 
 DWORD CLaunchConfiguration::getHeapMaxSize()
@@ -609,6 +653,11 @@ CLaunchConfiguration& CLaunchConfiguration::operator=(const CLaunchConfiguration
 			delete m_pcMainJavaMethod;
 			m_pcMainJavaMethod = NULL;
 		}
+		if (m_pcOsgiApplicationName != NULL)
+		{
+			delete m_pcOsgiApplicationName;
+			m_pcOsgiApplicationName = NULL;
+		}
 		if (m_pcWindowsServiceName != NULL)
 		{
 			delete m_pcWindowsServiceName;
@@ -640,6 +689,7 @@ CLaunchConfiguration& CLaunchConfiguration::operator=(const CLaunchConfiguration
 		m_dwHeapTenuredToYoungRatio = rightValue.m_dwHeapTenuredToYoungRatio;
 		m_jvmType = rightValue.m_jvmType;
 		m_bSingleton = rightValue.m_bSingleton;
+		m_bConsole = rightValue.m_bConsole;
 		m_bAutoDiscovery = rightValue.m_bAutoDiscovery;
 		m_dwManagementPort = rightValue.m_dwManagementPort;
 		if (rightValue.m_pcMainJavaClass != NULL)
@@ -661,6 +711,10 @@ CLaunchConfiguration& CLaunchConfiguration::operator=(const CLaunchConfiguration
 		if (rightValue.m_pcMainJavaMethod != NULL)
 		{
 			setMainJavaMethod(rightValue.m_pcMainJavaMethod);
+		}
+		if (rightValue.m_pcOsgiApplicationName != NULL)
+		{
+			setOsgiApplicationName(rightValue.m_pcOsgiApplicationName);
 		}
 		if (rightValue.m_pcWindowsServiceName != NULL)
 		{

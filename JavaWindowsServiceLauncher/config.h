@@ -9,7 +9,7 @@ CLaunchConfiguration getLaunchConfiguration()
 	CLaunchConfiguration config;
 
 	config = CLaunchConfiguration::getServerApplicationDefault();
-	config.setWindowsServiceName("Xpert.ivy Server");
+	config.setWindowsServiceName("Axon.ivy Engine");
 	config.setMainJavaClass("ch.ivyteam.ivy.server.WindowsService");
 	return config;
 }

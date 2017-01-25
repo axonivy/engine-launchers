@@ -22,6 +22,7 @@ ivy.dir.aux						The directory where the ivyTeam jars are located.
 ivy.dir.jre						The directory where the java runtime environment is located.
 ivy.java.main.class				The java main class to launch
 ivy.java.main.method			The java main method to launch
+ivy.osgi.application.name		Name of the OSGI application to launch
 ivy.vm.additional.options       Additional vm arguments
 ivy.garbage.collector.options   Garbage collector arguments
 ivy.windows.service.name		The name of the windows service
@@ -241,6 +242,10 @@ void CLaunchConfigurationFile::analyseNameValuePair(CLaunchConfiguration* pLaunc
 	else if (strcmp(pcName, "ivy.java.main.method")==0)
 	{
 		pLaunchConfiguration->setMainJavaMethod(pcValue);
+	}
+	else if (strcmp(pcName, "ivy.osgi.application.name")==0)
+	{
+		pLaunchConfiguration->setOsgiApplicationName(pcValue);
 	}
 	else if (strcmp(pcName, "ivy.vm.additional.options")==0)
 	{

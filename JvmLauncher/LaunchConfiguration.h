@@ -65,6 +65,10 @@ private:
 	LPSTR m_pcMainJavaClass;
 	/* The name of the main java method to launch */
 	LPSTR m_pcMainJavaMethod;
+	/* OSGI application name */
+	LPSTR m_pcOsgiApplicationName;
+	/* Console mode */
+	bool m_bConsole;
 
 	// --- Heap settings ---
 
@@ -172,7 +176,13 @@ public:
 	
 	LPCSTR getMainJavaMethod();
 	void setMainJavaMethod(LPCSTR pcMainJavaMethod);
+
+	LPCSTR getOsgiApplicationName();
+	void setOsgiApplicationName(LPCSTR pcOsgiApplicationName);
 	
+	bool isConsole();
+	void setConsole(bool bConsole);
+
 	DWORD getHeapMaxSize();
 	void setHeapMaxSize(DWORD dwHeapMaxSize);
 

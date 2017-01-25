@@ -150,8 +150,6 @@ void CJavaVirtualMaschine::loadJavaVirtualMaschineLibrary(LPCSTR pcJvmPath, Java
 
 void CJavaVirtualMaschine::loadPrerequiredLibraries(LPCSTR pcJvmPath)
 {    
-	HINSTANCE handle;
-	
 	char pcPrerequiredLibraryPath[MAX_PATH];
 	LPSTR pcSearch;
 
@@ -168,7 +166,7 @@ void CJavaVirtualMaschine::loadPrerequiredLibraries(LPCSTR pcJvmPath)
 		if (pcSearch !=  NULL)
 		{
 			*pcSearch='\0';
-			strcat(pcPrerequiredLibraryPath, "\\msvcr100.dll");
+			strcat_s(pcPrerequiredLibraryPath, MAX_PATH, "\\msvcr100.dll");
 			CLog::info("Loading prerequired library '%s'", pcPrerequiredLibraryPath);
 			if (GetFileAttributes(pcPrerequiredLibraryPath) != INVALID_FILE_ATTRIBUTES) // file exists
 			{

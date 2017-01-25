@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>ch.ivyteam.ivy.cpp</groupId>
 		<artifactId>maven-config</artifactId>
-		<version>6.5.0-SNAPSHOT</version>
+		<version>6.5.1-SNAPSHOT</version>
 		<relativePath>../build.maven/cpp</relativePath>
 	</parent>
 	<artifactId>javaLauncher</artifactId>
@@ -48,19 +48,6 @@
 								<ant dir="." target="build">
 									<property name="launcher" value="AxonIvyEngineConfig" />
 									<property name="launcher.description" value="Axon.ivy Engine Configuration" />
-									<property name="bin" value="${BIN_X86}" />
-								</ant>
-
-								<!-- RichDialogApplicationLauncher.exe -->
-								<ant dir="." target="build">
-									<property name="launcher" value="RichDialogApplicationLauncher" />
-									<property name="launcher.description" value="Rich Dialog Application Launcher" />
-									<property name="bin" value="${BIN_X64}" />
-									<property name="platform" value="x64" />
-								</ant>
-								<ant dir="." target="build">
-									<property name="launcher" value="RichDialogApplicationLauncher" />
-									<property name="launcher.description" value="Rich Dialog Application Launcher" />
 									<property name="bin" value="${BIN_X86}" />
 								</ant>
 

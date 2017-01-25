@@ -9,10 +9,12 @@
 CLaunchConfiguration getLaunchConfiguration()
 {
 	CLaunchConfiguration config;
-
 	config = CLaunchConfiguration::getGuiApplicationDefault();
 	config.setApplicationName("ControlCenter");
-	config.setMainJavaClass("ch.ivyteam.server.control.center.ServerControlCenter");
+	config.setOsgiApplicationName("ch.ivyteam.ivy.server.control.center.ui");
+#ifndef _WINDOWS
+	config.setConsole(true);
+#endif
 	return config;
 }
 

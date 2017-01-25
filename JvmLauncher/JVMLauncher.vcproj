@@ -368,6 +368,14 @@
 	</References>
 	<Files>
 		<File
+			RelativePath=".\JavaMainArguments.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\JavaMainArguments.h"
+			>
+		</File>
+		<File
 			RelativePath=".\JavaProgram.cpp"
 			>
 		</File>
@@ -567,13 +575,21 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="mc -h $(InputDir) -r $(InputDir) $(InputFileName)"
+					CommandLine="mc -h $(InputDir) -r $(InputDir) $(InputFileName)&#x0D;&#x0A;"
 					Outputs="MSG00001.bin"
 				/>
 			</FileConfiguration>
 		</File>
 		<File
 			RelativePath=".\resource.h"
+			>
+		</File>
+		<File
+			RelativePath=".\StringUtils.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\StringUtils.h"
 			>
 		</File>
 		<File
