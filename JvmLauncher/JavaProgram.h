@@ -65,6 +65,12 @@ private:
 	void initializeCommandVmOptions(CVmOptions& options);
 
 	/*
+	 * Initializes osgi parent classloader vm options
+	 * @param options the vm options to the osgi parent classloader
+	 */
+	void initializeOsgiParentClassLoaderVmOptions(CVmOptions& options);
+
+	/*
 	 * Initializes the class path option
 	 * @param options the java vm options to initialize with the classpath
 	 * @param pcApplicationDirectory the application directory
@@ -78,6 +84,14 @@ private:
 	 * @param pcApplicationDirectory application directory
 	 */
 	void addOsgiLauncherJarToClasspath(LPSTR& pcClasspath, DWORD& dwClasspathLength, LPCSTR pcApplicationDirectory);
+
+	/*
+	 * Adds the osgi boot jar file in the plugins directory to the classpath
+	 * @param pcClasspath the classpath buffer 
+	 * @param dwClasspathLength the length of the classpath buffer
+	 * @param pcApplicationDirectory application directory
+	 */
+	void addOsgiBootJarToClasspath(LPSTR& pcClasspath, DWORD& dwClasspathLength, LPCSTR pcApplicationDirectory);
 
 	/*
 	 * Adds all jars found in the relative lib directory to the classpath 

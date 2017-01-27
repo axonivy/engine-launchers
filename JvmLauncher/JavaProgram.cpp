@@ -573,6 +573,7 @@ void CJavaProgram::initializeVmOptions(CVmOptions& options, LPCSTR pcApplication
 	initializeClassPathOption(options, pcApplicationDirectory);
 	initializeAdditionalVmOptions(options);
 	initializeCommandVmOptions(options);
+	initializeOsgiParentClassLoaderVmOptions(options);
 }
 
 void CJavaProgram::disableManagementOptionForServerStop(int argc, LPSTR argv[])
@@ -621,6 +622,13 @@ void CJavaProgram::initializeCommandVmOptions(CVmOptions& options)
 	strcpy_s(pcCommand, 200, "-Dsun.java.command=");
 	strcat_s(pcCommand, 200, m_launchConfiguration.getMainJavaClass());
 	options.addOption(pcCommand, NULL);
+}
+
+void CJavaProgram::initializeOsgiParentClassLoaderVmOptions(CVmOptions& options)
+{
+	char pcClassloader[50];
+	strcpy_s(pcClassloader, 50, "-Dosgi.parentClassloader=app");
+	options.addOption(pcClassloader, NULL);
 }
 
 void CJavaProgram::initializeManagementVmOptions(CVmOptions& options)
@@ -855,6 +863,7 @@ void CJavaProgram::initializeClassPathOption(CVmOptions& options, LPCSTR pcAppli
 	{
 		CLog::debug("Start OSGI application: %s", m_launchConfiguration.getOsgiApplicationName());
 		addOsgiLauncherJarToClasspath(pcClassPath, maxClassPathLength, pcApplicationDirectory);
+		addOsgiBootJarToClasspath(pcClassPath, maxClassPathLength, pcApplicationDirectory);
 		addJarsToClasspath(pcClassPath, maxClassPathLength, pcApplicationDirectory, "lib\\patch");
 	}
 	else
@@ -910,6 +919,38 @@ void CJavaProgram::addOsgiLauncherJarToClasspath(LPSTR& pcClasspath, DWORD& dwCl
 		throw CLaunchException(JVMLauncherErrorCodes.COULD_NOT_FIND_OSGI_LAUNCHER_JAR,
 						GetLastError(),
 						"Could not found OSGI launcher jar");
+	}
+}
+
+void CJavaProgram::addOsgiBootJarToClasspath(LPSTR& pcClasspath, DWORD& dwClasspathLength, LPCSTR pcApplicationDirectory)
+{
+	char pcPluginsDirectoy[MAX_PATH];
+	char pcJarFileFilter[MAX_PATH];
+    WIN32_FIND_DATA jar_file;    
+	HANDLE hFile;
+
+	/* Create the library directory */
+	strcpy_s(pcPluginsDirectoy, MAX_PATH, pcApplicationDirectory);
+	strcat_s(pcPluginsDirectoy, MAX_PATH, "\\plugins\\");
+	
+	/* Create the *.jar search string */
+	strcpy_s(pcJarFileFilter, MAX_PATH, pcPluginsDirectoy);
+	strcat_s(pcJarFileFilter, MAX_PATH, "ch.ivyteam.ivy.boot.osgi_*.jar");
+
+	/* find ch.ivyteam.ivy.boot.osgi_*.jar files in the lib directory */
+	bool found = false;
+    hFile = FindFirstFile( pcJarFileFilter, &jar_file );
+	if (hFile != INVALID_HANDLE_VALUE)
+	{
+		addToClasspath(pcClasspath, dwClasspathLength, pcPluginsDirectoy, jar_file.cFileName);
+		FindClose( hFile );
+	}
+	else
+	{
+		CLog::error("Could not found ch.ivyteam.ivy.boot.osgi jar file %s in directory %s", pcJarFileFilter, pcPluginsDirectoy);
+		throw CLaunchException(JVMLauncherErrorCodes.COULD_NOT_FIND_IVY_BOOT_LAUNCHER_JAR,
+						GetLastError(),
+						"Could not found UTIL jar");
 	}
 }
 

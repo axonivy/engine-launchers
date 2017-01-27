@@ -1,10 +1,9 @@
 /*-----------------------------------------------------------------------------------
 
    Java Widnows Service Handler
-
 -------------------------------------------------------------------------------------
 
-  Implements the native method of class ch.ivyteam.server.win.WindowsServiceHandler
+  Implements the native method of class ch.ivyteam.ivy.boot.osgi.win.WindowsServiceHandler
 
 --------------------------------------------------------------------------------------
 
@@ -30,7 +29,7 @@ History:
 
 #define JavaWindowsServiceHandler
 #include "ch_ivyteam_server_win_WindowsServiceHandler.h"
-#include "ch_ivyteam_server_win_WindowsService.h"
+#include "ch_ivyteam_ivy_boot_osgi_win_WindowsService.h"
 
 
 /*
@@ -795,13 +794,12 @@ JNIEXPORT jint JNICALL Java_ch_ivyteam_server_win_WindowsServiceHandler_getExitC
 	return serviceStatus.dwWin32ExitCode;
 }
 
-
 /*
  * Class:     ch_ivyteam_server_win_WindowsService
  * Method:    setStatus0
- * Signature: (Lch/ivyteam/server/win/WindowsServiceStatus;)V
+ * Signature: (Lch/ivyteam/ivy/boot/osgi/win/WindowsServiceStatus;)V
  */
-JNIEXPORT void JNICALL Java_ch_ivyteam_server_win_WindowsService_setStatus0
+JNIEXPORT void JNICALL Java_ch_ivyteam_ivy_boot_osgi_win_WindowsService_setStatus0
   (JNIEnv *jpEnv, jobject jpThis, jobject jpWindowsServiceStatus)
 {
   SERVICE_STATUS serviceStatus;
