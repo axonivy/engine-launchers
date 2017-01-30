@@ -390,6 +390,10 @@
 	</References>
 	<Files>
 		<File
+			RelativePath=".\ch_ivyteam_ivy_boot_osgi_win_WindowsService.h"
+			>
+		</File>
+		<File
 			RelativePath=".\ch_ivyteam_server_win_WindowsServiceHandler.h"
 			>
 		</File>
