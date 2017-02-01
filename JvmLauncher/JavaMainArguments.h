@@ -17,6 +17,7 @@ private:
 	int m_length;
 
 public:
+	JavaMainArguments();
 	JavaMainArguments(int argc, LPSTR argv[]);
 	~JavaMainArguments();
 	void addArgument(LPSTR arg);

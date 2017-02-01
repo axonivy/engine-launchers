@@ -3,6 +3,12 @@
 #include "JavaMainArguments.h"
 #include "LaunchException.h"
 
+JavaMainArguments::JavaMainArguments()
+: m_argc(0), m_argv(NULL), m_length(1000)
+{	
+	m_argv = new LPSTR[m_length];
+}
+
 JavaMainArguments::JavaMainArguments(int argc, LPSTR argv[])
 : m_argc(argc), m_argv(NULL), m_length(1000)
 {	
