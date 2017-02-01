@@ -41,10 +41,9 @@ private:
 	/*
 	 * Calls the java main method
 	 * @param pJvm a pointer to the java virtual maschine to use to call the main function
-	 * @param argc the number of Options passed to the java program
-	 * @param argv the Options passed to the java program
+	 * @param javaMainArguments pointer to java main arguments
 	 */
-	void callJavaMain(CJavaVirtualMaschine* pJvm, int argc, LPSTR argv[]);
+	void callJavaMain(CJavaVirtualMaschine* pJvm, JavaMainArguments& javaMainArguments);
 
 	/*
 	 * Initializes additional vm options
@@ -61,8 +60,9 @@ private:
 	/*
 	 * Initializes command vm options
 	 * @param options the vm options to initialize with the additional vm Options
+	 * @param javaMainArguments pointer to java main arguments
 	 */
-	void initializeCommandVmOptions(CVmOptions& options);
+	void initializeCommandVmOptions(CVmOptions& options, JavaMainArguments& javaMainArguments);
 
 	/*
 	 * Initializes osgi parent classloader vm options
@@ -219,14 +219,14 @@ private:
 
 	/*
 	 * Adds the OSGI java main arguments to java main arguments.
-	 * @param javaMainArguments out variable, javaMainArguments
+	 * @param pJavaMainArguments out variable, javaMainArguments
 	 */
 	void addOsgiJavaMainArguments(JavaMainArguments* pJavaMainArguments);
 
 	/*
 	 * Logs the java main class with its arguments.
 	 * @param mainJavaClass java main class
-	 * @param javaMainArguments java main arguments
+	 * @param javaMainArguments point to java main arguments
 	 */
 	void logStartingJavaClass(LPCSTR pcMainJavaClass, JavaMainArguments& javaMainArguments);
 
@@ -272,8 +272,9 @@ protected:
 	 * Initializes the vm options
 	 * @param otions the vm options to initialize
 	 * @param pcApplicationDirectory the application directory 
+	 * @param javaMainArguments pointer to java main arguments
 	 */
-	void initializeVmOptions(CVmOptions& options, LPCSTR pcApplicationDirectory);
+	void initializeVmOptions(CVmOptions& options, LPCSTR pcApplicationDirectory, JavaMainArguments& javaMainArguments);
 
 	/*
 	 * Disables the mangament option if the arguments contains a server stop argument

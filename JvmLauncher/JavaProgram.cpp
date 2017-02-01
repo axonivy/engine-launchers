@@ -251,7 +251,10 @@ void CJavaProgram::main(int argc, LPSTR argv[])
 	
 	disableManagementOptionForServerStop(argc, argv);
 
-	initializeVmOptions(vmOptions, pcApplicationDirectory);
+	JavaMainArguments javaMainArguments(argc, argv);
+	addOsgiJavaMainArguments(&javaMainArguments);
+
+	initializeVmOptions(vmOptions, pcApplicationDirectory, javaMainArguments);
 
 	pJvm = CJavaVirtualMaschine::createJavaVirtualMaschine(
 		getJvmPath(pcApplicationDirectory, pcJvmPath, MAX_PATH), 
@@ -260,7 +263,7 @@ void CJavaProgram::main(int argc, LPSTR argv[])
 	try
 	{
 		// call java main
-		callJavaMain(pJvm, argc, argv);
+		callJavaMain(pJvm, javaMainArguments);
 		// if main returns, detach current thread, so that threads waiting for the main thread to die are notified
 		pJvm->detachCurrentThread();
 		// wait for till vm dies (all user threads end) and then destroys it
@@ -367,7 +370,7 @@ void CJavaProgram::evaluateJreDirectory(LPSTR pcJvmPathBuffer, DWORD dwBufferLen
 						"No JRE has been found. Use an Engine bundled with a JRE or set the IVY_JAVA_HOME or JAVA_HOME environment variable.");
 }
 
-void CJavaProgram::callJavaMain(CJavaVirtualMaschine* pJvm, int argc, LPSTR argv[])
+void CJavaProgram::callJavaMain(CJavaVirtualMaschine* pJvm, JavaMainArguments& javaMainArguments)
 {
 	jclass mainClass;
     jmethodID mainMethod;
@@ -381,11 +384,8 @@ void CJavaProgram::callJavaMain(CJavaVirtualMaschine* pJvm, int argc, LPSTR argv
 		(m_launchConfiguration.getMainJavaMethod()==NULL) ? "main" : m_launchConfiguration.getMainJavaMethod(),
 		"([Ljava/lang/String;)V");
 
-	JavaMainArguments javaMainArguments(argc, argv);
-	addOsgiJavaMainArguments(&javaMainArguments);
-	
 	logStartingJavaClass(m_launchConfiguration.getMainJavaClass(), javaMainArguments);
-	
+
 	mainArguments = convert2JavaStringArray(pJvm->getJavaNativeInterface(), javaMainArguments.getCount(), javaMainArguments.getArguments());
 	
     /* Invoke main method. */
@@ -565,14 +565,14 @@ LPSTR CJavaProgram::getApplicationDirectory(LPSTR pcApplicationDirectoryBuffer, 
 	return pcApplicationDirectoryBuffer;
 }
 
-void CJavaProgram::initializeVmOptions(CVmOptions& options, LPCSTR pcApplicationDirectory)
+void CJavaProgram::initializeVmOptions(CVmOptions& options, LPCSTR pcApplicationDirectory, JavaMainArguments& javaMainArguments)
 {
 	initializeMemoryOptions(options);
 	initializeGarbageCollectorOptions(options);
 	initializeManagementVmOptions(options);
 	initializeClassPathOption(options, pcApplicationDirectory);
 	initializeAdditionalVmOptions(options);
-	initializeCommandVmOptions(options);
+	initializeCommandVmOptions(options, javaMainArguments);
 	initializeOsgiParentClassLoaderVmOptions(options);
 }
 
@@ -615,12 +615,18 @@ bool CJavaProgram::containsServerStopArgument(int argc, LPSTR argv[])
 /*
  * This enables JPS and VisualVM to display the main class for the jvm process instance
  */
-void CJavaProgram::initializeCommandVmOptions(CVmOptions& options)
+void CJavaProgram::initializeCommandVmOptions(CVmOptions& options, JavaMainArguments& javaMainArguments)
 {
-	char pcCommand[200];
-	
-	strcpy_s(pcCommand, 200, "-Dsun.java.command=");
-	strcat_s(pcCommand, 200, m_launchConfiguration.getMainJavaClass());
+	char pcCommand[10000];
+
+	strcpy_s(pcCommand, 10000, "-Dsun.java.command=");
+	strcat_s(pcCommand, 10000, m_launchConfiguration.getMainJavaClass());
+
+	for (int i = 0; i < javaMainArguments.getCount(); i = i + 1) {
+		strcat_s(pcCommand, 10000, " ");
+		strcat_s(pcCommand, 10000, javaMainArguments.getArgument(i));
+	}
+
 	options.addOption(pcCommand, NULL);
 }
 

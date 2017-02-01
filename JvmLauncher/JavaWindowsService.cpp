@@ -581,8 +581,8 @@ void CJavaWindowsService::startupJava()
 
 		reportStartProgress();
 
-		// initialize vm options
-		initializeVmOptions(vmOptions, pcApplicationDirectory);
+		JavaMainArguments javaMainArguments;
+		initializeVmOptions(vmOptions, pcApplicationDirectory, javaMainArguments);
 		//addJvmExitHook(vmOptions);
 
 		reportStartProgress();
