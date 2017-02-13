@@ -65,33 +65,11 @@ private:
 	void initializeCommandVmOptions(CVmOptions& options, JavaMainArguments& javaMainArguments);
 
 	/*
-	 * Initializes osgi parent classloader vm options
-	 * @param options the vm options to the osgi parent classloader
-	 */
-	void initializeOsgiParentClassLoaderVmOptions(CVmOptions& options);
-
-	/*
 	 * Initializes the class path option
 	 * @param options the java vm options to initialize with the classpath
 	 * @param pcApplicationDirectory the application directory
 	 */
 	void initializeClassPathOption(CVmOptions& options, LPCSTR pcApplicationDirectory);
-
-	/*
-	 * Adds the osgi launcher jar file in the plugins directory to the classpath
-	 * @param pcClasspath the classpath buffer 
-	 * @param dwClasspathLength the length of the classpath buffer
-	 * @param pcApplicationDirectory application directory
-	 */
-	void addOsgiLauncherJarToClasspath(LPSTR& pcClasspath, DWORD& dwClasspathLength, LPCSTR pcApplicationDirectory);
-
-	/*
-	 * Adds the osgi boot jar file in the plugins directory to the classpath
-	 * @param pcClasspath the classpath buffer 
-	 * @param dwClasspathLength the length of the classpath buffer
-	 * @param pcApplicationDirectory application directory
-	 */
-	void addOsgiBootJarToClasspath(LPSTR& pcClasspath, DWORD& dwClasspathLength, LPCSTR pcApplicationDirectory);
 
 	/*
 	 * Adds all jars found in the relative lib directory to the classpath 
@@ -116,6 +94,13 @@ private:
 	 * @param options the java vm options to initialize with the memory options
      */
 	void initializeMemoryOptions(CVmOptions& options);
+
+	/*
+	 * Initializes the osgi vm options
+	 * @param options the java vm options
+	 * @param pcApplicationDirectory the application directory
+     */
+	void initializeOsgiVmOptions(CVmOptions& options, LPCSTR pcApplicationDirectory);
 
 	/*
 	 * Initializes the garbage collector options
