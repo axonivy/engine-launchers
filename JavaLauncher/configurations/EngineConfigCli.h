@@ -4,7 +4,7 @@
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
 
-#define APPICON "icons\\EngineConfig.ico"
+#define APPICON "icons\\EngineConfigCli.ico"
 
 CLaunchConfiguration getLaunchConfiguration()
 {
