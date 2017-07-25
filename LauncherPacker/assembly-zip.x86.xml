@@ -14,6 +14,16 @@
 		<fileSet>
 			<outputDirectory>.</outputDirectory>
 			<directory>${OUTPUT_X86}</directory>
+			<excludes>
+				<exclude>EngineConfigCli*</exclude>
+			</excludes>
 		</fileSet>
 	</fileSets>
+	<files>
+		<file>
+			<source>${OUTPUT_X86}/EngineConfigCliC.exe</source>
+			<outputDirectory>.</outputDirectory>
+			<destName>EngineConfigCli.exe</destName>
+		</file>
+	</files>
 </assembly>

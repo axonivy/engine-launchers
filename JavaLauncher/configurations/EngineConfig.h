@@ -11,8 +11,8 @@ CLaunchConfiguration getLaunchConfiguration()
 	CLaunchConfiguration config;
 
 	config = CLaunchConfiguration::getServerApplicationDefault();
-	config.setApplicationName("EngineConfig");
-	config.setMainJavaClass("ch.ivyteam.ivy.server.configuration.ServerConfigurationTool");
+	config.setApplicationName("EngineConfigCli");
+	config.setOsgiApplicationName("ch.ivyteam.ivy.server.configuration.cli");
 	return config;
 }
 

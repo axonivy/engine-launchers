@@ -63,6 +63,19 @@
 									<property name="launcher.description" value="Axon.ivy Engine Control Center" />
 									<property name="bin" value="${BIN_X86}" />
 								</ant>
+
+								<!-- EngineConfigCli.exe -->
+								<ant dir="." target="build">
+									<property name="launcher" value="EngineConfigCli" />
+									<property name="launcher.description" value="Axon.ivy Engine Config Cli" />
+									<property name="bin" value="${BIN_X64}" />
+									<property name="platform" value="x64" />
+								</ant>
+								<ant dir="." target="build">
+									<property name="launcher" value="EngineConfigCli" />
+									<property name="launcher.description" value="Axon.ivy Engine Config Cli" />
+									<property name="bin" value="${BIN_X86}" />
+								</ant>
 							</target>
 						</configuration>
 					</execution>
