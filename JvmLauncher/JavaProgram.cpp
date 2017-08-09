@@ -699,10 +699,17 @@ void CJavaProgram::initializeOsgiVmOptions(CVmOptions& options, LPCSTR pcApplica
 {
 	if (launchAsOsgiApplication())
 	{
-		char jvmOption[MAX_PATH];
-		strcpy_s(jvmOption, MAX_PATH, "-Dosgi.install.area=");
-		strcat_s(jvmOption, MAX_PATH, pcApplicationDirectory);
-		options.addOption(jvmOption, NULL);
+		char jvmOptionOsgiInstallArea[MAX_PATH];
+		strcpy_s(jvmOptionOsgiInstallArea, MAX_PATH, "-Dosgi.install.area=");
+		strcat_s(jvmOptionOsgiInstallArea, MAX_PATH, pcApplicationDirectory);
+		strcat_s(jvmOptionOsgiInstallArea, MAX_PATH, "\\system");
+		options.addOption(jvmOptionOsgiInstallArea, NULL);
+
+		char jvmOptionInstanceArea[MAX_PATH];
+		strcpy_s(jvmOptionInstanceArea, MAX_PATH, "-Dosgi.instance.area=");
+		strcat_s(jvmOptionInstanceArea, MAX_PATH, pcApplicationDirectory);
+		strcat_s(jvmOptionInstanceArea, MAX_PATH, "\\work");
+		options.addOption(jvmOptionInstanceArea, NULL);
 	}
 }
 
@@ -872,7 +879,7 @@ void CJavaProgram::initializeClassPathOption(CVmOptions& options, LPCSTR pcAppli
 	if (launchAsOsgiApplication())
 	{
 		CLog::debug("Start OSGI application: %s", m_launchConfiguration.getOsgiApplicationName());
-		addJarsToClasspath(pcClassPath, maxClassPathLength, pcApplicationDirectory, "lib\\boot");
+		addJarsToClasspath(pcClassPath, maxClassPathLength, pcApplicationDirectory, "system\\lib\\boot");
 	}
 	else
 	{		
