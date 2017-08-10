@@ -237,6 +237,8 @@ public:
 	LPCSTR getServerStopArgument();
 	void setServerStopArgument(LPCSTR pcServerStopArgument);
 
+	void setEnableLoggingInfo(bool bEnableLoggingInfo);
+
 	/*
 	 * Assign operator
 	 * @param rightValue the right value of the assign operator

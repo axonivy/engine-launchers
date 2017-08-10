@@ -23,6 +23,7 @@ History:
 #define JVMLauncher
 #include "LaunchConfiguration.h"
 #include <assert.h>
+#include "Log.h"
 
 CLaunchConfiguration::CLaunchConfiguration(LPCSTR pcMainJavaClass)
 : m_pcAdditionalVmOptions(NULL), m_pcGarbageCollectorOptions(NULL), m_dwHeapEdenToSurvivorRatio(DISABLED),
@@ -177,6 +178,7 @@ CLaunchConfiguration CLaunchConfiguration::getServerApplicationDefault()
 	launchConfiguration.setJvmType(ServerHotspotJVM); // use server hotspot
 	launchConfiguration.setAdditionalVmOptions("-Xverify:none -XX:-OmitStackTraceInFastThrow");
 	launchConfiguration.setGarbageCollectorOptions("-XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSParallelRemarkEnabled -XX:+CMSClassUnloadingEnabled -XX:+ExplicitGCInvokesConcurrent -Dsun.rmi.dgc.server.gcInterval=600000 -Dsun.rmi.dgc.client.gcInterval=600000");																																						 
+	launchConfiguration.setEnableLoggingInfo(true);
 	return launchConfiguration;
 }
 
@@ -622,6 +624,11 @@ void CLaunchConfiguration::setServerStopArgument(LPCSTR pcServerStopArgument)
 
 	m_pcServerStopArgument = new char[strlen(pcServerStopArgument)+1];
 	strcpy_s(m_pcServerStopArgument, strlen(pcServerStopArgument)+1, pcServerStopArgument);
+}
+
+void CLaunchConfiguration::setEnableLoggingInfo(bool bEnableLoggingInfo)
+{
+	CLog::enableLoggingInfo = bEnableLoggingInfo;
 }
 
 CLaunchConfiguration& CLaunchConfiguration::operator=(const CLaunchConfiguration& rightValue)

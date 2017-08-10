@@ -27,6 +27,8 @@ History:
 
 using namespace std;
 
+bool CLog::enableLoggingInfo = true;
+
 /*
  * Debug output function
  */
@@ -71,7 +73,9 @@ void CLog::info(LPCSTR pcFormat, ...)
 	va_list args;
 	va_start(args, pcFormat);
 
-	log("", pcFormat, args);
+	if (CLog::enableLoggingInfo) {
+		log("", pcFormat, args);
+	}
 }
 
 void CLog::error(LPCSTR pcFormat, ...)

@@ -36,10 +36,11 @@ class JVMLauncherExport CLog
 private:
 	static void log(LPCSTR pcPrefix, LPCSTR pcFormat, va_list args);
 public:
+	static bool enableLoggingInfo;
 	static void debug(LPCSTR pcFormat, ...);
 	static void info(LPCSTR pcFormat, ...);
 	static void error(LPCSTR pcFormat, ...);
-	static void warn(LPCSTR pcFormat, ...);
+	static void warn(LPCSTR pcFormat, ...);	
 };
 
 #endif 
