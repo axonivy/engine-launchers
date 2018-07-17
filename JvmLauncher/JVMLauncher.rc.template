@@ -92,7 +92,7 @@ BEGIN
             VALUE "OriginalFilename", "JVMLauncher.dll"
             VALUE "PrivateBuild", "Build Date @BuildDate@"
             VALUE "ProductName", "@ProductName@"
-            VALUE "ProductVersion", "@Version@"
+            VALUE "ProductVersion", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         END
     END
     BLOCK "VarFileInfo"

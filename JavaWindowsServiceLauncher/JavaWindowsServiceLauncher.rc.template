@@ -89,7 +89,7 @@ BEGIN
             VALUE "OriginalFilename", "@Launcher@.exe"
             VALUE "PrivateBuild", "Build Date @BuildDate@"
             VALUE "ProductName", "@ProductName@"
-            VALUE "ProductVersion", "@Version@"
+            VALUE "ProductVersion", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         END
     END
     BLOCK "VarFileInfo"

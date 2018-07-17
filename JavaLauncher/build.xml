@@ -114,7 +114,7 @@
       <replacefilter token="@ProductName@" value="${application.name} Engine"/>
       <replacefilter token="@Launcher@" value="${launcher}"/>
       <replacefilter token="@LauncherDescription@" value="${launcher.description}"/>
-      <replacefilter token="0,0,0,0" value="${build.version.major},${build.version.minor},${build.version.service},${svn.revision}"/>
+      <replacefilter token="0,0,0,0" value="${build.version.major},${build.version.minor},${build.version.service},0"/>
     </replace>
   </target>
 
