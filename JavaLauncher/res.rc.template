@@ -62,8 +62,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 7,2,0,0
- PRODUCTVERSION 7,2,0,0
+ FILEVERSION 0,0,0,0
+ PRODUCTVERSION 0,0,0,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -78,14 +78,14 @@ BEGIN
     BEGIN
         BLOCK "080704b0"
         BEGIN
-        	VALUE "CompanyName", "AXON IVY AG"
-            VALUE "FileDescription", "Axon.ivy Engine Config Cli"
-            VALUE "FileVersion", "7.2.0.0"
-            VALUE "InternalName", "EngineConfigCli"
-            VALUE "LegalCopyright", "© 2001-2018 AXON IVY AG"
-            VALUE "OriginalFilename", "EngineConfigCli.exe"
-            VALUE "PrivateBuild", "Build Date 2018-07-18"
-            VALUE "ProductName", "Axon.ivy Engine"
+        	VALUE "CompanyName", "@Vendor@"
+            VALUE "FileDescription", "@LauncherDescription@"
+            VALUE "FileVersion", "@Version@"
+            VALUE "InternalName", "@Launcher@"
+            VALUE "LegalCopyright", "@Copyright@"
+            VALUE "OriginalFilename", "@Launcher@.exe"
+            VALUE "PrivateBuild", "Build Date @BuildDate@"
+            VALUE "ProductName", "@ProductName@"
             VALUE "ProductVersion", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         END
     END

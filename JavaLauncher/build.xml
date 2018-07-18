@@ -86,26 +86,10 @@
     <delete dir="${dir.releaseConsole}" failonerror="false"/>
     
   </target>
-  
-  <!-- check if res.rc was already copied to res.rc.copy -->
-  <target name="existsResourceCopy" depends="init">
-    <!-- check if res.rc.copy does not exists -->
-    <condition property="project.copy.resource">
-      <not>
-      	<available file="res.rc.copy"/>
-      </not>
-    </condition>  
-  </target>
-  
-  <!-- copy res.rc to res.rc.copy if not yet copied -->
-  <target name="copyResource" depends="existsResourceCopy" if="project.copy.resource">
-    <!-- copy resource -->
-    <copy file="res.rc" tofile="res.rc.copy" />
-  </target>
-  
+    
   <!-- change resource -->
-  <target name="changeResource" description="Changes the resource file" depends="copyResource">
-    <copy file="res.rc.copy" tofile="res.rc" overwrite="yes"/>
+  <target name="changeResource" description="Changes the resource file" depends="init">
+    <copy file="res.rc.template" tofile="res.rc" overwrite="yes"/>
     <replace file="res.rc">
       <replacefilter token="@Vendor@" value="${vendor.name}"/>
       <replacefilter token="@Version@" value="${build.version.revision}"/>
