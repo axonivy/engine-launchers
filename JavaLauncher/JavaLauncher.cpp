@@ -65,7 +65,7 @@ WinMain(HINSTANCE inst, HINSTANCE previnst, LPSTR cmdline, int cmdshow)
 	}
 	catch(CLaunchException ex)
 	{
-		MessageBox(NULL, ex.getMessage(), "ivyTeam Java Launcher",
+		MessageBox(NULL, ex.getMessage(), "AXON Ivy Java Launcher",
             (MB_OK|MB_ICONSTOP|MB_APPLMODAL)); 
 		return ex.getErrorCode();
 	}    

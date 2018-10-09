@@ -1,10 +1,10 @@
 #
-# ivyTeam Launch Configuration File (*.ilc)
+# Axon.ivy Engine Launch Configuration File (*.ilc)
 #
 # ===========================================================================
 #
-# To overwrite the default launch configuration of an ivyTeam launcher,
-# rename this file to the ivyTeam launcher's executable name (*.exe) and
+# To overwrite the default launch configuration of an Axon.ivy Engine launcher,
+# rename this file to the Axon.ivy Engine launcher's executable name (*.exe) and
 # uncomment the properties you want to overwrite. 
 #
 # Example: 
@@ -27,7 +27,7 @@
 # ivy.heap.perm.max.size    Not used anymore in Java 8. Deprecated.
 #
 # ===========================================================================
-# The following properties are supported by ivyTeam launch configuration:
+# The following properties are supported:
 #
 # Max heap size (-Xmx) in percentage of the physical memory.
 #
@@ -79,7 +79,7 @@
 #ivy.jvm.type=ClientHotspotJVM
 #
 #
-# The directory where the ivyTeam jars are located.
+# The directory where the jars are located.
 #
 #ivy.dir.aux=lib\ivy
 #

@@ -78,11 +78,11 @@ BEGIN
     BEGIN
         BLOCK "080704b0"
         BEGIN
-        	VALUE "CompanyName", "AXON IVY AG"
+        	VALUE "CompanyName", "AXON Ivy AG"
             VALUE "FileDescription", "Axon.ivy Engine Config Cli"
             VALUE "FileVersion", "7.2.0.0"
             VALUE "InternalName", "EngineConfigCli"
-            VALUE "LegalCopyright", "© 2001-2018 AXON IVY AG"
+            VALUE "LegalCopyright", "ï¿½ 2001-2018 AXON Ivy AG"
             VALUE "OriginalFilename", "EngineConfigCli.exe"
             VALUE "PrivateBuild", "Build Date 2018-07-18"
             VALUE "ProductName", "Axon.ivy Engine"

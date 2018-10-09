@@ -18,7 +18,7 @@ ivy.heap.young.min.size			Min young heap size (-XX:NewSize) in mega bytes.
 ivy.heap.eden.survivor.ratio	Survivor heap size as ratio between the eden and the survivor heap size (-XX:SurvivorRatio).
 ivy.heap.tenured.young.ratio	Young heap size as ratio between the tenured and the young heap size (-XX:NewRatio).
 ivy.jvm.type					The java virtual machine type to use (ClientHotspotJVM, ServerHotspotJVM).
-ivy.dir.aux						The directory where the ivyTeam jars are located.
+ivy.dir.aux						The directory where the jars are located.
 ivy.dir.jre						The directory where the java runtime environment is located.
 ivy.java.main.class				The java main class to launch
 ivy.java.main.method			The java main method to launch
