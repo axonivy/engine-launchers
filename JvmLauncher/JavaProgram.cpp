@@ -708,7 +708,7 @@ void CJavaProgram::initializeOsgiVmOptions(CVmOptions& options, LPCSTR pcApplica
 		char jvmOptionInstanceArea[MAX_PATH];
 		strcpy_s(jvmOptionInstanceArea, MAX_PATH, "-Dosgi.instance.area=");
 		strcat_s(jvmOptionInstanceArea, MAX_PATH, pcApplicationDirectory);
-		strcat_s(jvmOptionInstanceArea, MAX_PATH, "\\work");
+		strcat_s(jvmOptionInstanceArea, MAX_PATH, "\\system\\workspace");
 		options.addOption(jvmOptionInstanceArea, NULL);
 	}
 }
