@@ -165,7 +165,7 @@ CLaunchConfiguration CLaunchConfiguration::getGuiApplicationDefault()
 	launchConfiguration.setHeapStartSize(64); // 64 MBytes
 	launchConfiguration.setJvmType(ClientHotspotJVM); // use client hotspot
 	launchConfiguration.setAdditionalVmOptions("-Xverify:none -XX:-OmitStackTraceInFastThrow");
-	launchConfiguration.setGarbageCollectorOptions("-XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSParallelRemarkEnabled -XX:+DisableExplicitGC");
+	launchConfiguration.setGarbageCollectorOptions("-XX:+UseG1GC -XX:+UseStringDeduplication");
 	return launchConfiguration;
 }
 
@@ -177,7 +177,7 @@ CLaunchConfiguration CLaunchConfiguration::getServerApplicationDefault()
 	launchConfiguration.setHeapStartSize(128);
 	launchConfiguration.setJvmType(ServerHotspotJVM); // use server hotspot
 	launchConfiguration.setAdditionalVmOptions("-Xverify:none -XX:-OmitStackTraceInFastThrow");
-	launchConfiguration.setGarbageCollectorOptions("-XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSParallelRemarkEnabled -XX:+CMSClassUnloadingEnabled -XX:+ExplicitGCInvokesConcurrent -Dsun.rmi.dgc.server.gcInterval=600000 -Dsun.rmi.dgc.client.gcInterval=600000");																																						 
+	launchConfiguration.setGarbageCollectorOptions("-XX:+UseG1GC -XX:+UseStringDeduplication");
 	launchConfiguration.setEnableLoggingInfo(true);
 	return launchConfiguration;
 }

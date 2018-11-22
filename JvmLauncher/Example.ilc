@@ -105,12 +105,8 @@
 #
 #
 # Garbage collector arguments:
-# Example configuration (for more information see: EngineGuide -> Configuration -> GC Optimization):
-# * GC optimized for JSF
-#ivy.garbage.collector.options=-XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSParallelRemarkEnabled -XX:+CMSClassUnloadingEnabled -XX:+DisableExplicitGC
-# * With an empty configuration the GC strategy is optimized for RIA (as shown below). A full concurrent gc is triggered every 10 minutes to prevent OutOfMemoryException on RIA clients.
 #
-#ivy.garbage.collector.options=-XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSParallelRemarkEnabled -XX:+CMSClassUnloadingEnabled -XX:+ExplicitGCInvokesConcurrent -Dsun.rmi.dgc.server.gcInterval=600000 -Dsun.rmi.dgc.client.gcInterval=600000
+#ivy.garbage.collector.options=-XX:+UseG1GC -XX:+UseStringDeduplication
 #
 #
 # To enable access to the java mangement extension (JMX) server from remote hosts, or from other users on the same machine (e.g. windows service), uncomment the following property line.
