@@ -101,7 +101,7 @@
 #
 # Additional vm arguments.
 #
-#ivy.vm.additional.options=
+#ivy.vm.additional.options=-XX:-OmitStackTraceInFastThrow"
 #
 #
 # Garbage collector arguments:

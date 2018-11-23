@@ -164,7 +164,7 @@ CLaunchConfiguration CLaunchConfiguration::getGuiApplicationDefault()
 	launchConfiguration.setHeapMaxRatio(80);	// 80% of physical memory
 	launchConfiguration.setHeapStartSize(64); // 64 MBytes
 	launchConfiguration.setJvmType(ClientHotspotJVM); // use client hotspot
-	launchConfiguration.setAdditionalVmOptions("-Xverify:none -XX:-OmitStackTraceInFastThrow");
+	launchConfiguration.setAdditionalVmOptions("-XX:-OmitStackTraceInFastThrow");
 	launchConfiguration.setGarbageCollectorOptions("-XX:+UseG1GC -XX:+UseStringDeduplication");
 	return launchConfiguration;
 }
@@ -176,7 +176,7 @@ CLaunchConfiguration CLaunchConfiguration::getServerApplicationDefault()
 	launchConfiguration.setHeapMaxRatio(80);	// 80% of physical memory
 	launchConfiguration.setHeapStartSize(128);
 	launchConfiguration.setJvmType(ServerHotspotJVM); // use server hotspot
-	launchConfiguration.setAdditionalVmOptions("-Xverify:none -XX:-OmitStackTraceInFastThrow");
+	launchConfiguration.setAdditionalVmOptions("-XX:-OmitStackTraceInFastThrow");
 	launchConfiguration.setGarbageCollectorOptions("-XX:+UseG1GC -XX:+UseStringDeduplication");
 	launchConfiguration.setEnableLoggingInfo(true);
 	return launchConfiguration;
