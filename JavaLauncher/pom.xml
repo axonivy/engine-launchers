@@ -12,7 +12,6 @@
 
 	<properties>
 		<BIN_X64>target/win/x64/bin</BIN_X64>
-		<BIN_X86>target/win/x86/bin</BIN_X86>
 	</properties>
 
 	<build>
@@ -32,25 +31,7 @@
 									<property name="bin" value="${BIN_X64}" />
 									<property name="platform" value="x64" />
 								</ant>
-								<ant dir="." target="build">
-									<property name="launcher" value="AxonIvyEngine" />
-									<property name="launcher.description" value="Axon.ivy Engine" />
-									<property name="bin" value="${BIN_X86}" />
-								</ant>
-							
-								<!-- AxonIvyEngineConfig.exe -->
-								<ant dir="." target="build">
-									<property name="launcher" value="AxonIvyEngineConfig" />
-									<property name="launcher.description" value="Axon.ivy Engine Configuration" />
-									<property name="bin" value="${BIN_X64}" />
-									<property name="platform" value="x64" />
-								</ant>
-								<ant dir="." target="build">
-									<property name="launcher" value="AxonIvyEngineConfig" />
-									<property name="launcher.description" value="Axon.ivy Engine Configuration" />
-									<property name="bin" value="${BIN_X86}" />
-								</ant>
-
+								
 								<!-- ControlCenter.exe -->
 								<ant dir="." target="build">
 									<property name="launcher" value="ControlCenter" />
@@ -58,37 +39,21 @@
 									<property name="bin" value="${BIN_X64}" />
 									<property name="platform" value="x64" />
 								</ant>
-								<ant dir="." target="build">
-									<property name="launcher" value="ControlCenter" />
-									<property name="launcher.description" value="Axon.ivy Engine Control Center" />
-									<property name="bin" value="${BIN_X86}" />
-								</ant>
-
+								
 								<!-- EngineConfigCli.exe -->
 								<ant dir="." target="build">
 									<property name="launcher" value="EngineConfigCli" />
 									<property name="launcher.description" value="Axon.ivy Engine Config Cli" />
 									<property name="bin" value="${BIN_X64}" />
 									<property name="platform" value="x64" />
-								</ant>
-								<ant dir="." target="build">
-									<property name="launcher" value="EngineConfigCli" />
-									<property name="launcher.description" value="Axon.ivy Engine Config Cli" />
-									<property name="bin" value="${BIN_X86}" />
-								</ant>
+								</ant>								
 							</target>
 						</configuration>
 					</execution>
 					<execution>
 						<id>cpp.pack</id>
 						<configuration>
-							<target>
-								<mkdir dir="${OUTPUT_X86}"/>
-								<copy todir="${OUTPUT_X86}">
-									<fileset dir="${BIN_X86}">
-										<include name="*.exe"/>
-									</fileset>
-								</copy>
+							<target>								
 								<mkdir dir="${OUTPUT_X64}"/>
 								<copy todir="${OUTPUT_X64}">
 									<fileset dir="${BIN_X64}">
