@@ -103,6 +103,12 @@ private:
 	void initializeOsgiVmOptions(CVmOptions& options, LPCSTR pcApplicationDirectory);
 
 	/*
+	 * Initializes the java module system vm options
+	 * @param options the java vm options
+	 */
+	void initializeJavaModuleSystemVmOptions(CVmOptions& options);
+
+	/*
 	 * Initializes the garbage collector options
 	 * @param Options the java vm option to initialize with the garbage collector option
      */
