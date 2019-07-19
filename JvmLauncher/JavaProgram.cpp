@@ -721,8 +721,8 @@ void CJavaProgram::initializeJavaModuleSystemVmOptions(CVmOptions& options)
 	options.addOption("java.base/java.lang=ALL-UNNAMED", NULL);
 
 	// allow ZipFileSystem readonly feature on engine with Java 11
-	options.addOpton("--add-opens", NULL);
-	options.addOption("jdk.zipfs/jdk.nio.zipfs=ALL-UNNAMED")
+	options.addOption("--add-opens", NULL);
+	options.addOption("jdk.zipfs/jdk.nio.zipfs=ALL-UNNAMED", NULL);
 }
 
 DWORD CJavaProgram::initializeHeapMaxSizeMemoryOption(MEMORYSTATUSEX& memInfo, CVmOptions& options)
