@@ -717,12 +717,10 @@ void CJavaProgram::initializeOsgiVmOptions(CVmOptions& options, LPCSTR pcApplica
 void CJavaProgram::initializeJavaModuleSystemVmOptions(CVmOptions& options)
 {
 	// ignore illegal reflective access warning at startup because guice
-	options.addOption("--add-opens", NULL);
-	options.addOption("java.base/java.lang=ALL-UNNAMED", NULL);
+	options.addOption("--add-opens=java.base/java.lang=ALL-UNNAMED", NULL);
 
 	// allow ZipFileSystem readonly feature on engine with Java 11
-	options.addOption("--add-opens", NULL);
-	options.addOption("jdk.zipfs/jdk.nio.zipfs=ALL-UNNAMED", NULL);
+	options.addOption("--add-opens=jdk.zipfs/jdk.nio.zipfs=ALL-UNNAMED", NULL);
 }
 
 DWORD CJavaProgram::initializeHeapMaxSizeMemoryOption(MEMORYSTATUSEX& memInfo, CVmOptions& options)
