@@ -85,6 +85,8 @@
 							<goals><goal>run</goal></goals>
 							<configuration>
 								<target>
+								    <echo message="Java Home ${java.home}"/>
+									
 									<property file="../ant.properties" />
 									<property file="../visual_studio.properties" />
 									
