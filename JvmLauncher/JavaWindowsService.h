@@ -77,6 +77,8 @@ private:
 	/** The arguments */
 	LPSTR* m_argv;
 
+	LPSTR m_windowsServiceName;
+
 	/* 
 	 * This method is called by the static startupWindowsService method
 	 * @param argc number of arguments
@@ -138,24 +140,12 @@ private:
 	 */
 	void reportStop(CLaunchException ex);	
 public:
-	/*
-	 * Constructor 
-	 * @param launchConfiguration the launch configuration to use 
-	 */
-	CJavaWindowsService(CLaunchConfiguration& launchConfiguration);
 
-	/*
-	 * Destructor
-	 */
+	CJavaWindowsService(LPSTR windowsServiceName, CLaunchConfiguration& launchConfiguration);
+	
 	virtual ~CJavaWindowsService(void);
 
-	/*
-	 * Creates a java Windows service.
-	 * Uses the launch configuration given
-	 * @param launchConfiguration the launch configuration to used
-	 * @return the created java windows service instance
-	 */
-	static CJavaWindowsService* createJavaWindowsService(CLaunchConfiguration launchConfiguration);
+	static CJavaWindowsService* createJavaWindowsService(LPSTR windowsServiceName, CLaunchConfiguration launchConfiguration);
 
 	/*
 	 * The main method of the Windows service. This function must be called if the windows starts the windows service.

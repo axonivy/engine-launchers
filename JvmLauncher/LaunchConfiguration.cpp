@@ -31,7 +31,6 @@ CLaunchConfiguration::CLaunchConfiguration()
   m_pcOsgiApplicationName(NULL),
   m_bConsole(false),
   m_bUseLowMemoryJvmSettings(false),
-  m_pcWindowsServiceName(NULL),
   m_pcServerStopArgument(NULL)
 {
 }
@@ -42,7 +41,6 @@ CLaunchConfiguration::CLaunchConfiguration(const CLaunchConfiguration &copy)
   m_pcOsgiApplicationName(NULL),
   m_bUseLowMemoryJvmSettings(copy.m_bUseLowMemoryJvmSettings),
   m_bConsole(copy.m_bConsole),
-  m_pcWindowsServiceName(NULL),
   m_pcServerStopArgument(NULL)
 {
 	if (copy.m_pcMainJavaClass != NULL)
@@ -52,10 +50,6 @@ CLaunchConfiguration::CLaunchConfiguration(const CLaunchConfiguration &copy)
 	if (copy.m_pcOsgiApplicationName != NULL)
 	{
 		setOsgiApplicationName(copy.m_pcOsgiApplicationName);
-	}
-	if (copy.m_pcWindowsServiceName != NULL)
-	{
-		setWindowsServiceName(copy.m_pcWindowsServiceName);
 	}
 	if (copy.m_pcServerStopArgument != NULL)
 	{
@@ -72,10 +66,6 @@ CLaunchConfiguration::~CLaunchConfiguration()
 	if (m_pcOsgiApplicationName != NULL)
 	{
 		delete m_pcOsgiApplicationName;
-	}
-	if (m_pcWindowsServiceName != NULL)
-	{
-		delete m_pcWindowsServiceName;
 	}
 	if (m_pcServerStopArgument != NULL)
 	{
@@ -166,24 +156,6 @@ void CLaunchConfiguration::setJvmType(JVMType jvmType)
 	m_jvmType = jvmType;
 }
 
-LPCSTR CLaunchConfiguration::getWindowsServiceName()
-{
-	return m_pcWindowsServiceName;
-}
-
-void CLaunchConfiguration::setWindowsServiceName(LPCSTR pcWindowsServiceName)
-{
-	assert(pcWindowsServiceName != NULL);
-
-	if (m_pcWindowsServiceName != NULL)
-	{
-		delete m_pcWindowsServiceName;
-	}
-
-	m_pcWindowsServiceName = new char[strlen(pcWindowsServiceName)+1];
-	strcpy_s(m_pcWindowsServiceName, strlen(pcWindowsServiceName)+1, pcWindowsServiceName);
-}
-
 LPCSTR CLaunchConfiguration::getServerStopArgument()
 {
 	return m_pcServerStopArgument;
@@ -221,11 +193,6 @@ CLaunchConfiguration& CLaunchConfiguration::operator=(const CLaunchConfiguration
 			delete m_pcOsgiApplicationName;
 			m_pcOsgiApplicationName = NULL;
 		}
-		if (m_pcWindowsServiceName != NULL)
-		{
-			delete m_pcWindowsServiceName;
-			m_pcWindowsServiceName = NULL;
-		}		
 		if (m_pcServerStopArgument != NULL)
 		{
 			delete m_pcServerStopArgument;
@@ -241,10 +208,6 @@ CLaunchConfiguration& CLaunchConfiguration::operator=(const CLaunchConfiguration
 		if (rightValue.m_pcOsgiApplicationName != NULL)
 		{
 			setOsgiApplicationName(rightValue.m_pcOsgiApplicationName);
-		}
-		if (rightValue.m_pcWindowsServiceName != NULL)
-		{
-			setWindowsServiceName(rightValue.m_pcWindowsServiceName);
 		}
 		if (rightValue.m_pcServerStopArgument != NULL)
 		{

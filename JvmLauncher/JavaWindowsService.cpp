@@ -93,13 +93,20 @@ BOOL __stdcall consoleControlHandler(DWORD dwMsg)
    return FALSE;				// Other events can be processed by JVM Console Control Handler
 }
 
-CJavaWindowsService::CJavaWindowsService(CLaunchConfiguration& launchConfiguration)
-: CJavaProgram(launchConfiguration), m_hEvent(NULL),  
-m_javaServiceClass(NULL), m_controlServiceMethod(NULL), m_pJavaVirtualMaschine(NULL), 
-m_pStartupException(NULL), m_mainServiceMethod(NULL), m_hServiceStatus(NULL), m_argc(0), m_argv(NULL)
+CJavaWindowsService::CJavaWindowsService(LPSTR windowsServiceName, CLaunchConfiguration& launchConfiguration)
+: CJavaProgram(launchConfiguration),
+  m_windowsServiceName(windowsServiceName),
+  m_hEvent(NULL),  
+  m_javaServiceClass(NULL),
+  m_controlServiceMethod(NULL),
+  m_pJavaVirtualMaschine(NULL), 
+  m_pStartupException(NULL),
+  m_mainServiceMethod(NULL),
+  m_hServiceStatus(NULL),
+  m_argc(0),
+  m_argv(NULL)
 {
 	memset(&m_serviceStatus, 0, sizeof(SERVICE_STATUS));
-	assert(launchConfiguration.getWindowsServiceName() != NULL);
 
 	m_serviceStatus.dwServiceType        = SERVICE_WIN32; 
     m_serviceStatus.dwCurrentState       = SERVICE_START_PENDING; 
@@ -145,9 +152,9 @@ CJavaWindowsService::~CJavaWindowsService(void)
 	}
 }
 
-CJavaWindowsService* CJavaWindowsService::createJavaWindowsService(CLaunchConfiguration launchConfiguration)
+CJavaWindowsService* CJavaWindowsService::createJavaWindowsService(LPSTR windowsServiceName, CLaunchConfiguration launchConfiguration)
 {
-	return new CJavaWindowsService(launchConfiguration);
+	return new CJavaWindowsService(windowsServiceName, launchConfiguration);
 }
 
 
@@ -157,7 +164,7 @@ void CJavaWindowsService::main()
 
 	SERVICE_TABLE_ENTRY   DispatchTable[] = 
     { 
-		{ TEXT((LPSTR)m_launchConfiguration.getWindowsServiceName()), startupWinService      }, 
+		{ TEXT(m_windowsServiceName), startupWinService }, 
         { NULL,              NULL                } 
     }; 
  
@@ -168,7 +175,7 @@ void CJavaWindowsService::main()
     if (!StartServiceCtrlDispatcher( DispatchTable)) 
     { 
 		CLaunchException ex = CLaunchException(JVMLauncherErrorCodes.COULD_NOT_START_SERVICE_DISPATCHER, GetLastError(),
-			"Could not start service control dispatcher for service %s", m_launchConfiguration.getWindowsServiceName());
+			"Could not start service control dispatcher for service %s", m_windowsServiceName);
 		CLog::error("CJavaWindowsService::main() throw (%s)", ex.getMessage());
 		throw ex;
     } 
@@ -189,25 +196,25 @@ void CJavaWindowsService::registerWindowsService(
 			DWORD dwDesiredAccess,
 			DWORD dwErrorControl)
 {
-	CWindowsService ntService(m_launchConfiguration.getWindowsServiceName());
+	CWindowsService ntService(m_windowsServiceName);
 	ntService.registerWindowsService(pcUserName, pcPassword, dwStartType, dwDesiredAccess, dwErrorControl);
 }
 
 void CJavaWindowsService::unregisterWindowsService()
 {
-	CWindowsService ntService(m_launchConfiguration.getWindowsServiceName());
+	CWindowsService ntService(m_windowsServiceName);
 	ntService.unregisterWindowsService();
 }
 
 void CJavaWindowsService::startWindowsService()
 {
-	CWindowsService ntService(m_launchConfiguration.getWindowsServiceName());
+	CWindowsService ntService(m_windowsServiceName);
 	ntService.startWindowsService();
 }
 
 void CJavaWindowsService::stopWindowsService()
 {
-	CWindowsService ntService(m_launchConfiguration.getWindowsServiceName());
+	CWindowsService ntService(m_windowsServiceName);
 	ntService.stopWindowsService();
 }
 
@@ -292,13 +299,13 @@ void CJavaWindowsService::startup(DWORD argc, LPSTR* argv)
 	}
  
     m_hServiceStatus = RegisterServiceCtrlHandler( 
-        TEXT(m_launchConfiguration.getWindowsServiceName()), 
+        TEXT(m_windowsServiceName), 
         controlWinService); 
  
     if (m_hServiceStatus == (SERVICE_STATUS_HANDLE)0) 
     { 
 		CLaunchException ex = CLaunchException(JVMLauncherErrorCodes.COULD_NOT_REGISTER_SERVICE_CONTROL_HANDLER,
-			GetLastError(), "Could	not register service control handler for service %s", m_launchConfiguration.getWindowsServiceName());
+			GetLastError(), "Could	not register service control handler for service %s", m_windowsServiceName);
 		CLog::error("CJavaWindowsService::startup(...) throw (%s)", ex.getMessage()); 
 		throw ex;
     } 
@@ -326,7 +333,7 @@ void CJavaWindowsService::startup(DWORD argc, LPSTR* argv)
 	if (!SetConsoleCtrlHandler(&consoleControlHandler, TRUE))
 	{
 		CLaunchException ex = CLaunchException(JVMLauncherErrorCodes.COULD_NOT_SET_CONSOLE_CTRL_HANDLER, GetLastError(),
-			"Could not set console ctrl handler of service %s", m_launchConfiguration.getWindowsServiceName());
+			"Could not set console ctrl handler of service %s", m_windowsServiceName);
 		CLog::error("CJavaWindowsService::startup(...) throw (%s)", ex.getMessage()); 
 		throw ex;
 	}
@@ -347,7 +354,7 @@ void CJavaWindowsService::reportStartProgress()
     { 
 		throw CLaunchException(JVMLauncherErrorCodes.COULD_NOT_SET_SERVICE_STATUS,
 			GetLastError(),
-			"Could not set status of service %s", m_launchConfiguration.getWindowsServiceName());
+			"Could not set status of service %s", m_windowsServiceName);
     } 
 }
 
@@ -375,7 +382,7 @@ void CJavaWindowsService::initialize(DWORD argc, LPSTR* argv)
 	if (m_hEvent == 0)
 	{
 		CLaunchException ex = CLaunchException(JVMLauncherErrorCodes.COULD_NOT_CREATE_EVENT_FOR_JAVA_THREAD,
-			GetLastError(), "Could not create event for service %s", m_launchConfiguration.getWindowsServiceName());
+			GetLastError(), "Could not create event for service %s", m_windowsServiceName);
 		CLog::error("CJavaWindowsService::initialize(...) throw (%s)", m_pStartupException->getMessage());
 		throw ex;
 	}
@@ -384,7 +391,7 @@ void CJavaWindowsService::initialize(DWORD argc, LPSTR* argv)
 	if (m_hJavaThread == 0)
 	{
 		CLaunchException ex = CLaunchException(JVMLauncherErrorCodes::COULD_NOT_CREATE_JAVA_SERVICE_STARTUP_THREAD,
-			GetLastError(), "Could not create java startup thread for service %s", m_launchConfiguration.getWindowsServiceName());
+			GetLastError(), "Could not create java startup thread for service %s", m_windowsServiceName);
 		CLog::error("CJavaWindowsService::initialize(...) throw (%s)", m_pStartupException->getMessage());
 		throw ex;
 	}
@@ -403,7 +410,7 @@ void CJavaWindowsService::initialize(DWORD argc, LPSTR* argv)
 	if (result == WAIT_TIMEOUT)
 	{
 		CLaunchException ex = CLaunchException(JVMLauncherErrorCodes::TIMEOUT_JAVA_SERVICE_STARTUP_THREAD,
-			"Timeout while starting java windows service %s", m_launchConfiguration.getWindowsServiceName());
+			"Timeout while starting java windows service %s", m_windowsServiceName);
 		CLog::error("CJavaWindowsService::initialize(...) throw (%s)", m_pStartupException->getMessage());
 		throw ex;
 	}
@@ -411,7 +418,7 @@ void CJavaWindowsService::initialize(DWORD argc, LPSTR* argv)
 	{
 		// thread has died
 		CLaunchException ex = CLaunchException(JVMLauncherErrorCodes::TIMEOUT_JAVA_SERVICE_STARTUP_THREAD,
-			"Java Service Startup Thread has died unexpected while starting java windows service %s", m_launchConfiguration.getWindowsServiceName());
+			"Java Service Startup Thread has died unexpected while starting java windows service %s", m_windowsServiceName);
 		CLog::error("CJavaWindowsService::initialize(...) throw (%s)", m_pStartupException->getMessage());
 		throw ex;
 	}

@@ -42,10 +42,6 @@ typedef enum{Disabled=-1, ClientHotspotJVM=1, ServerHotspotJVM=2} JVMType;
 class JVMLauncherExport CLaunchConfiguration
 {
 private:
-	// --- Windows Service ---
-	/* The windows service name */
-	LPSTR m_pcWindowsServiceName;
-
 	// --- What to launch ---
 	/* The name of the main java class to launch */
 	LPSTR m_pcMainJavaClass;
@@ -105,9 +101,6 @@ public:
 
 	JVMType getJvmType();
 	void setJvmType(JVMType jvmType);
-
-	LPCSTR getWindowsServiceName();
-	void setWindowsServiceName(LPCSTR pcWindowsServiceName);
 
 	LPCSTR getServerStopArgument();
 	void setServerStopArgument(LPCSTR pcServerStopArgument);

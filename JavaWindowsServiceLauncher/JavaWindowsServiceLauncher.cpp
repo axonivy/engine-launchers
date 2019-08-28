@@ -23,35 +23,61 @@ History:
 #include "..\JVMLauncher\JVMLauncher.h"
 #include "config.h"
 
+// CLI Tool
+
+// AxonIvyEngineService.exe
+// AxonIvyEngineService.exe -start
+// AxonIvyEngineService.exe -stop
+// AxonIvyEngineService.exe -register
+// AxonIvyEngineService.exe -unregister
+
+// AxonIvyEngineService.exe -start <windowsServiceName>
+// AxonIvyEngineService.exe -stop <windowsServiceName>
+// AxonIvyEngineService.exe -register <windowsServiceName>
+// AxonIvyEngineService.exe -unregister <windowsServiceName>
+
+// AxonIvyEngineService.exe -register <windowsServiceName> <service_user> <password>
+
+
+
+
 int main(int argc, char* argv[])
 {
 	CJavaWindowsService* pJavaWindowsService;
-
+	LPSTR windowsServiceName = "Axon.ivy Engine";
+	LPSTR command = NULL;
 	try
 	{
-		pJavaWindowsService = CJavaWindowsService::createJavaWindowsService(getLaunchConfiguration());
+		if (argc >= 3)
+		{
+			windowsServiceName = argv[2];
+		}
+	
+		pJavaWindowsService = CJavaWindowsService::createJavaWindowsService(windowsServiceName, getLaunchConfiguration());
+
 		if (argc >= 2)
 		{
-			if (strcmp(argv[1], "-register")==0)
+			command = argv[1];
+			if (strcmp(command, "-register")==0)
 			{
-				if (argc >= 4)
+				if (argc >= 5)
 				{
-					pJavaWindowsService->registerWindowsService(argv[2], argv[3]);
+					pJavaWindowsService->registerWindowsService(argv[3], argv[4]);
 				}
 				else
 				{
 					pJavaWindowsService->registerWindowsService();
 				}
 			}
-			else if(strcmp(argv[1], "-unregister")==0)
+			else if (strcmp(command, "-unregister") == 0)
 			{
 				pJavaWindowsService->unregisterWindowsService();
 			}
-			else if(strcmp(argv[1], "-start")==0)
+			else if (strcmp(command, "-start") == 0)
 			{
 				pJavaWindowsService->startWindowsService();
 			}
-			else if (strcmp(argv[1], "-stop")==0)
+			else if (strcmp(command, "-stop") == 0)
 			{
 				pJavaWindowsService->stopWindowsService();
 			}
@@ -68,6 +94,7 @@ int main(int argc, char* argv[])
 		{
 			pJavaWindowsService->main();
 		}
+		
 		delete pJavaWindowsService;
 		return 0;
 	}

@@ -9,7 +9,6 @@ CLaunchConfiguration getLaunchConfiguration()
 	CLaunchConfiguration config;
 
 	config = CLaunchConfiguration::getServerApplicationDefault();
-	config.setWindowsServiceName("Axon.ivy Engine");
 	config.setMainJavaClass("ch.ivyteam.ivy.boot.osgi.win.WindowsServiceLauncher");
 	config.setOsgiApplicationName("ch.ivyteam.ivy.server.exec.engine.service");
 	return config;
