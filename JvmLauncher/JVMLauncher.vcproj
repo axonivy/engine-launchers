@@ -408,6 +408,14 @@
 			>
 		</File>
 		<File
+			RelativePath=".\JvmOptionsFile.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\JvmOptionsFile.h"
+			>
+		</File>
+		<File
 			RelativePath="LaunchConfiguration.cpp"
 			>
 			<FileConfiguration
@@ -442,7 +450,7 @@
 					PreprocessorDefinitions=""
 				/>
 			</FileConfiguration>
-		</File>		
+		</File>
 		<File
 			RelativePath="LaunchException.cpp"
 			>

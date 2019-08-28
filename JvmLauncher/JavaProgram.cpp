@@ -23,6 +23,7 @@ History:
 #include "JavaProgram.h"
 #include "JavaVirtualMaschine.h"
 #include "LaunchException.h"
+#include "JvmOptionsFile.h"
 #include "Log.h"
 #include "VmOptions.h"
 #include "StringUtils.h"
@@ -175,9 +176,8 @@ void CJavaProgram::main(int argc, LPSTR argv[])
 	char pcJvmPath[MAX_PATH];
 
 	CLog::info("=============================================================");
-	CLog::info("Starting java programm in class");
+	CLog::info("Starting java class");
 	CLog::info("%s", m_launchConfiguration.getMainJavaClass());
-	CLog::info("with ivyteam's java launcher"); 
 	CLog::info("=============================================================");
 
 	getApplicationDirectory(pcApplicationDirectory, MAX_PATH);
@@ -188,18 +188,6 @@ void CJavaProgram::main(int argc, LPSTR argv[])
 	JavaMainArguments javaMainArguments(argc, argv);
 	addOsgiJavaMainArguments(&javaMainArguments);
 
-	// TODO
-	if (containsServerStopArgument(argc, argv))
-	{
-		// run with default jvm options
-	}
-	else
-	{
-		// if engine then run with jvm.otpions
-		// else with default jvm.optoins
-
-		//parseJvmOptions();
-	}
 	initializeVmOptions(vmOptions, pcApplicationDirectory, javaMainArguments);
 
 	pJvm = CJavaVirtualMaschine::createJavaVirtualMaschine(
@@ -494,10 +482,31 @@ LPSTR CJavaProgram::getApplicationDirectory(LPSTR pcApplicationDirectoryBuffer, 
 void CJavaProgram::initializeVmOptions(CVmOptions& options, LPCSTR pcApplicationDirectory, JavaMainArguments& javaMainArguments)
 {
 	initializeClassPathOption(options, pcApplicationDirectory);
-	initializeAdditionalVmOptions(options);
 	initializeCommandVmOptions(options, javaMainArguments);
 	initializeJavaModuleSystemVmOptions(options);
 	initializeOsgiVmOptions(options, pcApplicationDirectory);
+
+	//if (containsServerStopArgument(argc, argv) || )
+	//{
+		// use low memory setting and prevent management port mapping
+	//	options.addOptions("-XX:-OmitStackTraceInFastThrow", NULL);
+	//	options.addOptions("-XX:-OmitStackTraceInFastThrow", NULL);
+	//	options.addOptions("-XX:-OmitStackTraceInFastThrow", NULL);
+	//}
+	//else
+	//{
+		initializeJvmOptions(options, pcApplicationDirectory);
+	//}
+}
+
+void CJavaProgram::initializeJvmOptions(CVmOptions& options, LPCSTR pcApplicationDirectory)
+{
+	char pcJvmOptionsFileBuffer[MAX_PATH];
+	strcpy_s(pcJvmOptionsFileBuffer, MAX_PATH, pcApplicationDirectory);
+	strcat_s(pcJvmOptionsFileBuffer, MAX_PATH, "\\configuration\\jvm.options");
+
+	CJvmOptionsFile jvmOptionsFile(pcJvmOptionsFileBuffer);
+	jvmOptionsFile.parse(options);
 }
 
 bool CJavaProgram::containsServerStopArgument(int argc, LPSTR argv[])
@@ -700,31 +709,6 @@ void CJavaProgram::addJarsToClasspath(LPSTR& pcClasspath, DWORD& dwClasspathLeng
 	}
 	delete ppcJarFiles;
 };
-
-void CJavaProgram::initializeAdditionalVmOptions(CVmOptions& options)
-{
-	LPCSTR pcAdditionalVmOptions;
-	LPCSTR pcFound;
-
-	pcAdditionalVmOptions = m_launchConfiguration.getAdditionalVmOptions();
-	if (pcAdditionalVmOptions != NULL)
-	{
-		pcFound = strchr(pcAdditionalVmOptions, ' ');
-		while (pcFound != NULL)
-		{
-			if (pcFound-pcAdditionalVmOptions>0)
-			{
-				options.addOption(pcAdditionalVmOptions, pcFound, NULL);
-			}
-			pcAdditionalVmOptions = pcFound+1;
-			pcFound = strchr(pcAdditionalVmOptions, ' ');
-		}
-		if (strlen(pcAdditionalVmOptions)>0)
-		{
-			options.addOption(pcAdditionalVmOptions, NULL);
-		}
-	}
-}
 
 /*
  * Reports an error to the system event log

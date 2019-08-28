@@ -26,18 +26,24 @@ History:
 #include "Log.h"
 
 CLaunchConfiguration::CLaunchConfiguration(LPCSTR pcMainJavaClass)
-: m_pcAdditionalVmOptions(NULL), 
-  m_jvmType(Disabled), m_pcOsgiApplicationName(NULL), m_bConsole(false), m_pcWindowsServiceName(NULL),
-  m_pcApplicationName(NULL), m_pcServerStopArgument(NULL)
+: m_jvmType(Disabled),
+  m_pcOsgiApplicationName(NULL),
+  m_bConsole(false),
+  m_pcWindowsServiceName(NULL),
+  m_pcApplicationName(NULL),
+  m_pcServerStopArgument(NULL)
 {
 	setMainJavaClass(pcMainJavaClass);
 }
 
 CLaunchConfiguration::CLaunchConfiguration()
 : m_pcMainJavaClass(NULL),
-  m_pcAdditionalVmOptions(NULL), 
-  m_jvmType(Disabled), m_pcOsgiApplicationName(NULL), m_bConsole(false), m_pcWindowsServiceName(NULL),
-  m_pcApplicationName(NULL), m_pcServerStopArgument(NULL)
+  m_jvmType(Disabled),
+  m_pcOsgiApplicationName(NULL),
+  m_bConsole(false),
+  m_pcWindowsServiceName(NULL),
+  m_pcApplicationName(NULL),
+  m_pcServerStopArgument(NULL)
 {
 }
 
@@ -48,7 +54,6 @@ CLaunchConfiguration::CLaunchConfiguration(const CLaunchConfiguration &copy)
   m_pcOsgiApplicationName(NULL),
   m_bConsole(copy.m_bConsole),
   m_pcWindowsServiceName(NULL),
-  m_pcAdditionalVmOptions(NULL),
   m_pcServerStopArgument(NULL)
 {
 	if (copy.m_pcMainJavaClass != NULL)
@@ -66,10 +71,6 @@ CLaunchConfiguration::CLaunchConfiguration(const CLaunchConfiguration &copy)
 	if (copy.m_pcApplicationName != NULL)
 	{
 		setApplicationName(copy.m_pcApplicationName);
-	}
-	if (copy.m_pcAdditionalVmOptions != NULL)
-	{
-		setAdditionalVmOptions(copy.m_pcAdditionalVmOptions);
 	}
 	if (copy.m_pcServerStopArgument != NULL)
 	{
@@ -95,10 +96,6 @@ CLaunchConfiguration::~CLaunchConfiguration()
 	{
 		delete m_pcApplicationName;
 	}
-	if (m_pcAdditionalVmOptions != NULL)
-	{
-		delete m_pcAdditionalVmOptions;
-	}
 	if (m_pcServerStopArgument != NULL)
 	{
 		delete m_pcServerStopArgument;
@@ -110,7 +107,6 @@ CLaunchConfiguration CLaunchConfiguration::getGuiApplicationDefault()
 	CLaunchConfiguration launchConfiguration;
 	launchConfiguration.setMainJavaClass("org.eclipse.equinox.launcher.Main");	
 	launchConfiguration.setJvmType(ClientHotspotJVM);
-	launchConfiguration.setAdditionalVmOptions("-XX:-OmitStackTraceInFastThrow");
 	return launchConfiguration;
 }
 
@@ -119,7 +115,6 @@ CLaunchConfiguration CLaunchConfiguration::getServerApplicationDefault()
 	CLaunchConfiguration launchConfiguration;
 	launchConfiguration.setMainJavaClass("org.eclipse.equinox.launcher.Main");	
 	launchConfiguration.setJvmType(ServerHotspotJVM);
-	launchConfiguration.setAdditionalVmOptions("-XX:-OmitStackTraceInFastThrow");
 	launchConfiguration.setEnableLoggingInfo(true);
 	return launchConfiguration;
 }
@@ -178,24 +173,6 @@ JVMType CLaunchConfiguration::getJvmType()
 void CLaunchConfiguration::setJvmType(JVMType jvmType)
 {
 	m_jvmType = jvmType;
-}
-
-LPCSTR CLaunchConfiguration::getAdditionalVmOptions()
-{
-	return m_pcAdditionalVmOptions;
-}
-
-void CLaunchConfiguration::setAdditionalVmOptions(LPCSTR pcAdditionalVmOptions)
-{
-	assert(pcAdditionalVmOptions != NULL);
-
-	if (m_pcAdditionalVmOptions != NULL)
-	{
-		delete m_pcAdditionalVmOptions;
-	}
-
-	m_pcAdditionalVmOptions = new char[strlen(pcAdditionalVmOptions)+1];
-	strcpy_s(m_pcAdditionalVmOptions, strlen(pcAdditionalVmOptions)+1, pcAdditionalVmOptions);
 }
 
 LPCSTR CLaunchConfiguration::getWindowsServiceName()
@@ -280,12 +257,7 @@ CLaunchConfiguration& CLaunchConfiguration::operator=(const CLaunchConfiguration
 		{
 			delete m_pcApplicationName;
 			m_pcApplicationName = NULL;
-		}
-		if (m_pcAdditionalVmOptions != NULL)
-		{
-			delete m_pcAdditionalVmOptions;
-			m_pcAdditionalVmOptions = NULL;
-		}
+		}		
 		if (m_pcServerStopArgument != NULL)
 		{
 			delete m_pcServerStopArgument;
@@ -308,10 +280,6 @@ CLaunchConfiguration& CLaunchConfiguration::operator=(const CLaunchConfiguration
 		if (rightValue.m_pcApplicationName != NULL)
 		{
 			setApplicationName(rightValue.m_pcApplicationName);
-		}
-		if (rightValue.m_pcAdditionalVmOptions != NULL)
-		{
-			setAdditionalVmOptions(rightValue.m_pcAdditionalVmOptions);
 		}
 		if (rightValue.m_pcServerStopArgument != NULL)
 		{

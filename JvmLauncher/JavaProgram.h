@@ -45,12 +45,6 @@ private:
 	void callJavaMain(CJavaVirtualMaschine* pJvm, JavaMainArguments& javaMainArguments);
 
 	/*
-	 * Initializes additional vm options
-	 * @param options the vm options to initialize with the additional vm Options
-	 */
-	void initializeAdditionalVmOptions(CVmOptions& options);
-
-	/*
 	 * Initializes command vm options
 	 * @param options the vm options to initialize with the additional vm Options
 	 * @param javaMainArguments pointer to java main arguments
@@ -94,6 +88,8 @@ private:
 	 * @param options the java vm options
 	 */
 	void initializeJavaModuleSystemVmOptions(CVmOptions& options);
+
+	void initializeJvmOptions(CVmOptions& options, LPCSTR pcApplicationDirectory);
 
 	/*
 	 * Checks if there is already an instance of this application program running 

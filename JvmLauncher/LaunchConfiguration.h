@@ -62,8 +62,6 @@ private:
 
 	/* The java virtual machine type */
 	JVMType m_jvmType;
-	/* Additional vm options */
-	LPSTR m_pcAdditionalVmOptions;
 
 	// --- Managment Settings ---
 	LPSTR m_pcServerStopArgument;
@@ -115,9 +113,6 @@ public:
 
 	JVMType getJvmType();
 	void setJvmType(JVMType jvmType);
-
-	LPCSTR getAdditionalVmOptions();
-	void setAdditionalVmOptions(LPCSTR pcAdditionalVmOptions);
 
 	LPCSTR getWindowsServiceName();
 	void setWindowsServiceName(LPCSTR pcWindowsServiceName);
