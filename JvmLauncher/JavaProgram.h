@@ -172,11 +172,13 @@ protected:
 
 	/*
 	 * Initializes the vm options
-	 * @param otions the vm options to initialize
+	 * @param options the vm options to initialize
 	 * @param pcApplicationDirectory the application directory 
 	 * @param javaMainArguments pointer to java main arguments
+	 * @param useLowMemoryJvmSettings use low memory jvm settings
+	 * @param containsServerStopArgument contains server stop argument
 	 */
-	void initializeVmOptions(CVmOptions& options, LPCSTR pcApplicationDirectory, JavaMainArguments& javaMainArguments);
+	void initializeVmOptions(CVmOptions& options, LPCSTR pcApplicationDirectory, JavaMainArguments& javaMainArguments, boolean useLowMemoryJvmSettings, boolean containsServerStopArgument);
 
 	/*
 	 * Checks if the given arguments contains the server stop argument 

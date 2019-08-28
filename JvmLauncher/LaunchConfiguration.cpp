@@ -30,6 +30,7 @@ CLaunchConfiguration::CLaunchConfiguration()
   m_jvmType(Disabled),
   m_pcOsgiApplicationName(NULL),
   m_bConsole(false),
+  m_bUseLowMemoryJvmSettings(false),
   m_pcWindowsServiceName(NULL),
   m_pcApplicationName(NULL),
   m_pcServerStopArgument(NULL)
@@ -41,6 +42,7 @@ CLaunchConfiguration::CLaunchConfiguration(const CLaunchConfiguration &copy)
   m_pcApplicationName(NULL),
   m_pcMainJavaClass(NULL),
   m_pcOsgiApplicationName(NULL),
+  m_bUseLowMemoryJvmSettings(copy.m_bUseLowMemoryJvmSettings),
   m_bConsole(copy.m_bConsole),
   m_pcWindowsServiceName(NULL),
   m_pcServerStopArgument(NULL)
@@ -154,6 +156,16 @@ void CLaunchConfiguration::setConsole(bool bConsole)
 	m_bConsole = bConsole;
 }
 
+bool CLaunchConfiguration::isUseLowMemoryJvmSettings()
+{
+	return m_bUseLowMemoryJvmSettings;
+}
+
+void CLaunchConfiguration::useLowMemoryJvmSettings(bool bUseLowMemoryJvmSettings)
+{
+	m_bUseLowMemoryJvmSettings = bUseLowMemoryJvmSettings;
+}
+
 JVMType CLaunchConfiguration::getJvmType()
 {
 	return m_jvmType;
@@ -254,6 +266,7 @@ CLaunchConfiguration& CLaunchConfiguration::operator=(const CLaunchConfiguration
 		}		
 		m_jvmType = rightValue.m_jvmType;
 		m_bConsole = rightValue.m_bConsole;
+		m_bUseLowMemoryJvmSettings = rightValue.m_bUseLowMemoryJvmSettings;
 		if (rightValue.m_pcMainJavaClass != NULL)
 		{
 			setMainJavaClass(rightValue.m_pcMainJavaClass);

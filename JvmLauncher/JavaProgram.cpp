@@ -188,7 +188,7 @@ void CJavaProgram::main(int argc, LPSTR argv[])
 	JavaMainArguments javaMainArguments(argc, argv);
 	addOsgiJavaMainArguments(&javaMainArguments);
 
-	initializeVmOptions(vmOptions, pcApplicationDirectory, javaMainArguments);
+	initializeVmOptions(vmOptions, pcApplicationDirectory, javaMainArguments, m_launchConfiguration.isUseLowMemoryJvmSettings(), containsServerStopArgument(argc, argv));
 
 	pJvm = CJavaVirtualMaschine::createJavaVirtualMaschine(
 		getJvmPath(pcApplicationDirectory, pcJvmPath, MAX_PATH), 
@@ -479,24 +479,25 @@ LPSTR CJavaProgram::getApplicationDirectory(LPSTR pcApplicationDirectoryBuffer, 
 	return pcApplicationDirectoryBuffer;
 }
 
-void CJavaProgram::initializeVmOptions(CVmOptions& options, LPCSTR pcApplicationDirectory, JavaMainArguments& javaMainArguments)
+void CJavaProgram::initializeVmOptions(CVmOptions& options, LPCSTR pcApplicationDirectory, JavaMainArguments& javaMainArguments, boolean useLowMemoryJvmSettings, boolean containsServerStopArgument)
 {
 	initializeClassPathOption(options, pcApplicationDirectory);
 	initializeCommandVmOptions(options, javaMainArguments);
 	initializeJavaModuleSystemVmOptions(options);
 	initializeOsgiVmOptions(options, pcApplicationDirectory);
 
-	//if (containsServerStopArgument(argc, argv) || )
-	//{
-		// use low memory setting and prevent management port mapping
-	//	options.addOptions("-XX:-OmitStackTraceInFastThrow", NULL);
-	//	options.addOptions("-XX:-OmitStackTraceInFastThrow", NULL);
-	//	options.addOptions("-XX:-OmitStackTraceInFastThrow", NULL);
-	//}
-	//else
-	//{
+	if (useLowMemoryJvmSettings || containsServerStopArgument)
+	{
+		// this also prevents e.g. starting management port
+		// when stoping the axon ivy engine
+		options.addOption("-XX:-OmitStackTraceInFastThrow", NULL);
+		options.addOption("-Xmx768m", NULL);
+		options.addOption("-Xms128m", NULL);
+	}
+	else
+	{
 		initializeJvmOptions(options, pcApplicationDirectory);
-	//}
+	}
 }
 
 void CJavaProgram::initializeJvmOptions(CVmOptions& options, LPCSTR pcApplicationDirectory)

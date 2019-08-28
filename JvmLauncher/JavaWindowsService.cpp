@@ -511,7 +511,6 @@ void CJavaWindowsService::startupJava()
 	CLog::info("=============================================================");
 	CLog::info("Starting java windows service in class");
 	CLog::info("%s", m_launchConfiguration.getMainJavaClass());
-	CLog::info("with ivyteam's java windows service launcher"); 
 	CLog::info("=============================================================");
 
 	try
@@ -527,7 +526,7 @@ void CJavaWindowsService::startupJava()
 		reportStartProgress();
 
 		JavaMainArguments javaMainArguments;
-		initializeVmOptions(vmOptions, pcApplicationDirectory, javaMainArguments);
+		initializeVmOptions(vmOptions, pcApplicationDirectory, javaMainArguments, false, false);
 		//addJvmExitHook(vmOptions);
 
 		reportStartProgress();

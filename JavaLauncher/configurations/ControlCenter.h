@@ -12,6 +12,7 @@ CLaunchConfiguration getLaunchConfiguration()
 	config = CLaunchConfiguration::getGuiApplicationDefault();
 	config.setApplicationName("ControlCenter");
 	config.setOsgiApplicationName("ch.ivyteam.ivy.server.control.center.ui");
+	config.useLowMemoryJvmSettings(true);
 #ifndef _WINDOWS
 	config.setConsole(true);
 #endif

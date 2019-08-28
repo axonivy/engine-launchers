@@ -66,6 +66,8 @@ private:
 	// --- Managment Settings ---
 	LPSTR m_pcServerStopArgument;
 
+	bool m_bUseLowMemoryJvmSettings;
+
 public:
 	/* Value that means that a launch configuration property is DISABLED */
 	static const DWORD DISABLED = -1;
@@ -118,6 +120,9 @@ public:
 	void setServerStopArgument(LPCSTR pcServerStopArgument);
 
 	void setEnableLoggingInfo(bool bEnableLoggingInfo);
+
+	void useLowMemoryJvmSettings(bool bUseLowMemoryJvmSettings);
+	bool isUseLowMemoryJvmSettings();
 
 	/*
 	 * Assign operator
