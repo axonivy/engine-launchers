@@ -71,12 +71,6 @@ public:
 	static const DWORD DISABLED = -1;
 
 	/*
-	 * Constructor
-	 * @param pcMainJavaClass the main java class
-	 */
-	CLaunchConfiguration(LPCSTR pcMainJavaClass);
-
-	/*
 	 * Copy Constructor
 	 * @param copy the object to copy
 	 */

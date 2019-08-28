@@ -25,17 +25,6 @@ History:
 #include <assert.h>
 #include "Log.h"
 
-CLaunchConfiguration::CLaunchConfiguration(LPCSTR pcMainJavaClass)
-: m_jvmType(Disabled),
-  m_pcOsgiApplicationName(NULL),
-  m_bConsole(false),
-  m_pcWindowsServiceName(NULL),
-  m_pcApplicationName(NULL),
-  m_pcServerStopArgument(NULL)
-{
-	setMainJavaClass(pcMainJavaClass);
-}
-
 CLaunchConfiguration::CLaunchConfiguration()
 : m_pcMainJavaClass(NULL),
   m_jvmType(Disabled),
