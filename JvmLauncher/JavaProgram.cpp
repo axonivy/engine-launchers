@@ -67,14 +67,10 @@ BOOL CALLBACK enumWindowsProc( HWND hwnd, LPARAM lParam )
 	return TRUE;
 }
 
-/*
- * Compares filenames
- */
 int compareFileName(const void* elem1, const void* elem2)
 {
 	return strcmp(*static_cast<const char* const *>(elem1), *static_cast<const char* const *>(elem2));
 }
-
 
 CJavaProgram::CJavaProgram(CLaunchConfiguration& launchConfiguration)
 : m_launchConfiguration(launchConfiguration)
@@ -84,83 +80,6 @@ CJavaProgram::CJavaProgram(CLaunchConfiguration& launchConfiguration)
 CJavaProgram* CJavaProgram::createJavaProgram(CLaunchConfiguration launchConfiguration)
 {
 	return new CJavaProgram(launchConfiguration);
-}
-
-bool CJavaProgram::checkIsAlreadyRunning()
-{
-	BOOL result;
-
-	WindowEnumerationParameter param;
-
-	// create named file in pagefile
-	HANDLE hSharedMem = CreateFileMapping(INVALID_HANDLE_VALUE, 
-		NULL, PAGE_READWRITE|SEC_COMMIT, 0, 8, m_launchConfiguration.getApplicationName()); 
-	if (hSharedMem != NULL)
-	{
-		if (GetLastError() == ERROR_ALREADY_EXISTS)
-		{
-			// map file to memory
-			LPVOID memory = MapViewOfFile(hSharedMem, FILE_MAP_READ, 0, 0, 8);
-			if (memory != NULL)
-			{
-				// read process id of first process from map file
-				param.dwProcessId = *((DWORD*)(memory));				
-				param.bWindowFound = FALSE;
-				
-				// iterate throug all top level windows searching a window
-				// created by the first process
-				result = EnumWindows((WNDENUMPROC)enumWindowsProc, reinterpret_cast<LPARAM>(&param));
-				if (result == 0)
-				{
-					UnmapViewOfFile(memory);
-					CloseHandle(hSharedMem);	
-					throw CLaunchException(JVMLauncherErrorCodes.COULD_NOT_ENUMERATE_WINDOWS,
-						GetLastError(),
-						"Could not enumerate windows");
-				}
-
-				// window found?
-				if (param.bWindowFound == FALSE)
-				{
-					// No -> window not yet created -> beep
-					Beep(1000, 400);
-				}
-				// unmap file
-				UnmapViewOfFile(memory);
-			}
-			else
-			{
-				// map file failed -> beep
-				CloseHandle(hSharedMem);	
-				throw CLaunchException(JVMLauncherErrorCodes.COULD_NOT_MAP_VIEW_OF_VIEW,
-						GetLastError(),
-						"Could not map view of file");
-			}
-			// close handle to shared mem
-			CloseHandle(hSharedMem);	
-			return true;
-		}		
-		else
-		{
-			// map file to memory
-			LPVOID memory = MapViewOfFile(hSharedMem, FILE_MAP_WRITE, 0, 0, 8);
-			if (memory != NULL)
-			{
-				// stored process id in shared memory
-				*((DWORD*)(memory)) = GetCurrentProcessId();
-				// unmap file
-				UnmapViewOfFile(memory);
-			}
-
-			return false;
-		}
-	}
-	else
-	{
-		throw CLaunchException(JVMLauncherErrorCodes.COULD_NOT_CREATE_FILE_MAPPING,
-			GetLastError(),
-			"Could not create file mapping");
-	}
 }
 
 bool CJavaProgram::launchAsOsgiApplication()
@@ -722,20 +641,7 @@ void CJavaProgram::reportError(CLaunchException ex)
 	LPCSTR pcMessage;
 	CLog::debug("Report error to windows event log"); 
 
-	if (m_launchConfiguration.getApplicationName() != NULL)
-	{
-		strcpy_s(pcEventSourceName, 256, m_launchConfiguration.getApplicationName());
-		strcat_s(pcEventSourceName, 256, " Launchers");
-	}
-	else if (m_launchConfiguration.getWindowsServiceName() != NULL)
-	{
-		strcpy_s(pcEventSourceName, 256, m_launchConfiguration.getWindowsServiceName());
-		strcat_s(pcEventSourceName, 256, " Service Launcher");
-	}
-	else
-	{
-		strcpy_s(pcEventSourceName, 256, "JVMLauncher");
-	}
+	strcpy_s(pcEventSourceName, 256, "Axon.ivy Launcher");
 	registerEventSource(pcEventSourceName);
 	hEventSource = RegisterEventSource(NULL, pcEventSourceName);
 	if (hEventSource == NULL)

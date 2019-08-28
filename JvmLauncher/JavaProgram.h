@@ -92,13 +92,6 @@ private:
 	void initializeJvmOptions(CVmOptions& options, LPCSTR pcApplicationDirectory);
 
 	/*
-	 * Checks if there is already an instance of this application program running 
-	 * @return true if there is already an instance running, otherwise false
-	 * @throws CLaunchException if an error occurs 
-	 */
-	bool checkIsAlreadyRunning();
-
-	/*
 	 * Checks if the application must run as osgi application
 	 * @return true if the application must run as osgi application
 	 */

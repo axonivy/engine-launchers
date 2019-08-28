@@ -11,7 +11,6 @@ CLaunchConfiguration getLaunchConfiguration()
 	CLaunchConfiguration config;
 
 	config = CLaunchConfiguration::getServerApplicationDefault();
-	config.setApplicationName("EngineConfigCli");
 	config.setOsgiApplicationName("ch.ivyteam.ivy.server.configuration.cli");
 	config.setEnableLoggingInfo(false);
 	config.useLowMemoryJvmSettings(true);
