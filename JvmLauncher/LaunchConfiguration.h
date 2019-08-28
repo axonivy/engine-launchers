@@ -56,8 +56,6 @@ private:
 
 	/* The java runtime engine directory */
 	LPSTR m_pcJreDirectory;
-	/* The directory where the project specific libs are located */
-	LPSTR m_pcAuxDirectory;
 
 	// --- What to launch ---
 
@@ -124,9 +122,6 @@ public:
 	
 	LPCSTR getJreDirectory();
 	void setJreDirectory(LPCSTR pcJreDirectory);
-	
-	LPCSTR getAuxDirectory();
-	void setAuxDirectory(LPCSTR pcAuxDirectory);
 	
 	LPCSTR getMainJavaClass();
 	void setMainJavaClass(LPCSTR pcMainJavaClass);

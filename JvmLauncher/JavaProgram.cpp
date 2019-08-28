@@ -690,7 +690,6 @@ void CJavaProgram::initializeClassPathOption(CVmOptions& options, LPCSTR pcAppli
 	char pcClassesDir[MAX_PATH];
 	DWORD maxClassPathLength = MAX_CLASSPATH_LENGTH;
 	LPSTR pcClassPath = new char[MAX_CLASSPATH_LENGTH];
-	LPCSTR pcAuxDirectory;
 
 	/* Prepare a string which takes the classpath */
     strcpy_s(pcClassPath, maxClassPathLength, "-Djava.class.path=");
@@ -711,14 +710,7 @@ void CJavaProgram::initializeClassPathOption(CVmOptions& options, LPCSTR pcAppli
 		// Add jars in patch directory
 		addJarsToClasspath(pcClassPath, maxClassPathLength, pcApplicationDirectory, "lib\\patch");
 		// Add jars in shared directory
-		addJarsToClasspath(pcClassPath, maxClassPathLength, pcApplicationDirectory, "lib\\shared");
-		// Add jars in aux directory
-		pcAuxDirectory = m_launchConfiguration.getAuxDirectory();
-		if (pcAuxDirectory == NULL)
-		{
-			pcAuxDirectory = "lib\\ivy";
-		}
-		addJarsToClasspath(pcClassPath, maxClassPathLength, pcApplicationDirectory, pcAuxDirectory);	
+		addJarsToClasspath(pcClassPath, maxClassPathLength, pcApplicationDirectory, "lib\\shared");		
 	}
 
 	options.addOption(pcClassPath, NULL);

@@ -27,7 +27,7 @@ History:
 
 CLaunchConfiguration::CLaunchConfiguration(LPCSTR pcMainJavaClass)
 : m_pcAdditionalVmOptions(NULL), 
-  m_jvmType(Disabled), m_pcAuxDirectory(NULL), m_pcJreDirectory(NULL), m_pcMainJavaMethod(NULL), m_pcOsgiApplicationName(NULL), m_bConsole(false), m_pcWindowsServiceName(NULL),
+  m_jvmType(Disabled), m_pcJreDirectory(NULL), m_pcMainJavaMethod(NULL), m_pcOsgiApplicationName(NULL), m_bConsole(false), m_pcWindowsServiceName(NULL),
   m_pcApplicationName(NULL), m_bSingleton(false), m_dwManagementPort(DISABLED), m_bAutoDiscovery(true), m_pcServerStopArgument(NULL)
 {
 	setMainJavaClass(pcMainJavaClass);
@@ -36,7 +36,7 @@ CLaunchConfiguration::CLaunchConfiguration(LPCSTR pcMainJavaClass)
 CLaunchConfiguration::CLaunchConfiguration()
 : m_pcMainJavaClass(NULL),
   m_pcAdditionalVmOptions(NULL), 
-  m_jvmType(Disabled), m_pcAuxDirectory(NULL), m_pcJreDirectory(NULL), m_pcMainJavaMethod(NULL), m_pcOsgiApplicationName(NULL), m_bConsole(false), m_pcWindowsServiceName(NULL),
+  m_jvmType(Disabled), m_pcJreDirectory(NULL), m_pcMainJavaMethod(NULL), m_pcOsgiApplicationName(NULL), m_bConsole(false), m_pcWindowsServiceName(NULL),
   m_pcApplicationName(NULL), m_bSingleton(false), m_dwManagementPort(DISABLED), m_bAutoDiscovery(true), m_pcServerStopArgument(NULL)
 {
 }
@@ -45,7 +45,6 @@ CLaunchConfiguration::CLaunchConfiguration(const CLaunchConfiguration &copy)
 : m_jvmType(copy.m_jvmType),
   m_bSingleton(copy.m_bSingleton),
   m_pcApplicationName(NULL),
-  m_pcAuxDirectory(NULL),
   m_pcMainJavaClass(NULL),
   m_pcJreDirectory(NULL),
   m_pcMainJavaMethod(NULL),
@@ -60,10 +59,6 @@ CLaunchConfiguration::CLaunchConfiguration(const CLaunchConfiguration &copy)
 	if (copy.m_pcMainJavaClass != NULL)
 	{
 		setMainJavaClass(copy.m_pcMainJavaClass);
-	}
-	if (copy.m_pcAuxDirectory != NULL)
-	{
-		setAuxDirectory(copy.m_pcAuxDirectory);
 	}
 	if (copy.m_pcJreDirectory != NULL)
 	{
@@ -100,10 +95,6 @@ CLaunchConfiguration::~CLaunchConfiguration()
 	if (m_pcMainJavaClass != NULL)
 	{
 		delete m_pcMainJavaClass;
-	}
-	if (m_pcAuxDirectory != NULL)
-	{
-		delete m_pcAuxDirectory;
 	}
 	if (m_pcJreDirectory != NULL)
 	{
@@ -170,24 +161,6 @@ void CLaunchConfiguration::setJreDirectory(LPCSTR pcJreDirectory)
 
 	m_pcJreDirectory = new char[strlen(pcJreDirectory)+1];
 	strcpy_s(m_pcJreDirectory, strlen(pcJreDirectory)+1, pcJreDirectory);
-}
-
-LPCSTR CLaunchConfiguration::getAuxDirectory()
-{
-	return m_pcAuxDirectory;
-}
-
-void CLaunchConfiguration::setAuxDirectory(LPCSTR pcAuxDirectory)
-{
-	assert(pcAuxDirectory != NULL);
-
-	if (m_pcAuxDirectory != NULL)
-	{
-		delete m_pcAuxDirectory;
-	}
-
-	m_pcAuxDirectory = new char[strlen(pcAuxDirectory)+1];
-	strcpy_s(m_pcAuxDirectory, strlen(pcAuxDirectory)+1, pcAuxDirectory);
 }
 
 LPCSTR CLaunchConfiguration::getMainJavaClass()
@@ -380,11 +353,6 @@ CLaunchConfiguration& CLaunchConfiguration::operator=(const CLaunchConfiguration
 			delete m_pcMainJavaClass;
 			m_pcMainJavaClass = NULL;
 		}
-		if (m_pcAuxDirectory != NULL)
-		{
-			delete m_pcAuxDirectory;
-			m_pcAuxDirectory = NULL;
-		}
 		if (m_pcJreDirectory != NULL)
 		{
 			delete m_pcJreDirectory;
@@ -428,10 +396,6 @@ CLaunchConfiguration& CLaunchConfiguration::operator=(const CLaunchConfiguration
 		if (rightValue.m_pcMainJavaClass != NULL)
 		{
 			setMainJavaClass(rightValue.m_pcMainJavaClass);
-		}
-		if (rightValue.m_pcAuxDirectory != NULL)
-		{
-			setAuxDirectory(rightValue.m_pcAuxDirectory);
 		}
 		if (rightValue.m_pcJreDirectory != NULL)
 		{
