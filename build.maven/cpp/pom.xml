@@ -13,7 +13,6 @@
 	</properties>
 
 	<distributionManagement>
-		<!-- Used to deploy artifacts -->
 		<repository>
 			<id>zugpronexus.snapshots</id>
 			<name>Internal Build Integration Repository</name>
@@ -22,29 +21,7 @@
 	</distributionManagement>
 
 	<build>
-		<plugins>
-			<plugin>
-				<groupId>com.google.code.maven-svn-revision-number-plugin</groupId>
-				<artifactId>svn-revision-number-maven-plugin</artifactId>
-				<version>1.13</version>
-				<executions>
-					<execution>
-						<goals><goal>revision</goal></goals>
-					</execution>
-				</executions>
-				<configuration>
-					<entries>
-						<entry><prefix>svn</prefix></entry>
-					</entries>
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>org.tmatesoft.svnkit</groupId>
-						<artifactId>svnkit</artifactId>
-						<version>1.8.5</version>
-					</dependency>
-				</dependencies>
-			</plugin>
+		<plugins>	
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
