@@ -108,12 +108,6 @@ private:
 	void initializeJavaModuleSystemVmOptions(CVmOptions& options);
 
 	/*
-	 * Initializes the garbage collector options
-	 * @param Options the java vm option to initialize with the garbage collector option
-     */
-	void initializeGarbageCollectorOptions(CVmOptions& option);
-
-	/*
 	 * Checks if there is already an instance of this application program running 
 	 * @return true if there is already an instance running, otherwise false
 	 * @throws CLaunchException if an error occurs 

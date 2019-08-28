@@ -514,7 +514,6 @@ LPSTR CJavaProgram::getApplicationDirectory(LPSTR pcApplicationDirectoryBuffer, 
 void CJavaProgram::initializeVmOptions(CVmOptions& options, LPCSTR pcApplicationDirectory, JavaMainArguments& javaMainArguments)
 {
 	initializeMemoryOptions(options);
-	initializeGarbageCollectorOptions(options);
 	initializeManagementVmOptions(options);
 	initializeClassPathOption(options, pcApplicationDirectory);
 	initializeAdditionalVmOptions(options);
@@ -651,31 +650,6 @@ void CJavaProgram::printMemoryOverview(MEMORYSTATUSEX& memInfo)
 	CLog::info("  Available Virtual Memory:  %I64u kBytes", memInfo.ullAvailVirtual/1024);
 	CLog::info("  Total Page File:           %I64u kBytes", memInfo.ullTotalPageFile/1024);
 	CLog::info("  Available Page File:       %I64u kBytes", memInfo.ullAvailPageFile/1024);
-}
-
-void CJavaProgram::initializeGarbageCollectorOptions(CVmOptions& options)
-{
-	LPCSTR pcGarbageCollectorOptions;
-	LPCSTR pcFound;
-
-	pcGarbageCollectorOptions = m_launchConfiguration.getGarbageCollectorOptions();
-	if (pcGarbageCollectorOptions != NULL)
-	{
-		pcFound = strchr(pcGarbageCollectorOptions, ' ');
-		while (pcFound != NULL)
-		{
-			if (pcFound-pcGarbageCollectorOptions>0)
-			{
-				options.addOption(pcGarbageCollectorOptions, pcFound, NULL);
-			}
-			pcGarbageCollectorOptions = pcFound+1;
-			pcFound = strchr(pcGarbageCollectorOptions, ' ');
-		}
-		if (strlen(pcGarbageCollectorOptions)>0)
-		{
-			options.addOption(pcGarbageCollectorOptions, NULL);
-		}
-	}
 }
 
 void CJavaProgram::addToClasspath(LPSTR& pcClasspath, DWORD& dwClasspathLength, LPCSTR pcPathToAdd, LPCSTR pcFileToAdd)

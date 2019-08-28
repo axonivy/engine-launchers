@@ -74,8 +74,6 @@ private:
 
 	/* The java virtual machine type */
 	JVMType m_jvmType;
-	/* The garbage collector options */
-	LPSTR m_pcGarbageCollectorOptions;
 	/* Additional vm options */
 	LPSTR m_pcAdditionalVmOptions;
 
@@ -144,9 +142,6 @@ public:
 
 	JVMType getJvmType();
 	void setJvmType(JVMType jvmType);
-
-	LPCSTR getGarbageCollectorOptions();
-	void setGarbageCollectorOptions(LPCSTR pcGarbageCollectorOptions);
 
 	LPCSTR getAdditionalVmOptions();
 	void setAdditionalVmOptions(LPCSTR pcAdditionalVmOptions);

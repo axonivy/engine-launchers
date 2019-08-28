@@ -26,7 +26,7 @@ History:
 #include "Log.h"
 
 CLaunchConfiguration::CLaunchConfiguration(LPCSTR pcMainJavaClass)
-: m_pcAdditionalVmOptions(NULL), m_pcGarbageCollectorOptions(NULL),
+: m_pcAdditionalVmOptions(NULL), 
   m_jvmType(Disabled), m_pcAuxDirectory(NULL), m_pcJreDirectory(NULL), m_pcMainJavaMethod(NULL), m_pcOsgiApplicationName(NULL), m_bConsole(false), m_pcWindowsServiceName(NULL),
   m_pcApplicationName(NULL), m_bSingleton(false), m_dwManagementPort(DISABLED), m_bAutoDiscovery(true), m_pcServerStopArgument(NULL)
 {
@@ -35,7 +35,7 @@ CLaunchConfiguration::CLaunchConfiguration(LPCSTR pcMainJavaClass)
 
 CLaunchConfiguration::CLaunchConfiguration()
 : m_pcMainJavaClass(NULL),
-  m_pcAdditionalVmOptions(NULL), m_pcGarbageCollectorOptions(NULL),
+  m_pcAdditionalVmOptions(NULL), 
   m_jvmType(Disabled), m_pcAuxDirectory(NULL), m_pcJreDirectory(NULL), m_pcMainJavaMethod(NULL), m_pcOsgiApplicationName(NULL), m_bConsole(false), m_pcWindowsServiceName(NULL),
   m_pcApplicationName(NULL), m_bSingleton(false), m_dwManagementPort(DISABLED), m_bAutoDiscovery(true), m_pcServerStopArgument(NULL)
 {
@@ -47,7 +47,6 @@ CLaunchConfiguration::CLaunchConfiguration(const CLaunchConfiguration &copy)
   m_pcApplicationName(NULL),
   m_pcAuxDirectory(NULL),
   m_pcMainJavaClass(NULL),
-  m_pcGarbageCollectorOptions(NULL),
   m_pcJreDirectory(NULL),
   m_pcMainJavaMethod(NULL),
   m_pcOsgiApplicationName(NULL),
@@ -65,10 +64,6 @@ CLaunchConfiguration::CLaunchConfiguration(const CLaunchConfiguration &copy)
 	if (copy.m_pcAuxDirectory != NULL)
 	{
 		setAuxDirectory(copy.m_pcAuxDirectory);
-	}
-	if (copy.m_pcGarbageCollectorOptions != NULL)
-	{
-		setGarbageCollectorOptions(copy.m_pcGarbageCollectorOptions);
 	}
 	if (copy.m_pcJreDirectory != NULL)
 	{
@@ -110,10 +105,6 @@ CLaunchConfiguration::~CLaunchConfiguration()
 	{
 		delete m_pcAuxDirectory;
 	}
-	if (m_pcGarbageCollectorOptions != NULL)
-	{
-		delete m_pcGarbageCollectorOptions;
-	}
 	if (m_pcJreDirectory != NULL)
 	{
 		delete m_pcJreDirectory;
@@ -150,7 +141,6 @@ CLaunchConfiguration CLaunchConfiguration::getGuiApplicationDefault()
 	launchConfiguration.setMainJavaClass("org.eclipse.equinox.launcher.Main");	
 	launchConfiguration.setJvmType(ClientHotspotJVM);
 	launchConfiguration.setAdditionalVmOptions("-XX:-OmitStackTraceInFastThrow");
-	launchConfiguration.setGarbageCollectorOptions("-XX:+UseG1GC -XX:+UseStringDeduplication");
 	return launchConfiguration;
 }
 
@@ -160,7 +150,6 @@ CLaunchConfiguration CLaunchConfiguration::getServerApplicationDefault()
 	launchConfiguration.setMainJavaClass("org.eclipse.equinox.launcher.Main");	
 	launchConfiguration.setJvmType(ServerHotspotJVM);
 	launchConfiguration.setAdditionalVmOptions("-XX:-OmitStackTraceInFastThrow");
-	launchConfiguration.setGarbageCollectorOptions("-XX:+UseG1GC -XX:+UseStringDeduplication");
 	launchConfiguration.setEnableLoggingInfo(true);
 	return launchConfiguration;
 }
@@ -273,24 +262,6 @@ JVMType CLaunchConfiguration::getJvmType()
 void CLaunchConfiguration::setJvmType(JVMType jvmType)
 {
 	m_jvmType = jvmType;
-}
-
-LPCSTR CLaunchConfiguration::getGarbageCollectorOptions()
-{
-	return m_pcGarbageCollectorOptions;
-}
-
-void CLaunchConfiguration::setGarbageCollectorOptions(LPCSTR pcGarbageCollectorArgument)
-{
-	assert(pcGarbageCollectorArgument != NULL);
-
-	if (m_pcGarbageCollectorOptions != NULL)
-	{
-		delete m_pcGarbageCollectorOptions;
-	}
-
-	m_pcGarbageCollectorOptions = new char[strlen(pcGarbageCollectorArgument)+1];
-	strcpy_s(m_pcGarbageCollectorOptions, strlen(pcGarbageCollectorArgument)+1, pcGarbageCollectorArgument);
 }
 
 LPCSTR CLaunchConfiguration::getAdditionalVmOptions()
@@ -414,11 +385,6 @@ CLaunchConfiguration& CLaunchConfiguration::operator=(const CLaunchConfiguration
 			delete m_pcAuxDirectory;
 			m_pcAuxDirectory = NULL;
 		}
-		if (m_pcGarbageCollectorOptions != NULL)
-		{
-			delete m_pcGarbageCollectorOptions;
-			m_pcGarbageCollectorOptions = NULL;
-		}
 		if (m_pcJreDirectory != NULL)
 		{
 			delete m_pcJreDirectory;
@@ -466,10 +432,6 @@ CLaunchConfiguration& CLaunchConfiguration::operator=(const CLaunchConfiguration
 		if (rightValue.m_pcAuxDirectory != NULL)
 		{
 			setAuxDirectory(rightValue.m_pcAuxDirectory);
-		}
-		if (rightValue.m_pcGarbageCollectorOptions != NULL)
-		{
-			setGarbageCollectorOptions(rightValue.m_pcGarbageCollectorOptions);
 		}
 		if (rightValue.m_pcJreDirectory != NULL)
 		{
