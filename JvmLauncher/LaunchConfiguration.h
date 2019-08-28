@@ -78,8 +78,6 @@ private:
 	/** -1 means disable jmx */
 	DWORD m_dwManagementPort;
 
-	bool m_bAutoDiscovery;
-
 	LPSTR m_pcServerStopArgument;
 
 public:
@@ -147,9 +145,6 @@ public:
 
 	DWORD getManagementPort();
 	void setManagementPort(DWORD dwManagementPort);
-
-	bool isAutoDiscovery();
-	void setAutoDiscovery(bool bAutoDiscovery);
 
 	LPCSTR getServerStopArgument();
 	void setServerStopArgument(LPCSTR pcServerStopArgument);

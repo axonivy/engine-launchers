@@ -28,7 +28,7 @@ History:
 CLaunchConfiguration::CLaunchConfiguration(LPCSTR pcMainJavaClass)
 : m_pcAdditionalVmOptions(NULL), 
   m_jvmType(Disabled), m_pcJreDirectory(NULL), m_pcMainJavaMethod(NULL), m_pcOsgiApplicationName(NULL), m_bConsole(false), m_pcWindowsServiceName(NULL),
-  m_pcApplicationName(NULL), m_dwManagementPort(DISABLED), m_bAutoDiscovery(true), m_pcServerStopArgument(NULL)
+  m_pcApplicationName(NULL), m_dwManagementPort(DISABLED), m_pcServerStopArgument(NULL)
 {
 	setMainJavaClass(pcMainJavaClass);
 }
@@ -37,7 +37,7 @@ CLaunchConfiguration::CLaunchConfiguration()
 : m_pcMainJavaClass(NULL),
   m_pcAdditionalVmOptions(NULL), 
   m_jvmType(Disabled), m_pcJreDirectory(NULL), m_pcMainJavaMethod(NULL), m_pcOsgiApplicationName(NULL), m_bConsole(false), m_pcWindowsServiceName(NULL),
-  m_pcApplicationName(NULL), m_dwManagementPort(DISABLED), m_bAutoDiscovery(true), m_pcServerStopArgument(NULL)
+  m_pcApplicationName(NULL), m_dwManagementPort(DISABLED), m_pcServerStopArgument(NULL)
 {
 }
 
@@ -52,7 +52,6 @@ CLaunchConfiguration::CLaunchConfiguration(const CLaunchConfiguration &copy)
   m_pcWindowsServiceName(NULL),
   m_pcAdditionalVmOptions(NULL),
   m_dwManagementPort(copy.m_dwManagementPort), 
-  m_bAutoDiscovery(copy.m_bAutoDiscovery),
   m_pcServerStopArgument(NULL)
 {
 	if (copy.m_pcMainJavaClass != NULL)
@@ -290,16 +289,6 @@ void CLaunchConfiguration::setApplicationName(LPCSTR pcApplicationName)
 	strcpy_s(m_pcApplicationName, strlen(pcApplicationName)+1, pcApplicationName);
 }
 
-bool CLaunchConfiguration::isAutoDiscovery()
-{
-	return m_bAutoDiscovery;
-}
-
-void CLaunchConfiguration::setAutoDiscovery(bool bAutoDiscovery)
-{
-	m_bAutoDiscovery = bAutoDiscovery;
-}
-
 DWORD CLaunchConfiguration::getManagementPort()
 {
 	return m_dwManagementPort;
@@ -379,7 +368,6 @@ CLaunchConfiguration& CLaunchConfiguration::operator=(const CLaunchConfiguration
 		}		
 		m_jvmType = rightValue.m_jvmType;
 		m_bConsole = rightValue.m_bConsole;
-		m_bAutoDiscovery = rightValue.m_bAutoDiscovery;
 		m_dwManagementPort = rightValue.m_dwManagementPort;
 		if (rightValue.m_pcMainJavaClass != NULL)
 		{

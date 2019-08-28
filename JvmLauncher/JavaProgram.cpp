@@ -584,12 +584,6 @@ void CJavaProgram::initializeManagementVmOptions(CVmOptions& options)
 
 		strcpy_s(pcOption, 100, "-Dcom.sun.management.jmxremote.ssl=false");
 		options.addOption(pcOption, NULL);
-
-		if (m_launchConfiguration.isAutoDiscovery())
-		{
-			strcpy_s(pcOption, 100, "-Dcom.sun.management.jmxremote.autodiscovery=true");
-			options.addOption(pcOption, NULL);
-		}
 	}
 }
 
