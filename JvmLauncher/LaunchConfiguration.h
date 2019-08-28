@@ -45,8 +45,6 @@ private:
 	// --- Application  ---
 	/* the application name */
 	LPSTR m_pcApplicationName;
-	/* is a singleton application */
-	bool m_bSingleton;
 
 	// --- Windows Service ---
 	/* The windows service name */
@@ -146,9 +144,6 @@ public:
 
 	LPCSTR getApplicationName();
 	void setApplicationName(LPCSTR pcApplicationName);
-
-	bool isSingleton();
-	void setSingleton(bool isSingleton);
 
 	DWORD getManagementPort();
 	void setManagementPort(DWORD dwManagementPort);

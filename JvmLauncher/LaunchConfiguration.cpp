@@ -28,7 +28,7 @@ History:
 CLaunchConfiguration::CLaunchConfiguration(LPCSTR pcMainJavaClass)
 : m_pcAdditionalVmOptions(NULL), 
   m_jvmType(Disabled), m_pcJreDirectory(NULL), m_pcMainJavaMethod(NULL), m_pcOsgiApplicationName(NULL), m_bConsole(false), m_pcWindowsServiceName(NULL),
-  m_pcApplicationName(NULL), m_bSingleton(false), m_dwManagementPort(DISABLED), m_bAutoDiscovery(true), m_pcServerStopArgument(NULL)
+  m_pcApplicationName(NULL), m_dwManagementPort(DISABLED), m_bAutoDiscovery(true), m_pcServerStopArgument(NULL)
 {
 	setMainJavaClass(pcMainJavaClass);
 }
@@ -37,13 +37,12 @@ CLaunchConfiguration::CLaunchConfiguration()
 : m_pcMainJavaClass(NULL),
   m_pcAdditionalVmOptions(NULL), 
   m_jvmType(Disabled), m_pcJreDirectory(NULL), m_pcMainJavaMethod(NULL), m_pcOsgiApplicationName(NULL), m_bConsole(false), m_pcWindowsServiceName(NULL),
-  m_pcApplicationName(NULL), m_bSingleton(false), m_dwManagementPort(DISABLED), m_bAutoDiscovery(true), m_pcServerStopArgument(NULL)
+  m_pcApplicationName(NULL), m_dwManagementPort(DISABLED), m_bAutoDiscovery(true), m_pcServerStopArgument(NULL)
 {
 }
 
 CLaunchConfiguration::CLaunchConfiguration(const CLaunchConfiguration &copy)
 : m_jvmType(copy.m_jvmType),
-  m_bSingleton(copy.m_bSingleton),
   m_pcApplicationName(NULL),
   m_pcMainJavaClass(NULL),
   m_pcJreDirectory(NULL),
@@ -291,16 +290,6 @@ void CLaunchConfiguration::setApplicationName(LPCSTR pcApplicationName)
 	strcpy_s(m_pcApplicationName, strlen(pcApplicationName)+1, pcApplicationName);
 }
 
-bool CLaunchConfiguration::isSingleton()
-{
-	return m_bSingleton;
-}
-
-void CLaunchConfiguration::setSingleton(bool isSingleton)
-{
-	m_bSingleton = isSingleton;
-}
-
 bool CLaunchConfiguration::isAutoDiscovery()
 {
 	return m_bAutoDiscovery;
@@ -389,7 +378,6 @@ CLaunchConfiguration& CLaunchConfiguration::operator=(const CLaunchConfiguration
 			m_pcServerStopArgument = NULL;
 		}		
 		m_jvmType = rightValue.m_jvmType;
-		m_bSingleton = rightValue.m_bSingleton;
 		m_bConsole = rightValue.m_bConsole;
 		m_bAutoDiscovery = rightValue.m_bAutoDiscovery;
 		m_dwManagementPort = rightValue.m_dwManagementPort;

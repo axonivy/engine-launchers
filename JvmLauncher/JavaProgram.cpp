@@ -174,15 +174,6 @@ void CJavaProgram::main(int argc, LPSTR argv[])
 	char pcApplicationDirectory[MAX_PATH];
 	char pcJvmPath[MAX_PATH];
 
-	if ((m_launchConfiguration.isSingleton())&&(m_launchConfiguration.getApplicationName()!=NULL))
-	{
-		if (checkIsAlreadyRunning())
-		{
-			CLog::info("Program already running");
-			return;
-		}
-	}
-
 	CLog::info("=============================================================");
 	CLog::info("Starting java programm in class");
 	CLog::info("%s", m_launchConfiguration.getMainJavaClass());
