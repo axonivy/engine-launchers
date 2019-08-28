@@ -72,10 +72,6 @@ private:
 	LPSTR m_pcAdditionalVmOptions;
 
 	// --- Managment Settings ---
-
-	/** -1 means disable jmx */
-	DWORD m_dwManagementPort;
-
 	LPSTR m_pcServerStopArgument;
 
 public:
@@ -137,9 +133,6 @@ public:
 
 	LPCSTR getApplicationName();
 	void setApplicationName(LPCSTR pcApplicationName);
-
-	DWORD getManagementPort();
-	void setManagementPort(DWORD dwManagementPort);
 
 	LPCSTR getServerStopArgument();
 	void setServerStopArgument(LPCSTR pcServerStopArgument);

@@ -28,7 +28,7 @@ History:
 CLaunchConfiguration::CLaunchConfiguration(LPCSTR pcMainJavaClass)
 : m_pcAdditionalVmOptions(NULL), 
   m_jvmType(Disabled), m_pcJreDirectory(NULL), m_pcOsgiApplicationName(NULL), m_bConsole(false), m_pcWindowsServiceName(NULL),
-  m_pcApplicationName(NULL), m_dwManagementPort(DISABLED), m_pcServerStopArgument(NULL)
+  m_pcApplicationName(NULL), m_pcServerStopArgument(NULL)
 {
 	setMainJavaClass(pcMainJavaClass);
 }
@@ -37,7 +37,7 @@ CLaunchConfiguration::CLaunchConfiguration()
 : m_pcMainJavaClass(NULL),
   m_pcAdditionalVmOptions(NULL), 
   m_jvmType(Disabled), m_pcJreDirectory(NULL), m_pcOsgiApplicationName(NULL), m_bConsole(false), m_pcWindowsServiceName(NULL),
-  m_pcApplicationName(NULL), m_dwManagementPort(DISABLED), m_pcServerStopArgument(NULL)
+  m_pcApplicationName(NULL), m_pcServerStopArgument(NULL)
 {
 }
 
@@ -50,7 +50,6 @@ CLaunchConfiguration::CLaunchConfiguration(const CLaunchConfiguration &copy)
   m_bConsole(copy.m_bConsole),
   m_pcWindowsServiceName(NULL),
   m_pcAdditionalVmOptions(NULL),
-  m_dwManagementPort(copy.m_dwManagementPort), 
   m_pcServerStopArgument(NULL)
 {
 	if (copy.m_pcMainJavaClass != NULL)
@@ -262,16 +261,6 @@ void CLaunchConfiguration::setApplicationName(LPCSTR pcApplicationName)
 	strcpy_s(m_pcApplicationName, strlen(pcApplicationName)+1, pcApplicationName);
 }
 
-DWORD CLaunchConfiguration::getManagementPort()
-{
-	return m_dwManagementPort;
-}
-
-void CLaunchConfiguration::setManagementPort(DWORD dwManagementPort)
-{
-	m_dwManagementPort = dwManagementPort;
-}
-
 LPCSTR CLaunchConfiguration::getServerStopArgument()
 {
 	return m_pcServerStopArgument;
@@ -336,7 +325,6 @@ CLaunchConfiguration& CLaunchConfiguration::operator=(const CLaunchConfiguration
 		}		
 		m_jvmType = rightValue.m_jvmType;
 		m_bConsole = rightValue.m_bConsole;
-		m_dwManagementPort = rightValue.m_dwManagementPort;
 		if (rightValue.m_pcMainJavaClass != NULL)
 		{
 			setMainJavaClass(rightValue.m_pcMainJavaClass);

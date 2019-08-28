@@ -504,8 +504,7 @@ LPSTR CJavaProgram::getApplicationDirectory(LPSTR pcApplicationDirectoryBuffer, 
 
 void CJavaProgram::initializeVmOptions(CVmOptions& options, LPCSTR pcApplicationDirectory, JavaMainArguments& javaMainArguments)
 {
-	initializeMemoryOptions(options);
-	initializeManagementVmOptions(options);
+	initializeMemoryOptions(options);	
 	initializeClassPathOption(options, pcApplicationDirectory);
 	initializeAdditionalVmOptions(options);
 	initializeCommandVmOptions(options, javaMainArguments);
@@ -514,16 +513,10 @@ void CJavaProgram::initializeVmOptions(CVmOptions& options, LPCSTR pcApplication
 }
 
 void CJavaProgram::disableManagementOptionForServerStop(int argc, LPSTR argv[])
-{
-	if (m_launchConfiguration.getManagementPort() == CLaunchConfiguration::DISABLED || 
-		argc < 1 || 
-		m_launchConfiguration.getServerStopArgument() == NULL)
-	{
-		return;
-	}
+{	
 	if (containsServerStopArgument(argc, argv))
 	{
-		m_launchConfiguration.setManagementPort(CLaunchConfiguration::DISABLED);
+		// TODO Do not load jvm.options
 		return;
 	}
 }
@@ -565,26 +558,6 @@ void CJavaProgram::initializeCommandVmOptions(CVmOptions& options, JavaMainArgum
 	}
 
 	options.addOption(pcCommand, NULL);
-}
-
-void CJavaProgram::initializeManagementVmOptions(CVmOptions& options)
-{
-	if (m_launchConfiguration.getManagementPort() != CLaunchConfiguration::DISABLED)
-	{
-		char pcOption[100];
-		DWORD dwJmxPort = m_launchConfiguration.getManagementPort();
-		sprintf_s(pcOption, 100, "-Dcom.sun.management.jmxremote.port=%lu", dwJmxPort);
-		options.addOption(pcOption, NULL);
-
-		strcpy_s(pcOption, 100, "-Dcom.sun.management.jmxremote.login.config=jmx");
-		options.addOption(pcOption, NULL);
-
-		strcpy_s(pcOption, 100, "-Djava.security.auth.login.config=configuration/jaas.config");
-		options.addOption(pcOption, NULL);
-
-		strcpy_s(pcOption, 100, "-Dcom.sun.management.jmxremote.ssl=false");
-		options.addOption(pcOption, NULL);
-	}
 }
 
 void CJavaProgram::initializeMemoryOptions(CVmOptions& options)

@@ -51,12 +51,6 @@ private:
 	void initializeAdditionalVmOptions(CVmOptions& options);
 
 	/*
-	 * Initializes management vm options
-	 * @param options the vm options to initialize with the management vm Options
-	 */
-	void initializeManagementVmOptions(CVmOptions& options);
-
-	/*
 	 * Initializes command vm options
 	 * @param options the vm options to initialize with the additional vm Options
 	 * @param javaMainArguments pointer to java main arguments
