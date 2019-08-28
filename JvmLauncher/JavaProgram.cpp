@@ -183,14 +183,23 @@ void CJavaProgram::main(int argc, LPSTR argv[])
 	getApplicationDirectory(pcApplicationDirectory, MAX_PATH);
 	
 	CLog::info("Setting current directory to '%s'.", pcApplicationDirectory);
-	/* Set the current directory */
 	SetCurrentDirectory(pcApplicationDirectory);
-	
-	disableManagementOptionForServerStop(argc, argv);
 
 	JavaMainArguments javaMainArguments(argc, argv);
 	addOsgiJavaMainArguments(&javaMainArguments);
 
+	// TODO
+	if (containsServerStopArgument(argc, argv))
+	{
+		// run with default jvm options
+	}
+	else
+	{
+		// if engine then run with jvm.otpions
+		// else with default jvm.optoins
+
+		//parseJvmOptions();
+	}
 	initializeVmOptions(vmOptions, pcApplicationDirectory, javaMainArguments);
 
 	pJvm = CJavaVirtualMaschine::createJavaVirtualMaschine(
@@ -484,21 +493,11 @@ LPSTR CJavaProgram::getApplicationDirectory(LPSTR pcApplicationDirectoryBuffer, 
 
 void CJavaProgram::initializeVmOptions(CVmOptions& options, LPCSTR pcApplicationDirectory, JavaMainArguments& javaMainArguments)
 {
-	initializeMemoryOptions(options);	
 	initializeClassPathOption(options, pcApplicationDirectory);
 	initializeAdditionalVmOptions(options);
 	initializeCommandVmOptions(options, javaMainArguments);
 	initializeJavaModuleSystemVmOptions(options);
 	initializeOsgiVmOptions(options, pcApplicationDirectory);
-}
-
-void CJavaProgram::disableManagementOptionForServerStop(int argc, LPSTR argv[])
-{	
-	if (containsServerStopArgument(argc, argv))
-	{
-		// TODO Do not load jvm.options
-		return;
-	}
 }
 
 bool CJavaProgram::containsServerStopArgument(int argc, LPSTR argv[])
@@ -540,17 +539,6 @@ void CJavaProgram::initializeCommandVmOptions(CVmOptions& options, JavaMainArgum
 	options.addOption(pcCommand, NULL);
 }
 
-void CJavaProgram::initializeMemoryOptions(CVmOptions& options)
-{
-	MEMORYSTATUSEX memInfo;
-
-	// get global memory status of system
-	memInfo.dwLength = sizeof(MEMORYSTATUSEX);
-	GlobalMemoryStatusEx(&memInfo);
-
-	printMemoryOverview(memInfo);
-}
-
 void CJavaProgram::initializeOsgiVmOptions(CVmOptions& options, LPCSTR pcApplicationDirectory)
 {
 	if (launchAsOsgiApplication())
@@ -576,18 +564,6 @@ void CJavaProgram::initializeJavaModuleSystemVmOptions(CVmOptions& options)
 
 	// allow ZipFileSystem readonly feature on engine with Java 11
 	options.addOption("--add-opens=jdk.zipfs/jdk.nio.zipfs=ALL-UNNAMED", NULL);
-}
-
-void CJavaProgram::printMemoryOverview(MEMORYSTATUSEX& memInfo)
-{
-	CLog::info("Memory Overview:");
-	CLog::info("  Memory load:               %lu%%", memInfo.dwMemoryLoad);
-	CLog::info("  Total Physical Memory:     %I64u kBytes", memInfo.ullTotalPhys/1024);
-	CLog::info("  Available Physical Memory: %I64u kBytes", memInfo.ullAvailPhys/1024);
-	CLog::info("  Total Virtual Memory:      %I64u kBytes", memInfo.ullTotalVirtual/1024);
-	CLog::info("  Available Virtual Memory:  %I64u kBytes", memInfo.ullAvailVirtual/1024);
-	CLog::info("  Total Page File:           %I64u kBytes", memInfo.ullTotalPageFile/1024);
-	CLog::info("  Available Page File:       %I64u kBytes", memInfo.ullAvailPageFile/1024);
 }
 
 void CJavaProgram::addToClasspath(LPSTR& pcClasspath, DWORD& dwClasspathLength, LPCSTR pcPathToAdd, LPCSTR pcFileToAdd)

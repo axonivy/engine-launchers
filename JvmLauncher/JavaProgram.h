@@ -83,12 +83,6 @@ private:
 	void addToClasspath(LPSTR& pcClasspath, DWORD& dwClasspathLength, LPCSTR pcPathToAdd, LPCSTR pcFileToAdd);
 
 	/*
-	 * Initializes the memory options
-	 * @param options the java vm options to initialize with the memory options
-     */
-	void initializeMemoryOptions(CVmOptions& options);
-
-	/*
 	 * Initializes the osgi vm options
 	 * @param options the java vm options
 	 * @param pcApplicationDirectory the application directory
@@ -122,12 +116,6 @@ private:
 	 * @throws CLaunchException if conversion fails
 	 */
 	jstring convert2JavaString(JNIEnv* pJavaNativeInterface, LPCSTR pcString);
-
-	/*
-	 * Prints a print memory information overview to the debug out
-	 * @param memInfo the memory information
-	 */
-	void printMemoryOverview(MEMORYSTATUSEX& memInfo);
 
 	/*
 	 * Register an event source for the event log
@@ -193,13 +181,6 @@ protected:
 	 * @param javaMainArguments pointer to java main arguments
 	 */
 	void initializeVmOptions(CVmOptions& options, LPCSTR pcApplicationDirectory, JavaMainArguments& javaMainArguments);
-
-	/*
-	 * Disables the mangament option if the arguments contains a server stop argument
-	 * @param argc the number of arguments
-	 * @param argv the arguments
-	 */
-	void disableManagementOptionForServerStop(int argc, LPSTR argv[]);
 
 	/*
 	 * Checks if the given arguments contains the server stop argument 
