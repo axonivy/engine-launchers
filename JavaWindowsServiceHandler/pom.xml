@@ -42,13 +42,7 @@
 					<execution>
 						<id>cpp.pack</id>
 						<configuration>
-							<target>
-								<mkdir dir="${OUTPUT_X86}"/>
-								<copy todir="${OUTPUT_X86}">
-									<fileset dir="./Release">
-										<include name="*.dll"/>
-									</fileset>
-								</copy>
+							<target>								
 								<mkdir dir="${OUTPUT_X64}"/>
 								<copy todir="${OUTPUT_X64}">
 									<fileset dir="./x64/Release">
