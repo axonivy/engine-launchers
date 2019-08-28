@@ -136,66 +136,6 @@ private:
 	jstring convert2JavaString(JNIEnv* pJavaNativeInterface, LPCSTR pcString);
 
 	/*
-	 * Initializes the heap max memory vm argument
-	 * @param memInfo system memory information
-	 * @param option the vm options to initialize
-	 * @return the max heap memory initialized
-	 */
-	DWORD initializeHeapMaxSizeMemoryOption(MEMORYSTATUSEX& memInfo, CVmOptions& option);
-
-	/*
-	 * Initializes the heap start memory vm argument
-	 * @param memInfo system memory information
-	 * @param dwHeapMaxMemory the max heap memory
-	 * @param option the vm options to initialize
-	 * @return the start heap memory initialized
-	 */
-	DWORD initializeHeapStartSizeMemoryOption(MEMORYSTATUSEX& memInfo, DWORD dwHeapMaxMemory, CVmOptions& option);
-
-	/*
-	 * Initializes the heap free max ratio vm argument
-	 * @param option the vm options to initialize
-	 * @return the heap free max ratio initialized
-	 */
-	DWORD initializeHeapFreeMaxRatioMemoryOption(CVmOptions& option);
-
-	/*
-	 * Initializes the heap free max ratio vm argument
-	 * @param dwHeapFreeMaxRatio the max ratio initialized
-	 * @param option the vm options to initialize
-	 * @return the heap free max ratio initialized
-	 */
-	void initializeHeapFreeMinRatioMemoryOption(DWORD dwHeapFreeMaxRatio, CVmOptions& option);
-
-	/*
-	 * Initializes the heap young max size vm argument
-	 * @param dwHeapMaxSize the max heap size initialized
-	 * @param option the vm options to initialize
-	 * @return the heap young max size initialized
-	 */
-	DWORD initializeHeapYoungMaxSizeMemoryOption(DWORD dwHeapMaxSize, CVmOptions& option);
-
-	/*
-	 * Initializes the heap young min size vm argument
-	 * @param dwHeapYoungMaxSize the max young size initialized
-	 * @param dwHeapStartSize the start heap size initialized
-	 * @param option the vm options to initialize
-	 */
-	void initializeHeapYoungMinSizeMemoryOption(DWORD dwHeapYoungMaxSize, DWORD dwHeapStartSize, CVmOptions& option);
-
-	/*
-	 * Initializes the heap eden to survivor ratio vm argument
-	 * @param option the vm options to initialize
-	 */
-	void initializeHeapEdenSurvivorRatioMemoryOption( CVmOptions& option);
-
-	/*
-	 * Initializes the heap tenured to young ratio vm argument
-	 * @param option the vm options to initialize
-	 */
-	void initializeHeapTenuredYoungRatioMemoryOption( CVmOptions& option);
-
-	/*
 	 * Prints a print memory information overview to the debug out
 	 * @param memInfo the memory information
 	 */

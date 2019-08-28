@@ -26,9 +26,7 @@ History:
 #include "Log.h"
 
 CLaunchConfiguration::CLaunchConfiguration(LPCSTR pcMainJavaClass)
-: m_pcAdditionalVmOptions(NULL), m_pcGarbageCollectorOptions(NULL), m_dwHeapEdenToSurvivorRatio(DISABLED),
-  m_dwHeapMaxFreeRatio(DISABLED), m_dwHeapMaxRatio(DISABLED), m_dwHeapMaxSize(DISABLED), m_dwHeapMaxYoungSize(DISABLED), m_dwHeapMinFreeRatio(DISABLED), m_dwHeapMinYoungSize(DISABLED),
-  m_dwHeapStartSize(DISABLED), m_dwHeapTenuredToYoungRatio(DISABLED),
+: m_pcAdditionalVmOptions(NULL), m_pcGarbageCollectorOptions(NULL),
   m_jvmType(Disabled), m_pcAuxDirectory(NULL), m_pcJreDirectory(NULL), m_pcMainJavaMethod(NULL), m_pcOsgiApplicationName(NULL), m_bConsole(false), m_pcWindowsServiceName(NULL),
   m_pcApplicationName(NULL), m_bSingleton(false), m_dwManagementPort(DISABLED), m_bAutoDiscovery(true), m_pcServerStopArgument(NULL)
 {
@@ -37,25 +35,14 @@ CLaunchConfiguration::CLaunchConfiguration(LPCSTR pcMainJavaClass)
 
 CLaunchConfiguration::CLaunchConfiguration()
 : m_pcMainJavaClass(NULL),
-  m_pcAdditionalVmOptions(NULL), m_pcGarbageCollectorOptions(NULL), m_dwHeapEdenToSurvivorRatio(DISABLED),
-  m_dwHeapMaxFreeRatio(DISABLED), m_dwHeapMaxRatio(DISABLED), m_dwHeapMaxSize(DISABLED), m_dwHeapMaxYoungSize(DISABLED), m_dwHeapMinFreeRatio(DISABLED), m_dwHeapMinYoungSize(DISABLED),
-  m_dwHeapStartSize(DISABLED), m_dwHeapTenuredToYoungRatio(DISABLED),
+  m_pcAdditionalVmOptions(NULL), m_pcGarbageCollectorOptions(NULL),
   m_jvmType(Disabled), m_pcAuxDirectory(NULL), m_pcJreDirectory(NULL), m_pcMainJavaMethod(NULL), m_pcOsgiApplicationName(NULL), m_bConsole(false), m_pcWindowsServiceName(NULL),
   m_pcApplicationName(NULL), m_bSingleton(false), m_dwManagementPort(DISABLED), m_bAutoDiscovery(true), m_pcServerStopArgument(NULL)
 {
 }
 
 CLaunchConfiguration::CLaunchConfiguration(const CLaunchConfiguration &copy)
-: m_dwHeapEdenToSurvivorRatio(copy.m_dwHeapEdenToSurvivorRatio),
-  m_dwHeapMaxFreeRatio(copy.m_dwHeapMaxFreeRatio), 
-  m_dwHeapMaxSize(copy.m_dwHeapMaxSize), 
-  m_dwHeapMaxRatio(copy.m_dwHeapMaxRatio),
-  m_dwHeapMaxYoungSize(copy.m_dwHeapMaxYoungSize),
-  m_dwHeapMinFreeRatio(copy.m_dwHeapMinFreeRatio), 
-  m_dwHeapMinYoungSize(copy.m_dwHeapMinYoungSize),
-  m_dwHeapStartSize(copy.m_dwHeapStartSize), 
-  m_dwHeapTenuredToYoungRatio(copy.m_dwHeapTenuredToYoungRatio), 
-  m_jvmType(copy.m_jvmType),
+: m_jvmType(copy.m_jvmType),
   m_bSingleton(copy.m_bSingleton),
   m_pcApplicationName(NULL),
   m_pcAuxDirectory(NULL),
@@ -160,10 +147,8 @@ CLaunchConfiguration::~CLaunchConfiguration()
 CLaunchConfiguration CLaunchConfiguration::getGuiApplicationDefault()
 {
 	CLaunchConfiguration launchConfiguration;
-	launchConfiguration.setMainJavaClass("org.eclipse.equinox.launcher.Main");
-	launchConfiguration.setHeapMaxRatio(80);	// 80% of physical memory
-	launchConfiguration.setHeapStartSize(64); // 64 MBytes
-	launchConfiguration.setJvmType(ClientHotspotJVM); // use client hotspot
+	launchConfiguration.setMainJavaClass("org.eclipse.equinox.launcher.Main");	
+	launchConfiguration.setJvmType(ClientHotspotJVM);
 	launchConfiguration.setAdditionalVmOptions("-XX:-OmitStackTraceInFastThrow");
 	launchConfiguration.setGarbageCollectorOptions("-XX:+UseG1GC -XX:+UseStringDeduplication");
 	return launchConfiguration;
@@ -172,10 +157,8 @@ CLaunchConfiguration CLaunchConfiguration::getGuiApplicationDefault()
 CLaunchConfiguration CLaunchConfiguration::getServerApplicationDefault()
 {
 	CLaunchConfiguration launchConfiguration;
-	launchConfiguration.setMainJavaClass("org.eclipse.equinox.launcher.Main");
-	launchConfiguration.setHeapMaxRatio(80);	// 80% of physical memory
-	launchConfiguration.setHeapStartSize(128);
-	launchConfiguration.setJvmType(ServerHotspotJVM); // use server hotspot
+	launchConfiguration.setMainJavaClass("org.eclipse.equinox.launcher.Main");	
+	launchConfiguration.setJvmType(ServerHotspotJVM);
 	launchConfiguration.setAdditionalVmOptions("-XX:-OmitStackTraceInFastThrow");
 	launchConfiguration.setGarbageCollectorOptions("-XX:+UseG1GC -XX:+UseStringDeduplication");
 	launchConfiguration.setEnableLoggingInfo(true);
@@ -280,96 +263,6 @@ bool CLaunchConfiguration::isConsole()
 void CLaunchConfiguration::setConsole(bool bConsole)
 {
 	m_bConsole = bConsole;
-}
-
-DWORD CLaunchConfiguration::getHeapMaxSize()
-{
-	return m_dwHeapMaxSize;
-}
-
-void CLaunchConfiguration::setHeapMaxSize(DWORD dwHeapMaxSize)
-{
-	m_dwHeapMaxSize = dwHeapMaxSize;
-}
-
-DWORD CLaunchConfiguration::getHeapMaxRatio()
-{
-	return m_dwHeapMaxRatio;
-}
-
-void CLaunchConfiguration::setHeapMaxRatio(DWORD dwHeapMaxRatio)
-{
-	m_dwHeapMaxRatio = dwHeapMaxRatio;
-}
-
-DWORD CLaunchConfiguration::getHeapStartSize()
-{
-	return m_dwHeapStartSize;
-}
-
-void CLaunchConfiguration::setHeapStartSize(DWORD dwHeapStartSize)
-{
-	m_dwHeapStartSize = dwHeapStartSize;
-}
-
-DWORD CLaunchConfiguration::getHeapMinFreeRatio()
-{
-	return m_dwHeapMinFreeRatio;
-}
-
-void CLaunchConfiguration::setHeapMinFreeRatio(DWORD dwHeapMinFreeRatio)
-{
-	m_dwHeapMinFreeRatio = dwHeapMinFreeRatio; 
-}
-
-DWORD CLaunchConfiguration::getHeapMaxFreeRatio()
-{
-	return m_dwHeapMaxFreeRatio;
-}
-
-void CLaunchConfiguration::setHeapMaxFreeRatio(DWORD dwHeapMaxFreeRatio)
-{
-	m_dwHeapMaxFreeRatio = dwHeapMaxFreeRatio;
-}
-
-DWORD CLaunchConfiguration::getHeapTenuredToYoungRatio()
-{
-	return m_dwHeapTenuredToYoungRatio;
-}
-
-void CLaunchConfiguration::setHeapTenuredToYoungRatio(DWORD dwHeapTenuredToYoungRatio)
-{
-	m_dwHeapTenuredToYoungRatio = dwHeapTenuredToYoungRatio;
-}
-
-DWORD CLaunchConfiguration::getHeapMinYoungSize()
-{
-	return m_dwHeapMinYoungSize;
-}
-
-void CLaunchConfiguration::setHeapMinYoungSize(DWORD dwHeapMinYoungSize)
-{
-	m_dwHeapMinYoungSize = dwHeapMinYoungSize;
-}
-
-DWORD CLaunchConfiguration::getHeapMaxYoungSize()
-{
-	return m_dwHeapMaxYoungSize;
-}
-
-void CLaunchConfiguration::setHeapMaxYoungSize(DWORD dwHeapMaxYoungSize)
-{
-	m_dwHeapMaxYoungSize = dwHeapMaxYoungSize;
-}
-
-DWORD CLaunchConfiguration::getHeapEdenToSurvivorRatio()
-{
-	return m_dwHeapEdenToSurvivorRatio;
-}
-
-void CLaunchConfiguration::setHeapEdenToSurvivorRatio(DWORD dwHeapEdenToSurvivorRatio)
-{
-	m_dwHeapEdenToSurvivorRatio = dwHeapEdenToSurvivorRatio;
 }
 
 JVMType CLaunchConfiguration::getJvmType()
@@ -560,16 +453,7 @@ CLaunchConfiguration& CLaunchConfiguration::operator=(const CLaunchConfiguration
 		{
 			delete m_pcServerStopArgument;
 			m_pcServerStopArgument = NULL;
-		}
-		m_dwHeapEdenToSurvivorRatio = rightValue.m_dwHeapEdenToSurvivorRatio;
-		m_dwHeapMaxFreeRatio = rightValue.m_dwHeapMaxFreeRatio; 
-		m_dwHeapMaxSize = rightValue.m_dwHeapMaxSize;
-		m_dwHeapMaxRatio = rightValue.m_dwHeapMaxRatio;
-		m_dwHeapMaxYoungSize = rightValue.m_dwHeapMaxYoungSize;
-		m_dwHeapMinFreeRatio = rightValue.m_dwHeapMinFreeRatio;
-		m_dwHeapMinYoungSize = rightValue.m_dwHeapMinYoungSize;
-		m_dwHeapStartSize = rightValue.m_dwHeapStartSize;
-		m_dwHeapTenuredToYoungRatio = rightValue.m_dwHeapTenuredToYoungRatio;
+		}		
 		m_jvmType = rightValue.m_jvmType;
 		m_bSingleton = rightValue.m_bSingleton;
 		m_bConsole = rightValue.m_bConsole;

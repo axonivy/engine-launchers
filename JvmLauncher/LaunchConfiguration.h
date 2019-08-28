@@ -70,40 +70,6 @@ private:
 	/* Console mode */
 	bool m_bConsole;
 
-	// --- Heap settings ---
-
-	/* The max heap size in mega bytes. -1 means disabled. Note either m_HeapMaxSize or m_HeapMaxRatio may be defined, but not both. -Xmx */
-	DWORD m_dwHeapMaxSize;
-	/* The max heap size in percentage of the physical memory. -1 means disable. Note either m_HeapMaxSize or m_HeapMaxRatio may be defined, but not both. -Xmx */
-	DWORD m_dwHeapMaxRatio;
-
-	/* the start heap size in mega bytes. -1 means disabled. -Xms */
-	DWORD m_dwHeapStartSize;
-	/* The minimum free heap size in percent. 
-	   The heap is expanded if min free heap size is not available. 
-	   -1 means disabled. -XX:MinHeapFreeRatio */
-	DWORD m_dwHeapMinFreeRatio;
-	/* The maximum free heap size in percent. 
-	   The heap is shrinked if max free heap size is available. 
-	   -1 means disabled. -XX:MaxHeapFreeRatio */
-	DWORD m_dwHeapMaxFreeRatio;
-	/* The tenured to young ratio. 
-	   Ration between young and tenured generation heap space. 
-	   4 means that the tenured part divided to the young part is 4/1. 
-	   -1 means disabled. -XX:NewRatio */
-	DWORD m_dwHeapTenuredToYoungRatio;
-	/* The minimum size of the young generation heap size in mega bytes. 
-	   -1 means disabled. -XX:NewSize */
-	DWORD m_dwHeapMinYoungSize;
-	/* The maximum size of the young generation heap size in mega bytes. 
-	   -1 means disabled. -XX:MaxNewSize */
-	DWORD m_dwHeapMaxYoungSize;
-	/* The eden to survivor ratio. 
-	   Ratio between the survivor heap space and the eden heap space. 
-	   6 means that eden part divided to survivor part is 6/1. 
-	   -1 means disabled. -XX:SurvivorRatio */
-	DWORD m_dwHeapEdenToSurvivorRatio;
-
 	// --- JVM Settings ---
 
 	/* The java virtual machine type */
@@ -176,33 +142,6 @@ public:
 	bool isConsole();
 	void setConsole(bool bConsole);
 
-	DWORD getHeapMaxSize();
-	void setHeapMaxSize(DWORD dwHeapMaxSize);
-
-	DWORD getHeapMaxRatio();
-	void setHeapMaxRatio(DWORD dwHeapMaxRatio);
-
-	DWORD getHeapStartSize();
-	void setHeapStartSize(DWORD dwHeapStartSize);
-
-	DWORD getHeapMinFreeRatio();
-	void setHeapMinFreeRatio(DWORD dwHeapMinFreeRatio);
-
-	DWORD getHeapMaxFreeRatio();
-	void setHeapMaxFreeRatio(DWORD dwHeapMaxFreeRatio);
-
-	DWORD getHeapTenuredToYoungRatio();
-	void setHeapTenuredToYoungRatio(DWORD dwHeapTenuredToYoungRatio);
-
-	DWORD getHeapMinYoungSize();
-	void setHeapMinYoungSize(DWORD dwHeapMinYoungSize);
-
-	DWORD getHeapMaxYoungSize();
-	void setHeapMaxYoungSize(DWORD dwHeapMaxYoungSize);
-
-	DWORD getHeapEdenToSurvivorRatio();
-	void setHeapEdenToSurvivorRatio(DWORD dwHeapEdenToSurvivorRatio);
-	
 	JVMType getJvmType();
 	void setJvmType(JVMType jvmType);
 

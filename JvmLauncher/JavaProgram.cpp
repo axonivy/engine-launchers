@@ -605,10 +605,6 @@ void CJavaProgram::initializeManagementVmOptions(CVmOptions& options)
 
 void CJavaProgram::initializeMemoryOptions(CVmOptions& options)
 {
-	DWORD dwHeapMaxSize;
-	DWORD dwHeapStartSize;
-	DWORD dwHeapFreeMaxRatio;
-	DWORD dwHeapYoungMaxSize;
 	MEMORYSTATUSEX memInfo;
 
 	// get global memory status of system
@@ -616,30 +612,6 @@ void CJavaProgram::initializeMemoryOptions(CVmOptions& options)
 	GlobalMemoryStatusEx(&memInfo);
 
 	printMemoryOverview(memInfo);
-
-	// initialize heap max memory
-	dwHeapMaxSize = initializeHeapMaxSizeMemoryOption(memInfo, options);
-
-	// initialize heap start memory
-	dwHeapStartSize = initializeHeapStartSizeMemoryOption(memInfo, dwHeapMaxSize, options);
-
-	// initialize heap free max ratio 
-	dwHeapFreeMaxRatio = initializeHeapFreeMaxRatioMemoryOption(options);
-
-	// initialize heap free min ratio 
-	initializeHeapFreeMinRatioMemoryOption(dwHeapFreeMaxRatio, options);
-
-	// initialize heap young max size
-	dwHeapYoungMaxSize = initializeHeapYoungMaxSizeMemoryOption(dwHeapMaxSize, options);
-	
-	// initialize heap young min size
-	initializeHeapYoungMinSizeMemoryOption(dwHeapYoungMaxSize, dwHeapStartSize,  options);
-
-	// initialize heap eden survivor ratio
-	initializeHeapEdenSurvivorRatioMemoryOption(options);
-
-	// initialize heap tenured young ratio
-	initializeHeapTenuredYoungRatioMemoryOption(options);
 }
 
 void CJavaProgram::initializeOsgiVmOptions(CVmOptions& options, LPCSTR pcApplicationDirectory)
@@ -667,89 +639,6 @@ void CJavaProgram::initializeJavaModuleSystemVmOptions(CVmOptions& options)
 
 	// allow ZipFileSystem readonly feature on engine with Java 11
 	options.addOption("--add-opens=jdk.zipfs/jdk.nio.zipfs=ALL-UNNAMED", NULL);
-}
-
-DWORD CJavaProgram::initializeHeapMaxSizeMemoryOption(MEMORYSTATUSEX& memInfo, CVmOptions& options)
-{
-	DWORD dwMaxMemory;
-	DWORD dwTotalPhysicalMemory;
-	DWORD dwLimitMemory;
-	char pcOption[100];
-
-	if (m_launchConfiguration.getHeapMaxSize() != CLaunchConfiguration::DISABLED)
-	{
-		dwMaxMemory = m_launchConfiguration.getHeapMaxSize();
-	}
-	else if (m_launchConfiguration.getHeapMaxRatio() != CLaunchConfiguration::DISABLED)
-	{
-		dwTotalPhysicalMemory = static_cast<DWORD>(memInfo.ullTotalPhys/1024/1024+1);
-		dwMaxMemory = m_launchConfiguration.getHeapMaxRatio()*dwTotalPhysicalMemory/100;
-		// Bug use dwAvailPageFile instaed of dwTotalPageFile
-		dwLimitMemory = static_cast<DWORD>(memInfo.ullAvailPageFile / 1024 /1024 + 1);
-		
-#ifndef WIN64 //  limit max memory only on 32 bit windows systems		
-		if (m_launchConfiguration.getJvmType() == ClientHotspotJVM)
-		{
-			// With the client jvm the limit is smaller than with the server jvm. Limit max mem to 1 GByte.
-			// See Bug #2648.
-			if (dwLimitMemory > 1000)
-			{
-				dwLimitMemory = 1000;
-			}
-		}
-		else
-		{
-			// ReW 15.10.2003
-			// does not seem to work with large values -> limit to 1.2 GByte
-			// ReW 30.3.2005 Spezial version for SWM with 1.45 GByte because they 
-			// have the 3GB Switch of Windows Server 2000 activated
-			if (dwLimitMemory > 1100)
-			{
-				dwLimitMemory = 1100;
-			}
-		} 
-#endif
-
-		// ReW 2.5.2001
-		// Max memory must be lower than total available virtual memory in system, 
-		// otherwise java would not start. 
-		if (dwMaxMemory >= dwLimitMemory)
-		{
-			dwMaxMemory = dwLimitMemory;
-		}
-	}
-	else
-	{
-		return CLaunchConfiguration::DISABLED;
-	}
-
-	sprintf_s(pcOption, 100, "-Xmx%lum", dwMaxMemory);
-	options.addOption(pcOption, NULL);
-	return dwMaxMemory;
-}
-
-DWORD CJavaProgram::initializeHeapStartSizeMemoryOption(MEMORYSTATUSEX& memInfo, DWORD dwMaxHeapMemory, CVmOptions& options)
-{
-	DWORD dwHeapStartMemory;
-	char pcOption[100];
-
-	if (m_launchConfiguration.getHeapStartSize()!= CLaunchConfiguration::DISABLED)
-	{
-		dwHeapStartMemory = m_launchConfiguration.getHeapStartSize();
-		if ((dwMaxHeapMemory != CLaunchConfiguration::DISABLED)&&
-			(dwHeapStartMemory > dwMaxHeapMemory))
-		{
-			dwHeapStartMemory = dwMaxHeapMemory;
-			CLog::warn("ivy.heap.start.size was higher than ivy.heap.max.size. Set it to same value as ivy.heap.max.size");
-		}
-		sprintf_s(pcOption, 100, "-Xms%lum", dwHeapStartMemory);
-		options.addOption(pcOption, NULL);
-		return dwHeapStartMemory;
-	}
-	else
-	{
-		return CLaunchConfiguration::DISABLED;
-	}
 }
 
 void CJavaProgram::printMemoryOverview(MEMORYSTATUSEX& memInfo)
@@ -954,110 +843,6 @@ void CJavaProgram::initializeAdditionalVmOptions(CVmOptions& options)
 		{
 			options.addOption(pcAdditionalVmOptions, NULL);
 		}
-	}
-}
-
-DWORD CJavaProgram::initializeHeapFreeMaxRatioMemoryOption(CVmOptions& options)
-{
-	DWORD dwHeapFreeMaxRatio;
-	char pcOption[100];
-
-	if (m_launchConfiguration.getHeapMaxFreeRatio()!= CLaunchConfiguration::DISABLED)
-	{
-		dwHeapFreeMaxRatio = m_launchConfiguration.getHeapMaxFreeRatio();
-		sprintf_s(pcOption, 100, "-XX:MaxHeapFreeRatio=%lu", dwHeapFreeMaxRatio);
-		options.addOption(pcOption, NULL);
-		return dwHeapFreeMaxRatio;
-	}
-	else
-	{
-		return CLaunchConfiguration::DISABLED;
-	}
-}
-
-void CJavaProgram::initializeHeapFreeMinRatioMemoryOption(DWORD dwHeapFreeMaxRatio, CVmOptions& options)
-{
-	DWORD dwHeapFreeMinRatio;
-	char pcOption[100];
-
-	if (m_launchConfiguration.getHeapMinFreeRatio()!= CLaunchConfiguration::DISABLED)
-	{
-		dwHeapFreeMinRatio = m_launchConfiguration.getHeapMinFreeRatio();
-		if (dwHeapFreeMinRatio > dwHeapFreeMaxRatio)
-		{
-			dwHeapFreeMinRatio = dwHeapFreeMaxRatio;
-			CLog::warn("ivy.heap.free.min.ratio was higher than ivy.heap.free.max.ratio. Set it to same value as ivy.heap.free.max.ratio");
-		}
-		sprintf_s(pcOption, 100, "-XX:MinHeapFreeRatio=%lu", dwHeapFreeMinRatio);
-		options.addOption(pcOption, NULL);
-	}
-}
-
-DWORD CJavaProgram::initializeHeapYoungMaxSizeMemoryOption(DWORD dwHeapMaxSize, CVmOptions& options)
-{
-	DWORD dwHeapYoungMaxSize;
-	char pcOption[100];
-
-	if (m_launchConfiguration.getHeapMaxYoungSize()!= CLaunchConfiguration::DISABLED)
-	{
-		dwHeapYoungMaxSize = m_launchConfiguration.getHeapMaxYoungSize();
-		if (dwHeapYoungMaxSize > dwHeapMaxSize)
-		{
-			dwHeapYoungMaxSize = dwHeapMaxSize;
-			CLog::warn("ivy.heap.young.max.size was higher than ivy.heap.max.size. Set it to same value as ivy.heap.max.size");
-
-		}
-		sprintf_s(pcOption, 100, "-XX:MaxNewSize=%lum", dwHeapYoungMaxSize);
-		options.addOption(pcOption, NULL);
-		return dwHeapYoungMaxSize;
-	}
-	else
-	{
-		return CLaunchConfiguration::DISABLED;
-	}
-}
-
-void CJavaProgram::initializeHeapYoungMinSizeMemoryOption(DWORD dwHeapYoungMaxSize, DWORD dwHeapStartSize, CVmOptions& options)
-{
-	DWORD dwHeapYoungMinSize;
-	char pcOption[100];
-
-	if (m_launchConfiguration.getHeapMinYoungSize()!= CLaunchConfiguration::DISABLED)
-	{
-		dwHeapYoungMinSize = m_launchConfiguration.getHeapMinYoungSize();
-		if (dwHeapYoungMinSize > dwHeapYoungMaxSize)
-		{
-			dwHeapYoungMinSize = dwHeapYoungMaxSize;
-			CLog::warn("ivy.heap.young.min.size was higher than ivy.heap.young.max.size. Set it to same value as ivy.heap.young.max.size");
-		}
-		sprintf_s(pcOption, 100, "-XX:NewSize=%lum", dwHeapYoungMinSize);
-		options.addOption(pcOption, NULL);
-	}
-}
-
-void CJavaProgram::initializeHeapEdenSurvivorRatioMemoryOption( CVmOptions& options)
-{
-	DWORD dwHeapEdenSurvivorRatio;
-	char pcOption[100];
-
-	if (m_launchConfiguration.getHeapEdenToSurvivorRatio()!= CLaunchConfiguration::DISABLED)
-	{
-		dwHeapEdenSurvivorRatio = m_launchConfiguration.getHeapEdenToSurvivorRatio();
-		sprintf_s(pcOption, 100, "-XX:SurvivorRatio=%lu", dwHeapEdenSurvivorRatio);
-		options.addOption(pcOption, NULL);
-	}
-}
-
-void CJavaProgram::initializeHeapTenuredYoungRatioMemoryOption( CVmOptions& options)
-{
-	DWORD dwHeapTenuredYoungRatio;
-	char pcOption[100];
-
-	if (m_launchConfiguration.getHeapTenuredToYoungRatio()!= CLaunchConfiguration::DISABLED)
-	{
-		dwHeapTenuredYoungRatio = m_launchConfiguration.getHeapTenuredToYoungRatio();
-		sprintf_s(pcOption, 100, "-XX:NewRatio=%lu", dwHeapTenuredYoungRatio);
-		options.addOption(pcOption, NULL);
 	}
 }
 
