@@ -1,12 +1,9 @@
 #define JVMLauncher
 
-// TODO Check includes
 #include "JvmOptionsFile.h"
 #include "LaunchException.h"
 #include "Log.h"
 #include "VmOptions.h"
-//#include <stdio.h>
-//#include <stdlib.h>
 
 CJvmOptionsFile::CJvmOptionsFile(LPSTR pcJvmOptionsFile)
 {	
