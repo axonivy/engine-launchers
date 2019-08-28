@@ -157,13 +157,6 @@ public:
 	 * Gets a default launch configuration for a server application
 	 */
 	static CLaunchConfiguration getServerApplicationDefault();
-
-	/*
-	 * Overwrites the launch configuration with another launch configuration
-	 * @param launchConfiguration the launch configuration to overwrite this launch configuration
-	 * @return the overwritten launch configuration
-	 */
-	CLaunchConfiguration overwrite(CLaunchConfiguration launchConfiguration);
 	
 	LPCSTR getJreDirectory();
 	void setJreDirectory(LPCSTR pcJreDirectory);
