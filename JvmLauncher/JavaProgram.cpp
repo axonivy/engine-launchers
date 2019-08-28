@@ -318,7 +318,7 @@ void CJavaProgram::callJavaMain(CJavaVirtualMaschine* pJvm, JavaMainArguments& j
 	mainMethod = getJavaStaticMethod(
 		pJvm->getJavaNativeInterface(), 
 		mainClass, 
-		(m_launchConfiguration.getMainJavaMethod()==NULL) ? "main" : m_launchConfiguration.getMainJavaMethod(),
+		"main",
 		"([Ljava/lang/String;)V");
 
 	logStartingJavaClass(m_launchConfiguration.getMainJavaClass(), javaMainArguments);

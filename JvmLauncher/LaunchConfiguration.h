@@ -59,8 +59,6 @@ private:
 
 	/* The name of the main java class to launch */
 	LPSTR m_pcMainJavaClass;
-	/* The name of the main java method to launch */
-	LPSTR m_pcMainJavaMethod;
 	/* OSGI application name */
 	LPSTR m_pcOsgiApplicationName;
 	/* Console mode */
@@ -122,9 +120,6 @@ public:
 	LPCSTR getMainJavaClass();
 	void setMainJavaClass(LPCSTR pcMainJavaClass);
 	
-	LPCSTR getMainJavaMethod();
-	void setMainJavaMethod(LPCSTR pcMainJavaMethod);
-
 	LPCSTR getOsgiApplicationName();
 	void setOsgiApplicationName(LPCSTR pcOsgiApplicationName);
 	

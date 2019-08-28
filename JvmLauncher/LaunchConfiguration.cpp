@@ -27,7 +27,7 @@ History:
 
 CLaunchConfiguration::CLaunchConfiguration(LPCSTR pcMainJavaClass)
 : m_pcAdditionalVmOptions(NULL), 
-  m_jvmType(Disabled), m_pcJreDirectory(NULL), m_pcMainJavaMethod(NULL), m_pcOsgiApplicationName(NULL), m_bConsole(false), m_pcWindowsServiceName(NULL),
+  m_jvmType(Disabled), m_pcJreDirectory(NULL), m_pcOsgiApplicationName(NULL), m_bConsole(false), m_pcWindowsServiceName(NULL),
   m_pcApplicationName(NULL), m_dwManagementPort(DISABLED), m_pcServerStopArgument(NULL)
 {
 	setMainJavaClass(pcMainJavaClass);
@@ -36,7 +36,7 @@ CLaunchConfiguration::CLaunchConfiguration(LPCSTR pcMainJavaClass)
 CLaunchConfiguration::CLaunchConfiguration()
 : m_pcMainJavaClass(NULL),
   m_pcAdditionalVmOptions(NULL), 
-  m_jvmType(Disabled), m_pcJreDirectory(NULL), m_pcMainJavaMethod(NULL), m_pcOsgiApplicationName(NULL), m_bConsole(false), m_pcWindowsServiceName(NULL),
+  m_jvmType(Disabled), m_pcJreDirectory(NULL), m_pcOsgiApplicationName(NULL), m_bConsole(false), m_pcWindowsServiceName(NULL),
   m_pcApplicationName(NULL), m_dwManagementPort(DISABLED), m_pcServerStopArgument(NULL)
 {
 }
@@ -46,7 +46,6 @@ CLaunchConfiguration::CLaunchConfiguration(const CLaunchConfiguration &copy)
   m_pcApplicationName(NULL),
   m_pcMainJavaClass(NULL),
   m_pcJreDirectory(NULL),
-  m_pcMainJavaMethod(NULL),
   m_pcOsgiApplicationName(NULL),
   m_bConsole(copy.m_bConsole),
   m_pcWindowsServiceName(NULL),
@@ -61,10 +60,6 @@ CLaunchConfiguration::CLaunchConfiguration(const CLaunchConfiguration &copy)
 	if (copy.m_pcJreDirectory != NULL)
 	{
 		setJreDirectory(copy.m_pcJreDirectory);
-	}
-	if (copy.m_pcMainJavaMethod != NULL)
-	{
-		setMainJavaMethod(copy.m_pcMainJavaMethod);
 	}
 	if (copy.m_pcOsgiApplicationName != NULL)
 	{
@@ -97,10 +92,6 @@ CLaunchConfiguration::~CLaunchConfiguration()
 	if (m_pcJreDirectory != NULL)
 	{
 		delete m_pcJreDirectory;
-	}
-	if (m_pcMainJavaMethod != NULL)
-	{
-		delete m_pcMainJavaMethod;
 	}
 	if (m_pcOsgiApplicationName != NULL)
 	{
@@ -177,24 +168,6 @@ void CLaunchConfiguration::setMainJavaClass(LPCSTR pcMainJavaClass)
 
 	m_pcMainJavaClass = new char[strlen(pcMainJavaClass)+1];
 	strcpy_s(m_pcMainJavaClass, strlen(pcMainJavaClass)+1, pcMainJavaClass);
-}
-
-LPCSTR CLaunchConfiguration::getMainJavaMethod()
-{
-	return m_pcMainJavaMethod;
-}
-
-void CLaunchConfiguration::setMainJavaMethod(LPCSTR pcMainJavaMethod)
-{
-	assert(pcMainJavaMethod != NULL);
-
-	if (m_pcMainJavaMethod != NULL)
-	{
-		delete m_pcMainJavaMethod;
-	}
-
-	m_pcMainJavaMethod = new char[strlen(pcMainJavaMethod)+1];
-	strcpy_s(m_pcMainJavaMethod, strlen(pcMainJavaMethod)+1, pcMainJavaMethod);
 }
 
 LPCSTR CLaunchConfiguration::getOsgiApplicationName()
@@ -336,11 +309,6 @@ CLaunchConfiguration& CLaunchConfiguration::operator=(const CLaunchConfiguration
 			delete m_pcJreDirectory;
 			m_pcJreDirectory = NULL;
 		}
-		if (m_pcMainJavaMethod != NULL)
-		{
-			delete m_pcMainJavaMethod;
-			m_pcMainJavaMethod = NULL;
-		}
 		if (m_pcOsgiApplicationName != NULL)
 		{
 			delete m_pcOsgiApplicationName;
@@ -376,10 +344,6 @@ CLaunchConfiguration& CLaunchConfiguration::operator=(const CLaunchConfiguration
 		if (rightValue.m_pcJreDirectory != NULL)
 		{
 			setJreDirectory(rightValue.m_pcJreDirectory);
-		}
-		if (rightValue.m_pcMainJavaMethod != NULL)
-		{
-			setMainJavaMethod(rightValue.m_pcMainJavaMethod);
 		}
 		if (rightValue.m_pcOsgiApplicationName != NULL)
 		{
