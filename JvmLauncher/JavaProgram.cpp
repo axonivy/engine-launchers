@@ -220,30 +220,10 @@ LPSTR CJavaProgram::getJvmPath(LPCSTR pcApplicationDirectory, LPSTR pcJvmPathBuf
 	assert(pcJvmPathBuffer != NULL);
 	LPSTR pcEndOfJrePath;
 
-	// Prepare the jre and the JVM path
-	if (m_launchConfiguration.getJreDirectory()!=NULL)
-	{
-		if (strchr(m_launchConfiguration.getJreDirectory(), ':')!=NULL)  //c:\, d:\ etc
-		{
-			// absolute path
-			strcpy_s(pcJvmPathBuffer, dwBufferLength, m_launchConfiguration.getJreDirectory());
-		}
-		else
-		{
-			// relative path
-			strcpy_s(pcJvmPathBuffer, dwBufferLength, pcApplicationDirectory);
-			strcat_s(pcJvmPathBuffer, dwBufferLength, "\\");
-			strcat_s(pcJvmPathBuffer, dwBufferLength, m_launchConfiguration.getJreDirectory());
-		}
-	}
-	else
-	{
-		// default path
-		strcpy_s(pcJvmPathBuffer, dwBufferLength, pcApplicationDirectory);
-		strcat_s(pcJvmPathBuffer, dwBufferLength, "\\jre");
+	strcpy_s(pcJvmPathBuffer, dwBufferLength, pcApplicationDirectory);
+	strcat_s(pcJvmPathBuffer, dwBufferLength, "\\jre");
+	evaluateJreDirectory(pcJvmPathBuffer, dwBufferLength);
 
-		evaluateJreDirectory(pcJvmPathBuffer, dwBufferLength);
-	}
 	if (m_launchConfiguration.getJvmType()==ClientHotspotJVM)
 	{
 		// in >= jdk 1.4 the client hotspot vm is located in the bin\client directory

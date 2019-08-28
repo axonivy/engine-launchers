@@ -50,13 +50,7 @@ private:
 	/* The windows service name */
 	LPSTR m_pcWindowsServiceName;
 
-	// --- Directories ---
-
-	/* The java runtime engine directory */
-	LPSTR m_pcJreDirectory;
-
 	// --- What to launch ---
-
 	/* The name of the main java class to launch */
 	LPSTR m_pcMainJavaClass;
 	/* OSGI application name */
@@ -109,10 +103,7 @@ public:
 	 * Gets a default launch configuration for a server application
 	 */
 	static CLaunchConfiguration getServerApplicationDefault();
-	
-	LPCSTR getJreDirectory();
-	void setJreDirectory(LPCSTR pcJreDirectory);
-	
+		
 	LPCSTR getMainJavaClass();
 	void setMainJavaClass(LPCSTR pcMainJavaClass);
 	

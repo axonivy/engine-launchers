@@ -27,7 +27,7 @@ History:
 
 CLaunchConfiguration::CLaunchConfiguration(LPCSTR pcMainJavaClass)
 : m_pcAdditionalVmOptions(NULL), 
-  m_jvmType(Disabled), m_pcJreDirectory(NULL), m_pcOsgiApplicationName(NULL), m_bConsole(false), m_pcWindowsServiceName(NULL),
+  m_jvmType(Disabled), m_pcOsgiApplicationName(NULL), m_bConsole(false), m_pcWindowsServiceName(NULL),
   m_pcApplicationName(NULL), m_pcServerStopArgument(NULL)
 {
 	setMainJavaClass(pcMainJavaClass);
@@ -36,7 +36,7 @@ CLaunchConfiguration::CLaunchConfiguration(LPCSTR pcMainJavaClass)
 CLaunchConfiguration::CLaunchConfiguration()
 : m_pcMainJavaClass(NULL),
   m_pcAdditionalVmOptions(NULL), 
-  m_jvmType(Disabled), m_pcJreDirectory(NULL), m_pcOsgiApplicationName(NULL), m_bConsole(false), m_pcWindowsServiceName(NULL),
+  m_jvmType(Disabled), m_pcOsgiApplicationName(NULL), m_bConsole(false), m_pcWindowsServiceName(NULL),
   m_pcApplicationName(NULL), m_pcServerStopArgument(NULL)
 {
 }
@@ -45,7 +45,6 @@ CLaunchConfiguration::CLaunchConfiguration(const CLaunchConfiguration &copy)
 : m_jvmType(copy.m_jvmType),
   m_pcApplicationName(NULL),
   m_pcMainJavaClass(NULL),
-  m_pcJreDirectory(NULL),
   m_pcOsgiApplicationName(NULL),
   m_bConsole(copy.m_bConsole),
   m_pcWindowsServiceName(NULL),
@@ -55,10 +54,6 @@ CLaunchConfiguration::CLaunchConfiguration(const CLaunchConfiguration &copy)
 	if (copy.m_pcMainJavaClass != NULL)
 	{
 		setMainJavaClass(copy.m_pcMainJavaClass);
-	}
-	if (copy.m_pcJreDirectory != NULL)
-	{
-		setJreDirectory(copy.m_pcJreDirectory);
 	}
 	if (copy.m_pcOsgiApplicationName != NULL)
 	{
@@ -87,10 +82,6 @@ CLaunchConfiguration::~CLaunchConfiguration()
 	if (m_pcMainJavaClass != NULL)
 	{
 		delete m_pcMainJavaClass;
-	}
-	if (m_pcJreDirectory != NULL)
-	{
-		delete m_pcJreDirectory;
 	}
 	if (m_pcOsgiApplicationName != NULL)
 	{
@@ -131,24 +122,6 @@ CLaunchConfiguration CLaunchConfiguration::getServerApplicationDefault()
 	launchConfiguration.setAdditionalVmOptions("-XX:-OmitStackTraceInFastThrow");
 	launchConfiguration.setEnableLoggingInfo(true);
 	return launchConfiguration;
-}
-
-LPCSTR CLaunchConfiguration::getJreDirectory()
-{
-	return m_pcJreDirectory;
-}
-
-void CLaunchConfiguration::setJreDirectory(LPCSTR pcJreDirectory)
-{
-	assert(pcJreDirectory != NULL);
-
-	if (m_pcJreDirectory != NULL)
-	{
-		delete m_pcJreDirectory;
-	}
-
-	m_pcJreDirectory = new char[strlen(pcJreDirectory)+1];
-	strcpy_s(m_pcJreDirectory, strlen(pcJreDirectory)+1, pcJreDirectory);
 }
 
 LPCSTR CLaunchConfiguration::getMainJavaClass()
@@ -293,11 +266,6 @@ CLaunchConfiguration& CLaunchConfiguration::operator=(const CLaunchConfiguration
 			delete m_pcMainJavaClass;
 			m_pcMainJavaClass = NULL;
 		}
-		if (m_pcJreDirectory != NULL)
-		{
-			delete m_pcJreDirectory;
-			m_pcJreDirectory = NULL;
-		}
 		if (m_pcOsgiApplicationName != NULL)
 		{
 			delete m_pcOsgiApplicationName;
@@ -328,10 +296,6 @@ CLaunchConfiguration& CLaunchConfiguration::operator=(const CLaunchConfiguration
 		if (rightValue.m_pcMainJavaClass != NULL)
 		{
 			setMainJavaClass(rightValue.m_pcMainJavaClass);
-		}
-		if (rightValue.m_pcJreDirectory != NULL)
-		{
-			setJreDirectory(rightValue.m_pcJreDirectory);
 		}
 		if (rightValue.m_pcOsgiApplicationName != NULL)
 		{
