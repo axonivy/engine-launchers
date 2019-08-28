@@ -80,63 +80,9 @@ CJavaProgram::CJavaProgram(CLaunchConfiguration& launchConfiguration)
 {
 }
 
-CJavaProgram* CJavaProgram::createJavaProgram(LPCSTR pcMainJavaClass)
-{
-	CLaunchConfiguration defaultLaunchConfiguration;
-
-	assert(pcMainJavaClass != NULL);
-	defaultLaunchConfiguration.setMainJavaClass(pcMainJavaClass);
-	return new CJavaProgram(defaultLaunchConfiguration);
-}
-
-CJavaProgram* CJavaProgram::createJavaProgram()
-{
-	return new CJavaProgram(
-		CLaunchConfigurationFile::getForExecutable().readLaunchConfiguration());
-}
-
-CJavaProgram* CJavaProgram::createJavaProgram(CLaunchConfigurationFile launchConfigurationFile)
-{
-	return new CJavaProgram(launchConfigurationFile.readLaunchConfiguration());
-}
-
 CJavaProgram* CJavaProgram::createJavaProgram(CLaunchConfiguration launchConfiguration)
 {
 	return new CJavaProgram(launchConfiguration);
-}
-
-CJavaProgram* CJavaProgram::createJavaProgram(CLaunchConfiguration defaultLaunchConfiguration, bool readLaunchConfigurationFileIfExists)
-{
-	if (readLaunchConfigurationFileIfExists)
-	{
-		CLaunchConfigurationFile launchConfigurationFile;
-
-		launchConfigurationFile = CLaunchConfigurationFile::getForExecutable();
-		if (launchConfigurationFile.exists())
-		{
-			CLaunchConfiguration launchConfigurationFromFile, launchConfiguration;
-
-			launchConfigurationFromFile = launchConfigurationFile.readLaunchConfiguration();
-			launchConfiguration = defaultLaunchConfiguration.overwrite(launchConfigurationFromFile);
-			return createJavaProgram(launchConfiguration);
-		}
-		else
-		{
-			return createJavaProgram(defaultLaunchConfiguration);
-		}
-	}
-	else
-	{
-		return createJavaProgram(defaultLaunchConfiguration);
-	}
-}
-
-CJavaProgram* CJavaProgram::createJavaProgram(CLaunchConfiguration defaultLaunchConfiguration, CLaunchConfigurationFile launchConfigurationFile)
-{
-	CLaunchConfiguration launchConfiguration;
-
-	launchConfiguration = defaultLaunchConfiguration.overwrite(launchConfigurationFile.readLaunchConfiguration());
-	return createJavaProgram(launchConfiguration);
 }
 
 bool CJavaProgram::checkIsAlreadyRunning()

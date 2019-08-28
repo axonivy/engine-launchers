@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
 
 	try
 	{
-		pJavaWindowsService = CJavaWindowsService::createJavaWindowsService(getLaunchConfiguration(), true);
+		pJavaWindowsService = CJavaWindowsService::createJavaWindowsService(getLaunchConfiguration());
 		if (argc >= 2)
 		{
 			if (strcmp(argv[1], "-register")==0)

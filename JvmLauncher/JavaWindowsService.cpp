@@ -145,66 +145,11 @@ CJavaWindowsService::~CJavaWindowsService(void)
 	}
 }
 
-CJavaWindowsService* CJavaWindowsService::createJavaWindowsService(LPCSTR pcWindowsServiceName, LPCSTR pcMainJavaWindowsServiceClass)
-{
-	CLaunchConfiguration defaultLaunchConfiguration;
-
-	assert(pcMainJavaWindowsServiceClass != NULL);
-	assert(pcWindowsServiceName != NULL);
-	defaultLaunchConfiguration.setMainJavaClass(pcMainJavaWindowsServiceClass);
-	defaultLaunchConfiguration.setWindowsServiceName(pcWindowsServiceName);
-	return new CJavaWindowsService(defaultLaunchConfiguration);
-}
-
-CJavaWindowsService* CJavaWindowsService::createJavaWindowsService()
-{
-	return new CJavaWindowsService(
-		CLaunchConfigurationFile::getForExecutable().readLaunchConfiguration());
-}
-
-CJavaWindowsService* CJavaWindowsService::createJavaWindowsService(CLaunchConfigurationFile launchConfigurationFile)
-{
-	return new CJavaWindowsService(launchConfigurationFile.readLaunchConfiguration());
-}
-
 CJavaWindowsService* CJavaWindowsService::createJavaWindowsService(CLaunchConfiguration launchConfiguration)
 {
 	return new CJavaWindowsService(launchConfiguration);
 }
 
-CJavaWindowsService* CJavaWindowsService::createJavaWindowsService(CLaunchConfiguration defaultLaunchConfiguration, bool readLaunchConfigurationFileIfExists)
-{
-	if (readLaunchConfigurationFileIfExists)
-	{
-		CLaunchConfigurationFile launchConfigurationFile;
-
-		launchConfigurationFile = CLaunchConfigurationFile::getForExecutable();
-		if (launchConfigurationFile.exists())
-		{
-			CLaunchConfiguration launchConfigurationFromFile, launchConfiguration;
-
-			launchConfigurationFromFile = launchConfigurationFile.readLaunchConfiguration();
-			launchConfiguration = defaultLaunchConfiguration.overwrite(launchConfigurationFromFile);
-			return createJavaWindowsService(launchConfiguration);
-		}
-		else
-		{
-			return createJavaWindowsService(defaultLaunchConfiguration);
-		}
-	}
-	else
-	{
-		return createJavaWindowsService(defaultLaunchConfiguration);
-	}
-}
-
-CJavaWindowsService* CJavaWindowsService::createJavaWindowsService(CLaunchConfiguration defaultLaunchConfiguration, CLaunchConfigurationFile launchConfigurationFile)
-{
-	CLaunchConfiguration launchConfiguration;
-
-	launchConfiguration = defaultLaunchConfiguration.overwrite(launchConfigurationFile.readLaunchConfiguration());
-	return createJavaWindowsService(launchConfiguration);
-}
 
 void CJavaWindowsService::main()
 {

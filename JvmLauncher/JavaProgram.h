@@ -30,7 +30,6 @@ History:
 
 #include <jni.h>
 #include "LaunchConfiguration.h"
-#include "LaunchConfigurationFile.h"
 #include "JavaVirtualMaschine.h"
 #include "LaunchException.h"
 #include "JavaMainArguments.h"
@@ -321,57 +320,11 @@ public:
 
 	/*
 	 * Creates a java program.
- 	 * @return the created java program instance
-	 * @param pcMainJavaClass the main java class to run
-	 */
-	static CJavaProgram* createJavaProgram(LPCSTR pcMainJavaClass);
-
-	/*
-	 * Creates a java program.
-	 * Reads the launch configuration from a launch configuration file that has the same name as the exe started this program.
- 	 * @return the created java program instance
-	 * @throws CLaunchException if launch configuration file does not exists, cannot be read or has a unvalid format
-	 */
-	static CJavaProgram* createJavaProgram();
-
-	/**
-	 * Creates a java program.
-	 * Uses the launch configuration stored in the launch configuration file
-	 * @param launchConfigurationFile pointer to the launch configuration file to use
- 	 * @return the created java program instance
-	 * @throws CLaunchException if launch configuration file does not exists, cannot be read or has a unvalid format
-	 */
-	static CJavaProgram* createJavaProgram(CLaunchConfigurationFile launchConfigurationFile);
-
-	/*
-	 * Creates a java program.
 	 * Uses the launch configuration given
 	 * @param launchConfiguration the launch configuration to used
  	 * @return the created java program instance
 	 */
 	static CJavaProgram* createJavaProgram(CLaunchConfiguration launchConfiguration);
-
-	/*
-	 * Creates a java program.
-	 * Uses the launch configuration given overwritten with the launch configuration read from a 
-	 * launch configuration file that has the same name as the exe started this program. 
-	 * @param defaultLaunchConfiguration the default launch configuration to used
-	 * @param readLaunchConfigurationFileIfExists should the launch configuration file be read if it exists 
- 	 * @return the created java program instance
-	 * @throws CLaunchException if launch configuration file cannot be read or has a unvalid format
-	 */	
-	static CJavaProgram* createJavaProgram(CLaunchConfiguration defaultLaunchConfiguration, bool readLaunchConfigurationFileIfExists);
-
-	/*
-	 * Creates a java program.
-	 * Uses the launch configuration given overwritten with the launch configuration read from a 
-	 * launch configuration file. 
-	 * @param launchConfiguration the launch configuration to used
-	 * @param launchConfigurationFile the launch configuration file that overwrittes the settings in pLaunchConfiguration 
- 	 * @return the created java program instance
-	 * @throws CLaunchException if launch configuration file does not exists cannot be read or has a unvalid format
-	 */	
-	static CJavaProgram* createJavaProgram(CLaunchConfiguration defaultLaunchConfiguration, CLaunchConfigurationFile launchConfigurationFile);
 
 	/*
 	 * Calls the main method of the java program
