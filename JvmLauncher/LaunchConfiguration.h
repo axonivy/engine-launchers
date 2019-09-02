@@ -31,53 +31,25 @@ History:
 #endif
 
 /*
- * JVM type enumeration
- */
-typedef enum{Disabled=-1, ClientHotspotJVM=1, ServerHotspotJVM=2} JVMType;
-
-
-/*
  Holds the java virtual machine launch configuration 
  */
 class JVMLauncherExport CLaunchConfiguration
 {
 private:
-	// --- What to launch ---
-	/* The name of the main java class to launch */
 	LPSTR m_pcMainJavaClass;
-	/* OSGI application name */
 	LPSTR m_pcOsgiApplicationName;
-	/* Console mode */
 	bool m_bConsole;
-
-	// --- JVM Settings ---
-
-	/* The java virtual machine type */
-	JVMType m_jvmType;
-
-	// --- Managment Settings ---
 	LPSTR m_pcServerStopArgument;
-
 	bool m_bUseLowMemoryJvmSettings;
 
 public:
-	/* Value that means that a launch configuration property is DISABLED */
-	static const DWORD DISABLED = -1;
-
 	/*
 	 * Copy Constructor
 	 * @param copy the object to copy
 	 */
 	CLaunchConfiguration(const CLaunchConfiguration &copy);
 
-	/*
-	 * Default constructor
-	 */
 	CLaunchConfiguration();
-
-	/*
-	 *Destructor 
-	 */
 	~CLaunchConfiguration();
 
 	/*
@@ -98,9 +70,6 @@ public:
 	
 	bool isConsole();
 	void setConsole(bool bConsole);
-
-	JVMType getJvmType();
-	void setJvmType(JVMType jvmType);
 
 	LPCSTR getServerStopArgument();
 	void setServerStopArgument(LPCSTR pcServerStopArgument);

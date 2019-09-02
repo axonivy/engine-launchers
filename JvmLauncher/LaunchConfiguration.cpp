@@ -27,7 +27,6 @@ History:
 
 CLaunchConfiguration::CLaunchConfiguration()
 : m_pcMainJavaClass(NULL),
-  m_jvmType(Disabled),
   m_pcOsgiApplicationName(NULL),
   m_bConsole(false),
   m_bUseLowMemoryJvmSettings(false),
@@ -36,8 +35,7 @@ CLaunchConfiguration::CLaunchConfiguration()
 }
 
 CLaunchConfiguration::CLaunchConfiguration(const CLaunchConfiguration &copy)
-: m_jvmType(copy.m_jvmType),
-  m_pcMainJavaClass(NULL),
+: m_pcMainJavaClass(NULL),
   m_pcOsgiApplicationName(NULL),
   m_bUseLowMemoryJvmSettings(copy.m_bUseLowMemoryJvmSettings),
   m_bConsole(copy.m_bConsole),
@@ -77,7 +75,6 @@ CLaunchConfiguration CLaunchConfiguration::getGuiApplicationDefault()
 {
 	CLaunchConfiguration launchConfiguration;
 	launchConfiguration.setMainJavaClass("org.eclipse.equinox.launcher.Main");	
-	launchConfiguration.setJvmType(ClientHotspotJVM);
 	return launchConfiguration;
 }
 
@@ -85,7 +82,6 @@ CLaunchConfiguration CLaunchConfiguration::getServerApplicationDefault()
 {
 	CLaunchConfiguration launchConfiguration;
 	launchConfiguration.setMainJavaClass("org.eclipse.equinox.launcher.Main");	
-	launchConfiguration.setJvmType(ServerHotspotJVM);
 	launchConfiguration.setEnableLoggingInfo(true);
 	return launchConfiguration;
 }
@@ -146,16 +142,6 @@ void CLaunchConfiguration::useLowMemoryJvmSettings(bool bUseLowMemoryJvmSettings
 	m_bUseLowMemoryJvmSettings = bUseLowMemoryJvmSettings;
 }
 
-JVMType CLaunchConfiguration::getJvmType()
-{
-	return m_jvmType;
-}
-
-void CLaunchConfiguration::setJvmType(JVMType jvmType)
-{
-	m_jvmType = jvmType;
-}
-
 LPCSTR CLaunchConfiguration::getServerStopArgument()
 {
 	return m_pcServerStopArgument;
@@ -197,8 +183,7 @@ CLaunchConfiguration& CLaunchConfiguration::operator=(const CLaunchConfiguration
 		{
 			delete m_pcServerStopArgument;
 			m_pcServerStopArgument = NULL;
-		}		
-		m_jvmType = rightValue.m_jvmType;
+		}
 		m_bConsole = rightValue.m_bConsole;
 		m_bUseLowMemoryJvmSettings = rightValue.m_bUseLowMemoryJvmSettings;
 		if (rightValue.m_pcMainJavaClass != NULL)
