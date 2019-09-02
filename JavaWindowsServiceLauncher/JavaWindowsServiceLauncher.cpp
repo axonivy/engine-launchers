@@ -38,9 +38,6 @@ History:
 
 // AxonIvyEngineService.exe -register <windowsServiceName> <service_user> <password>
 
-
-
-
 int main(int argc, char* argv[])
 {
 	CJavaWindowsService* pJavaWindowsService;
@@ -84,10 +81,10 @@ int main(int argc, char* argv[])
 			else
 			{
 				CLog::info("Options:");
-				CLog::info("-register [service_user, password]");
-				CLog::info("-unregister");
-				CLog::info("-start");
-				CLog::info("-stop");
+				CLog::info("-register [windowsServiceName] [service_user, password]");
+				CLog::info("-unregister [windowsServiceName]");
+				CLog::info("-start [windowsServiceName]");
+				CLog::info("-stop [windowsServiceName]");
 			}
 		}
 		else
