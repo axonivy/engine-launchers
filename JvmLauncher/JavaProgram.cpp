@@ -33,40 +33,6 @@ History:
 #define MAX_CLASSPATH_LENGTH 10000
 #define MODE_DIRECTORY_EXISTS 00
 
-typedef struct 
-{
-	bool bWindowFound;
-	DWORD dwProcessId;
-} WindowEnumerationParameter;
-
-/*
- * Callback of the enumWindows Function
- */
-BOOL CALLBACK enumWindowsProc( HWND hwnd, LPARAM lParam ) 
-{
-	DWORD processId;
-	WindowEnumerationParameter* pParam;
-
-	pParam = reinterpret_cast<WindowEnumerationParameter*>(lParam);
-	
-	// get owner process id of hwnd
-	GetWindowThreadProcessId(hwnd, &processId);
-
-	// if owner process is equal to first process and window is visible 
-	// (There are unvisible windows from the java runtime) the window will be 
-	// uniconify and set to the foreground;
-	if ((processId == pParam->dwProcessId)&&(IsWindowVisible(hwnd)==TRUE))
-	{
-		// Restore the window with the default size (uniconify, normalize)
-		ShowWindow(hwnd, SW_RESTORE);
-		// Set window to foreground
-		SetForegroundWindow(hwnd);
-		// yes we found a window
-		pParam->bWindowFound = TRUE;
-	}
-	return TRUE;
-}
-
 int compareFileName(const void* elem1, const void* elem2)
 {
 	return strcmp(*static_cast<const char* const *>(elem1), *static_cast<const char* const *>(elem2));
