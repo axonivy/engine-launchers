@@ -8,11 +8,9 @@
 
 CLaunchConfiguration getLaunchConfiguration()
 {
-	CLaunchConfiguration config;
-
-	config = CLaunchConfiguration::getServerApplicationDefault();
+	CLaunchConfiguration config();
+	config.setMainJavaClass("org.eclipse.equinox.launcher.Main");
 	config.setOsgiApplicationName("ch.ivyteam.ivy.server.configuration.cli");
-	config.setEnableLoggingInfo(false);
 	config.useLowMemoryJvmSettings(true);
 	return config;
 }
