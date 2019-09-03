@@ -6,10 +6,11 @@
 
 CLaunchConfiguration getLaunchConfiguration()
 {
-	CLaunchConfiguration config();
+	CLaunchConfiguration config;
+
+	config = CLaunchConfiguration::getServerApplicationDefault();
 	config.setMainJavaClass("ch.ivyteam.ivy.boot.osgi.win.WindowsServiceLauncher");
 	config.setOsgiApplicationName("ch.ivyteam.ivy.server.exec.engine.service");
-	config.setEnableLoggingInfo(true);
 	return config;
 }
 

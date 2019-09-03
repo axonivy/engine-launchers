@@ -34,6 +34,27 @@ CLaunchConfiguration::CLaunchConfiguration()
 {
 }
 
+CLaunchConfiguration::CLaunchConfiguration(const CLaunchConfiguration &copy)
+: m_pcMainJavaClass(NULL),
+  m_pcOsgiApplicationName(NULL),
+  m_bUseLowMemoryJvmSettings(copy.m_bUseLowMemoryJvmSettings),
+  m_bConsole(copy.m_bConsole),
+  m_pcServerStopArgument(NULL)
+{
+	if (copy.m_pcMainJavaClass != NULL)
+	{
+		setMainJavaClass(copy.m_pcMainJavaClass);
+	}
+	if (copy.m_pcOsgiApplicationName != NULL)
+	{
+		setOsgiApplicationName(copy.m_pcOsgiApplicationName);
+	}
+	if (copy.m_pcServerStopArgument != NULL)
+	{
+		setServerStopArgument(copy.m_pcServerStopArgument);
+	}
+}
+
 CLaunchConfiguration::~CLaunchConfiguration()
 {
 	if (m_pcMainJavaClass != NULL)
@@ -48,6 +69,21 @@ CLaunchConfiguration::~CLaunchConfiguration()
 	{
 		delete m_pcServerStopArgument;
 	}
+}
+
+CLaunchConfiguration CLaunchConfiguration::getGuiApplicationDefault()
+{
+	CLaunchConfiguration launchConfiguration;
+	launchConfiguration.setMainJavaClass("org.eclipse.equinox.launcher.Main");	
+	return launchConfiguration;
+}
+
+CLaunchConfiguration CLaunchConfiguration::getServerApplicationDefault()
+{
+	CLaunchConfiguration launchConfiguration;
+	launchConfiguration.setMainJavaClass("org.eclipse.equinox.launcher.Main");	
+	launchConfiguration.setEnableLoggingInfo(true);
+	return launchConfiguration;
 }
 
 LPCSTR CLaunchConfiguration::getMainJavaClass()
@@ -127,4 +163,41 @@ void CLaunchConfiguration::setServerStopArgument(LPCSTR pcServerStopArgument)
 void CLaunchConfiguration::setEnableLoggingInfo(bool bEnableLoggingInfo)
 {
 	CLog::enableLoggingInfo = bEnableLoggingInfo;
+}
+
+CLaunchConfiguration& CLaunchConfiguration::operator=(const CLaunchConfiguration& rightValue)
+{
+	if (this != &rightValue)
+	{
+		if (m_pcMainJavaClass != NULL)
+		{
+			delete m_pcMainJavaClass;
+			m_pcMainJavaClass = NULL;
+		}
+		if (m_pcOsgiApplicationName != NULL)
+		{
+			delete m_pcOsgiApplicationName;
+			m_pcOsgiApplicationName = NULL;
+		}
+		if (m_pcServerStopArgument != NULL)
+		{
+			delete m_pcServerStopArgument;
+			m_pcServerStopArgument = NULL;
+		}
+		m_bConsole = rightValue.m_bConsole;
+		m_bUseLowMemoryJvmSettings = rightValue.m_bUseLowMemoryJvmSettings;
+		if (rightValue.m_pcMainJavaClass != NULL)
+		{
+			setMainJavaClass(rightValue.m_pcMainJavaClass);
+		}
+		if (rightValue.m_pcOsgiApplicationName != NULL)
+		{
+			setOsgiApplicationName(rightValue.m_pcOsgiApplicationName);
+		}
+		if (rightValue.m_pcServerStopArgument != NULL)
+		{
+			setServerStopArgument(rightValue.m_pcServerStopArgument);
+		}
+	}
+	return *this;
 }

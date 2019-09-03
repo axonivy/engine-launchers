@@ -43,10 +43,24 @@ private:
 	bool m_bUseLowMemoryJvmSettings;
 
 public:
+	/*
+	 * Copy Constructor
+	 * @param copy the object to copy
+	 */
+	CLaunchConfiguration(const CLaunchConfiguration &copy);
 
 	CLaunchConfiguration();
 	~CLaunchConfiguration();
 
+	/*
+	 * Gets a default launch configuration for a gui application
+	 */
+	static CLaunchConfiguration getGuiApplicationDefault();
+
+	/*
+	 * Gets a default launch configuration for a server application
+	 */
+	static CLaunchConfiguration getServerApplicationDefault();
 		
 	LPCSTR getMainJavaClass();
 	void setMainJavaClass(LPCSTR pcMainJavaClass);

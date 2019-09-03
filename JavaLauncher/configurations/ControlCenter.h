@@ -8,8 +8,8 @@
 
 CLaunchConfiguration getLaunchConfiguration()
 {
-	CLaunchConfiguration config();
-	config.setMainJavaClass("org.eclipse.equinox.launcher.Main");	
+	CLaunchConfiguration config;
+	config = CLaunchConfiguration::getGuiApplicationDefault();
 	config.setOsgiApplicationName("ch.ivyteam.ivy.server.control.center.ui");
 	config.useLowMemoryJvmSettings(true);
 #ifndef _WINDOWS
