@@ -30,7 +30,6 @@ History:
 
 #include <jni.h>
 #include "LaunchConfiguration.h"
-#include "LaunchConfigurationFile.h"
 #include "JavaVirtualMaschine.h"
 #include "LaunchException.h"
 #include "JavaMainArguments.h"
@@ -44,18 +43,6 @@ private:
 	 * @param javaMainArguments pointer to java main arguments
 	 */
 	void callJavaMain(CJavaVirtualMaschine* pJvm, JavaMainArguments& javaMainArguments);
-
-	/*
-	 * Initializes additional vm options
-	 * @param options the vm options to initialize with the additional vm Options
-	 */
-	void initializeAdditionalVmOptions(CVmOptions& options);
-
-	/*
-	 * Initializes management vm options
-	 * @param options the vm options to initialize with the management vm Options
-	 */
-	void initializeManagementVmOptions(CVmOptions& options);
 
 	/*
 	 * Initializes command vm options
@@ -90,12 +77,6 @@ private:
 	void addToClasspath(LPSTR& pcClasspath, DWORD& dwClasspathLength, LPCSTR pcPathToAdd, LPCSTR pcFileToAdd);
 
 	/*
-	 * Initializes the memory options
-	 * @param options the java vm options to initialize with the memory options
-     */
-	void initializeMemoryOptions(CVmOptions& options);
-
-	/*
 	 * Initializes the osgi vm options
 	 * @param options the java vm options
 	 * @param pcApplicationDirectory the application directory
@@ -108,18 +89,7 @@ private:
 	 */
 	void initializeJavaModuleSystemVmOptions(CVmOptions& options);
 
-	/*
-	 * Initializes the garbage collector options
-	 * @param Options the java vm option to initialize with the garbage collector option
-     */
-	void initializeGarbageCollectorOptions(CVmOptions& option);
-
-	/*
-	 * Checks if there is already an instance of this application program running 
-	 * @return true if there is already an instance running, otherwise false
-	 * @throws CLaunchException if an error occurs 
-	 */
-	bool checkIsAlreadyRunning();
+	void initializeJvmOptions(CVmOptions& options, LPCSTR pcApplicationDirectory);
 
 	/*
 	 * Checks if the application must run as osgi application
@@ -135,72 +105,6 @@ private:
 	 * @throws CLaunchException if conversion fails
 	 */
 	jstring convert2JavaString(JNIEnv* pJavaNativeInterface, LPCSTR pcString);
-
-	/*
-	 * Initializes the heap max memory vm argument
-	 * @param memInfo system memory information
-	 * @param option the vm options to initialize
-	 * @return the max heap memory initialized
-	 */
-	DWORD initializeHeapMaxSizeMemoryOption(MEMORYSTATUSEX& memInfo, CVmOptions& option);
-
-	/*
-	 * Initializes the heap start memory vm argument
-	 * @param memInfo system memory information
-	 * @param dwHeapMaxMemory the max heap memory
-	 * @param option the vm options to initialize
-	 * @return the start heap memory initialized
-	 */
-	DWORD initializeHeapStartSizeMemoryOption(MEMORYSTATUSEX& memInfo, DWORD dwHeapMaxMemory, CVmOptions& option);
-
-	/*
-	 * Initializes the heap free max ratio vm argument
-	 * @param option the vm options to initialize
-	 * @return the heap free max ratio initialized
-	 */
-	DWORD initializeHeapFreeMaxRatioMemoryOption(CVmOptions& option);
-
-	/*
-	 * Initializes the heap free max ratio vm argument
-	 * @param dwHeapFreeMaxRatio the max ratio initialized
-	 * @param option the vm options to initialize
-	 * @return the heap free max ratio initialized
-	 */
-	void initializeHeapFreeMinRatioMemoryOption(DWORD dwHeapFreeMaxRatio, CVmOptions& option);
-
-	/*
-	 * Initializes the heap young max size vm argument
-	 * @param dwHeapMaxSize the max heap size initialized
-	 * @param option the vm options to initialize
-	 * @return the heap young max size initialized
-	 */
-	DWORD initializeHeapYoungMaxSizeMemoryOption(DWORD dwHeapMaxSize, CVmOptions& option);
-
-	/*
-	 * Initializes the heap young min size vm argument
-	 * @param dwHeapYoungMaxSize the max young size initialized
-	 * @param dwHeapStartSize the start heap size initialized
-	 * @param option the vm options to initialize
-	 */
-	void initializeHeapYoungMinSizeMemoryOption(DWORD dwHeapYoungMaxSize, DWORD dwHeapStartSize, CVmOptions& option);
-
-	/*
-	 * Initializes the heap eden to survivor ratio vm argument
-	 * @param option the vm options to initialize
-	 */
-	void initializeHeapEdenSurvivorRatioMemoryOption( CVmOptions& option);
-
-	/*
-	 * Initializes the heap tenured to young ratio vm argument
-	 * @param option the vm options to initialize
-	 */
-	void initializeHeapTenuredYoungRatioMemoryOption( CVmOptions& option);
-
-	/*
-	 * Prints a print memory information overview to the debug out
-	 * @param memInfo the memory information
-	 */
-	void printMemoryOverview(MEMORYSTATUSEX& memInfo);
 
 	/*
 	 * Register an event source for the event log
@@ -261,18 +165,13 @@ protected:
 
 	/*
 	 * Initializes the vm options
-	 * @param otions the vm options to initialize
+	 * @param options the vm options to initialize
 	 * @param pcApplicationDirectory the application directory 
 	 * @param javaMainArguments pointer to java main arguments
+	 * @param useLowMemoryJvmSettings use low memory jvm settings
+	 * @param containsServerStopArgument contains server stop argument
 	 */
-	void initializeVmOptions(CVmOptions& options, LPCSTR pcApplicationDirectory, JavaMainArguments& javaMainArguments);
-
-	/*
-	 * Disables the mangament option if the arguments contains a server stop argument
-	 * @param argc the number of arguments
-	 * @param argv the arguments
-	 */
-	void disableManagementOptionForServerStop(int argc, LPSTR argv[]);
+	void initializeVmOptions(CVmOptions& options, LPCSTR pcApplicationDirectory, JavaMainArguments& javaMainArguments, boolean useLowMemoryJvmSettings, boolean containsServerStopArgument);
 
 	/*
 	 * Checks if the given arguments contains the server stop argument 
@@ -321,57 +220,11 @@ public:
 
 	/*
 	 * Creates a java program.
- 	 * @return the created java program instance
-	 * @param pcMainJavaClass the main java class to run
-	 */
-	static CJavaProgram* createJavaProgram(LPCSTR pcMainJavaClass);
-
-	/*
-	 * Creates a java program.
-	 * Reads the launch configuration from a launch configuration file that has the same name as the exe started this program.
- 	 * @return the created java program instance
-	 * @throws CLaunchException if launch configuration file does not exists, cannot be read or has a unvalid format
-	 */
-	static CJavaProgram* createJavaProgram();
-
-	/**
-	 * Creates a java program.
-	 * Uses the launch configuration stored in the launch configuration file
-	 * @param launchConfigurationFile pointer to the launch configuration file to use
- 	 * @return the created java program instance
-	 * @throws CLaunchException if launch configuration file does not exists, cannot be read or has a unvalid format
-	 */
-	static CJavaProgram* createJavaProgram(CLaunchConfigurationFile launchConfigurationFile);
-
-	/*
-	 * Creates a java program.
 	 * Uses the launch configuration given
 	 * @param launchConfiguration the launch configuration to used
  	 * @return the created java program instance
 	 */
 	static CJavaProgram* createJavaProgram(CLaunchConfiguration launchConfiguration);
-
-	/*
-	 * Creates a java program.
-	 * Uses the launch configuration given overwritten with the launch configuration read from a 
-	 * launch configuration file that has the same name as the exe started this program. 
-	 * @param defaultLaunchConfiguration the default launch configuration to used
-	 * @param readLaunchConfigurationFileIfExists should the launch configuration file be read if it exists 
- 	 * @return the created java program instance
-	 * @throws CLaunchException if launch configuration file cannot be read or has a unvalid format
-	 */	
-	static CJavaProgram* createJavaProgram(CLaunchConfiguration defaultLaunchConfiguration, bool readLaunchConfigurationFileIfExists);
-
-	/*
-	 * Creates a java program.
-	 * Uses the launch configuration given overwritten with the launch configuration read from a 
-	 * launch configuration file. 
-	 * @param launchConfiguration the launch configuration to used
-	 * @param launchConfigurationFile the launch configuration file that overwrittes the settings in pLaunchConfiguration 
- 	 * @return the created java program instance
-	 * @throws CLaunchException if launch configuration file does not exists cannot be read or has a unvalid format
-	 */	
-	static CJavaProgram* createJavaProgram(CLaunchConfiguration defaultLaunchConfiguration, CLaunchConfigurationFile launchConfigurationFile);
 
 	/*
 	 * Calls the main method of the java program

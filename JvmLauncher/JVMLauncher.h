@@ -37,7 +37,6 @@ History:
 #include "JavaWindowsService.h"
 #include "LaunchException.h"
 #include "LaunchConfiguration.h"
-#include "LaunchConfigurationFile.h"
 #include "WindowsService.h"
 #include "Log.h"
 #include "VmOptions.h"

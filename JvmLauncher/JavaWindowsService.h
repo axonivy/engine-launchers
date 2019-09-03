@@ -77,6 +77,8 @@ private:
 	/** The arguments */
 	LPSTR* m_argv;
 
+	LPSTR m_windowsServiceName;
+
 	/* 
 	 * This method is called by the static startupWindowsService method
 	 * @param argc number of arguments
@@ -138,71 +140,12 @@ private:
 	 */
 	void reportStop(CLaunchException ex);	
 public:
-	/*
-	 * Constructor 
-	 * @param launchConfiguration the launch configuration to use 
-	 */
-	CJavaWindowsService(CLaunchConfiguration& launchConfiguration);
 
-	/*
-	 * Destructor
-	 */
+	CJavaWindowsService(LPSTR windowsServiceName, CLaunchConfiguration& launchConfiguration);
+	
 	virtual ~CJavaWindowsService(void);
 
-	/*
-	 * Creates a java Windows service
-	 * @param pcWindowsServiceName the windows service name
-	 * @param pcMainJavaWindowsServiceClass the main java Windows service class to run
-	 * @return the created java windows service instance
-	 */
-	static CJavaWindowsService* createJavaWindowsService(LPCSTR pcWindowsServiceName, LPCSTR pcMainJavaWindowsServiceClass);
-
-	/*
-	 * Creates a java Windows service.
-	 * Reads the launch configuration from a launch configuration file that has the same name as the exe started this program.
-	 * @return the created java windows service instance
-	 * @throws CLaunchException if launch configuration file does not exists, cannot be read or has a unvalid format
-	 */
-	static CJavaWindowsService* createJavaWindowsService();
-
-	/**
-	 * Creates a java Windows service.
-	 * Uses the launch configuration stored in the launch configuration file
-	 * @param launchConfigurationFile poiWindowser to the launch configuration file to use
-	 * @return the created java windows service instance
-	 * @throws CLaunchException if launch configuration file does not exists, cannot be read or has a unvalid format
-	 */
-	static CJavaWindowsService* createJavaWindowsService(CLaunchConfigurationFile launchConfigurationFile);
-
-	/*
-	 * Creates a java Windows service.
-	 * Uses the launch configuration given
-	 * @param launchConfiguration the launch configuration to used
-	 * @return the created java windows service instance
-	 */
-	static CJavaWindowsService* createJavaWindowsService(CLaunchConfiguration launchConfiguration);
-
-	/*
-	 * Creates a java Windows service program.
-	 * Uses the launch configuration given overwritten with the launch configuration read from a 
-	 * launch configuration file that has the same name as the exe started this program. 
-	 * @param defaultLaunchConfiguration the default launch configuration to used
-	 * @param readLaunchConfigurationFileIfExists should the launch configuration file be read if it exists 
-	 * @return the created java windows service instance
-	 * @throws CLaunchException if launch configuration file cannot be read or has a unvalid format
-	 */	
-	static CJavaWindowsService* createJavaWindowsService(CLaunchConfiguration defaultLaunchConfiguration, bool readLaunchConfigurationFileIfExists);
-
-	/*
-	 * Creates a java net service program.
-	 * Uses the launch configuration given overwritten with the launch configuration read from a 
-	 * launch configuration file. 
-	 * @param launchConfiguration the launch configuration to used
-	 * @param launchConfigurationFile the launch configuration file that overwrittes the settings in pLaunchConfiguration 
-	 * @return the created java windows service instance
-	 * @throws CLaunchException if launch configuration file does not exists cannot be read or has a unvalid format
-	 */	
-	static CJavaWindowsService* createJavaWindowsService(CLaunchConfiguration defaultLaunchConfiguration, CLaunchConfigurationFile launchConfigurationFile);
+	static CJavaWindowsService* createJavaWindowsService(LPSTR windowsServiceName, CLaunchConfiguration launchConfiguration);
 
 	/*
 	 * The main method of the Windows service. This function must be called if the windows starts the windows service.

@@ -30,7 +30,7 @@ void _main(int argc, char* argv[])
 {
 	CJavaProgram* pProgram;
 	
-	pProgram = CJavaProgram::createJavaProgram(getLaunchConfiguration(), true);
+	pProgram = CJavaProgram::createJavaProgram(getLaunchConfiguration());
 	try
 	{
 	 	argc--; // skip the application name

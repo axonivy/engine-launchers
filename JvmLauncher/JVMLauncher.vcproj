@@ -408,6 +408,14 @@
 			>
 		</File>
 		<File
+			RelativePath=".\JvmOptionsFile.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\JvmOptionsFile.h"
+			>
+		</File>
+		<File
 			RelativePath="LaunchConfiguration.cpp"
 			>
 			<FileConfiguration
@@ -442,50 +450,6 @@
 					PreprocessorDefinitions=""
 				/>
 			</FileConfiguration>
-		</File>
-		<File
-			RelativePath="LaunchConfiguration.h"
-			>
-		</File>
-		<File
-			RelativePath="LaunchConfigurationFile.cpp"
-			>
-			<FileConfiguration
-				Name="Release|Win32"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					PreprocessorDefinitions=""
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|x64"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					PreprocessorDefinitions=""
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|Win32"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					PreprocessorDefinitions=""
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Debug|x64"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					PreprocessorDefinitions=""
-				/>
-			</FileConfiguration>
-		</File>
-		<File
-			RelativePath="LaunchConfigurationFile.h"
-			>
 		</File>
 		<File
 			RelativePath="LaunchException.cpp"

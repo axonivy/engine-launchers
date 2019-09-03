@@ -10,7 +10,6 @@ CLaunchConfiguration getLaunchConfiguration()
 {
 	CLaunchConfiguration config;
 	config = CLaunchConfiguration::getServerApplicationDefault();
-	config.setApplicationName("AxonIvyEngine");
 	config.setOsgiApplicationName("ch.ivyteam.ivy.server.exec.engine");
 	config.setServerStopArgument("stop");
 #ifndef _WINDOWS
