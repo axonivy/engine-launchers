@@ -106,7 +106,7 @@ LPSTR CJavaProgram::getJvmPath(LPCSTR pcApplicationDirectory, LPSTR pcJvmPathBuf
 	strcat_s(pcJvmPathBuffer, dwBufferLength, "\\jre");
 	evaluateJreDirectory(pcJvmPathBuffer, dwBufferLength);
 
-    strcat_s(pcJvmPathBuffer, dwBufferLength, "\\bin\\server\\jvm.dll");
+	strcat_s(pcJvmPathBuffer, dwBufferLength, "\\bin\\server\\jvm.dll");
 
 	return pcJvmPathBuffer;
 }
@@ -156,8 +156,8 @@ void CJavaProgram::evaluateJreDirectory(LPSTR pcJvmPathBuffer, DWORD dwBufferLen
 void CJavaProgram::callJavaMain(CJavaVirtualMaschine* pJvm, JavaMainArguments& javaMainArguments)
 {
 	jclass mainClass;
-    jmethodID mainMethod;
-    jobjectArray mainArguments;
+	jmethodID mainMethod;
+	jobjectArray mainArguments;
 	
 	mainClass = getJavaClass(pJvm->getJavaNativeInterface(), m_launchConfiguration.getMainJavaClass());
 
@@ -172,8 +172,8 @@ void CJavaProgram::callJavaMain(CJavaVirtualMaschine* pJvm, JavaMainArguments& j
 	mainArguments = convert2JavaStringArray(pJvm->getJavaNativeInterface(), javaMainArguments.getCount(), javaMainArguments.getArguments());
 	
     /* Invoke main method. */
-    pJvm->getJavaNativeInterface()->CallStaticVoidMethod(mainClass, mainMethod, mainArguments);
-    if (pJvm->getJavaNativeInterface()->ExceptionCheck()) {
+	pJvm->getJavaNativeInterface()->CallStaticVoidMethod(mainClass, mainMethod, mainArguments);
+	if (pJvm->getJavaNativeInterface()->ExceptionCheck()) {
 		throw CLaunchException(JVMLauncherErrorCodes.EXCEPTION_IN_MAIN_METHOD,
 			pJvm->getJavaNativeInterface(),
 			"Java main method throws Exception");
