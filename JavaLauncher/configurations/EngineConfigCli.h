@@ -12,7 +12,7 @@ CLaunchConfiguration getLaunchConfiguration()
 
 	config = CLaunchConfiguration::getServerApplicationDefault();
 	config.setOsgiApplicationName("ch.ivyteam.ivy.server.configuration.cli");
-	//config.setEnableLoggingInfo(false);
+	config.setEnableLoggingInfo(false);
 	config.useLowMemoryJvmSettings(true);
 	return config;
 }
