@@ -73,7 +73,12 @@ void CJavaProgram::main(int argc, LPSTR argv[])
 	JavaMainArguments javaMainArguments(argc, argv);
 	addOsgiJavaMainArguments(&javaMainArguments);
 
-	initializeVmOptions(vmOptions, pcApplicationDirectory, javaMainArguments, m_launchConfiguration.isUseLowMemoryJvmSettings(), containsServerStopArgument(argc, argv));
+	bool serverStopArgument = false;	
+	if (m_launchConfiguration.getServerStopArgument() != NULL)
+	{
+		serverStopArgument = containsServerStopArgument(argc, argv);
+	}
+	initializeVmOptions(vmOptions, pcApplicationDirectory, javaMainArguments, m_launchConfiguration.isUseLowMemoryJvmSettings(), serverStopArgument);
 
 	pJvm = CJavaVirtualMaschine::createJavaVirtualMaschine(
 		getJvmPath(pcApplicationDirectory, pcJvmPath, MAX_PATH), 
@@ -100,7 +105,6 @@ LPSTR CJavaProgram::getJvmPath(LPCSTR pcApplicationDirectory, LPSTR pcJvmPathBuf
 {
 	assert(pcApplicationDirectory != NULL);
 	assert(pcJvmPathBuffer != NULL);
-	LPSTR pcEndOfJrePath;
 
 	strcpy_s(pcJvmPathBuffer, dwBufferLength, pcApplicationDirectory);
 	strcat_s(pcJvmPathBuffer, dwBufferLength, "\\jre");
@@ -360,7 +364,7 @@ void CJavaProgram::initializeVmOptions(CVmOptions& options, LPCSTR pcApplication
 		// this also prevents e.g. starting management port
 		// when stoping the axon ivy engine
 		options.addOption("-XX:-OmitStackTraceInFastThrow", NULL);
-		options.addOption("-Xmx768m", NULL);
+		options.addOption("-Xmx256m", NULL);
 	}
 	else
 	{
