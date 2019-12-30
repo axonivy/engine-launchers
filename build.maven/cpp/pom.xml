@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ch.ivyteam.ivy.cpp</groupId>
 	<artifactId>maven-config</artifactId>
-	<version>7.4.1-SNAPSHOT</version>
+	<version>8.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<properties>
@@ -13,11 +13,10 @@
 	</properties>
 
 	<distributionManagement>
-		<repository>
-			<id>zugpronexus.snapshots</id>
-			<name>Internal Build Integration Repository</name>
-			<url>http://zugpronexus:8081/nexus/content/repositories/build-snapshots/</url>
-		</repository>
+		<snapshotRepository>
+			<id>nexus.ivyteam.io</id>
+			<url>https://nexus.ivyteam.io/repository/maven-snapshots/</url>
+		</snapshotRepository>
 	</distributionManagement>
 
 	<build>
