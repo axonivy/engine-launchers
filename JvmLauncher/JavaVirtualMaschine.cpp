@@ -65,7 +65,6 @@ CJavaVirtualMaschine* CJavaVirtualMaschine::createJavaVirtualMaschine(
     vmInvocationFunctions.pFctCreateJavaVM = NULL; 
 	vmInvocationFunctions.pFctGetDefaultJavaVMInitArgs = NULL;
 
-	CLog::info("Loading prerequired libraries of java virtual maschine %s", pcJvmPath);
 	loadPrerequiredLibraries(pcJvmPath);
 
 	CLog::info("Loading java virtual maschine %s", pcJvmPath);
@@ -150,29 +149,47 @@ void CJavaVirtualMaschine::loadJavaVirtualMaschineLibrary(LPCSTR pcJvmPath, Java
 
 void CJavaVirtualMaschine::loadPrerequiredLibraries(LPCSTR pcJvmPath)
 {    
-	char pcPrerequiredLibraryPath[MAX_PATH];
+	char pcLibraryPath[MAX_PATH];
 	LPSTR pcSearch;
 
-	// load msvcr100.dll which is required by the jvm version 1.7
+	// load visual studio standard c/c++ libraries which are required by the jvm 
 	// see http://www.duckware.com/tech/java6msvcr71.html for more details why this is necessary
 	// also see sun bug #6509291
-	strncpy_s(pcPrerequiredLibraryPath, MAX_PATH, pcJvmPath, strnlen(pcJvmPath, MAX_PATH)+1);
+	strncpy_s(pcLibraryPath, MAX_PATH, pcJvmPath, strnlen(pcJvmPath, MAX_PATH)+1);
 
-	pcSearch = strrchr(pcPrerequiredLibraryPath, '\\');
-	if (pcSearch !=  NULL)
+	pcSearch = strrchr(pcLibraryPath, '\\');
+	if (pcSearch ==  NULL)
 	{
-		*pcSearch='\0';
-		pcSearch = strrchr(pcPrerequiredLibraryPath, '\\');
-		if (pcSearch !=  NULL)
-		{
-			*pcSearch='\0';
-			strcat_s(pcPrerequiredLibraryPath, MAX_PATH, "\\msvcr100.dll");
-			CLog::info("Loading prerequired library '%s'", pcPrerequiredLibraryPath);
-			if (GetFileAttributes(pcPrerequiredLibraryPath) != INVALID_FILE_ATTRIBUTES) // file exists
-			{
-				LoadLibrary(pcPrerequiredLibraryPath);
-			}
-		}
+		CLog::warn("Could not evaluate directory of prerequired libraries of jvm '%s'", pcJvmPath);
+		return;
+	}
+	*pcSearch='\0';
+	pcSearch = strrchr(pcLibraryPath, '\\');
+	if (pcSearch ==  NULL)
+	{
+		CLog::warn("Could not evaluate directory of prerequired libraries of jvm '%s'", pcJvmPath);
+		return;
+	}
+	*pcSearch='\0';
+	loadPrerequiredLibrary(pcLibraryPath, "vcruntime140.dll");
+	loadPrerequiredLibrary(pcLibraryPath, "msvcp140.dll");
+}
+
+void CJavaVirtualMaschine::loadPrerequiredLibrary(LPCSTR pcLibraryPath, LPCSTR pcLibraryFileName)
+{
+	char pcPrerequiredLibraryPath[MAX_PATH];
+
+	strcpy_s(pcPrerequiredLibraryPath, MAX_PATH, pcLibraryPath);
+	strcat_s(pcPrerequiredLibraryPath, MAX_PATH, "\\");
+	strcat_s(pcPrerequiredLibraryPath, MAX_PATH, pcLibraryFileName);
+	if (GetFileAttributes(pcPrerequiredLibraryPath) != INVALID_FILE_ATTRIBUTES) // file exists
+	{
+		CLog::info("Loading prerequired library '%s'", pcPrerequiredLibraryPath);
+		LoadLibrary(pcPrerequiredLibraryPath);
+	}
+	else
+	{
+		CLog::warn("Could not load prerequired library '%s'", pcPrerequiredLibraryPath);
 	}
 }
 
