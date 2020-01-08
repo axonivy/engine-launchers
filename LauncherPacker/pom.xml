@@ -1,14 +1,23 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>ch.ivyteam.ivy.cpp</groupId>
-		<artifactId>maven-config</artifactId>
-		<version>8.0.0-SNAPSHOT</version>
-		<relativePath>../build.maven/cpp</relativePath>
-	</parent>
-	<artifactId>engineLaunchers</artifactId>
+
+	<groupId>ch.ivyteam.launch</groupId>
+	<version>8.0.0-SNAPSHOT</version>
+	<artifactId>engine-launchers</artifactId>
 	<packaging>pom</packaging>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>nexus.ivyteam.io</id>
+			<url>https://nexus.ivyteam.io/repository/maven-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<properties>
+		<OUTPUT_X64>../target/win/x64</OUTPUT_X64>
+		<maven.test.skip>true</maven.test.skip>
+	</properties>
 
 	<build>
 		<plugins>
@@ -29,5 +38,13 @@
 				</executions>
 			</plugin>
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<configuration><skip>false</skip></configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 </project>
