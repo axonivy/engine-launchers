@@ -20,7 +20,7 @@ pipeline {
     stage('build') {
       steps {
         script {
-          def phase = env.BRANCH_NAME == 'master' ? 'deploy' : 'verify'
+          def phase = env.BRANCH_NAME == 'release/8.0' ? 'deploy' : 'verify'
           maven cmd: "clean ${phase}"
         }
         archiveArtifacts '*/target/*.zip'
