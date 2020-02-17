@@ -444,6 +444,9 @@ void CJavaProgram::initializeJavaModuleSystemVmOptions(CVmOptions& options)
 	// ignore illegal reflective access warning at startup because guice
 	options.addOption("--add-opens=java.base/java.lang=ALL-UNNAMED", NULL);
 
+	// ignore illegal reflective access warning at rest deployment because ProjectJaxRsClassesScanner#hackReflectionHelperToNonOsgiMode()
+	options.addOption("--add-opens=java.base/java.lang.reflect=ALL-UNNAMED", NULL);
+
 	// allow ZipFileSystem readonly feature on engine with Java 11
 	options.addOption("--add-opens=jdk.zipfs/jdk.nio.zipfs=ALL-UNNAMED", NULL);
 }
