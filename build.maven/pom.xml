@@ -7,7 +7,7 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<tools.microsoft.visualstudio.8>C:/Program Files (x86)/Microsoft Visual Studio 8</tools.microsoft.visualstudio.8>
+		<tools.microsoft.visualstudio.8>visual</tools.microsoft.visualstudio.8>
 		<OUTPUT_X64>../target/win/x64</OUTPUT_X64>
 		<maven.test.skip>true</maven.test.skip>
 	</properties>
