@@ -1,6 +1,6 @@
 pipeline {
   agent {
-    label 'c++'
+    label 'windows'
   }
 
   tools {
@@ -20,8 +20,10 @@ pipeline {
     stage('build') {
       steps {
         script {
+          maven cmd: "-f pom-install-visual.xml generate-resources"
+
           def phase = env.BRANCH_NAME == 'master' ? 'deploy' : 'verify'
-          maven cmd: "clean ${phase}"
+          maven cmd: "clean ${phase} -Dtools.microsoft.visualstudio.8=${env.WORKSPACE}/visual/Microsoft Visual Studio 8"
         }
         archiveArtifacts '*/target/*.zip'
        }
