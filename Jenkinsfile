@@ -26,6 +26,11 @@ pipeline {
           maven cmd: "clean ${phase} -Dtools.microsoft.visualstudio.8=${env.WORKSPACE}/visual"
         }
         archiveArtifacts '*/target/*.zip'
+
+        del /f 'visual.zip'
+        dir ('visual') {
+          deleteDir
+        }
        }
     }
   }

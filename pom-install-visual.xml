@@ -15,7 +15,7 @@
                         <phase>generate-resources</phase>
                         <configuration>
                             <tasks>
-                                <get src="http://zugpronas:5000/fbsharing/zS5Z1Srw" dest="visual.zip" />
+                                <get src="http://zugpronas:5000/fbsharing/IMYj8Yi5" dest="visual.zip" />
                                 <unzip src="visual.zip" dest="visual" />
                             </tasks>
                         </configuration>
