@@ -29,7 +29,7 @@ pipeline {
 
         bat 'del /f visual.zip'
         dir ('visual') {
-          deleteDir
+          //deleteDir
         }
        }
     }
