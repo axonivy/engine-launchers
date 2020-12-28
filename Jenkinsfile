@@ -23,7 +23,7 @@ pipeline {
           maven cmd: "-f pom-install-visual.xml generate-resources"
 
           def phase = env.BRANCH_NAME == 'master' ? 'deploy' : 'verify'
-          maven cmd: "clean ${phase} -Dtools.microsoft.visualstudio.8='${env.WORKSPACE}/visual"
+          maven cmd: "clean ${phase} -Dtools.microsoft.visualstudio.8=${env.WORKSPACE}/visual"
         }
         archiveArtifacts '*/target/*.zip'
        }
