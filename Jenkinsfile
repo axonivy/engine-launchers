@@ -27,7 +27,7 @@ pipeline {
         }
         archiveArtifacts '*/target/*.zip'
 
-        del /f 'visual.zip'
+        bat 'del /f visual.zip'
         dir ('visual') {
           deleteDir
         }
