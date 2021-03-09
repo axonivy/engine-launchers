@@ -9,7 +9,7 @@
  * ======================================================================
  *
  * Author    : Reto Weiss
- * Copyright : AXON Ivy 
+ * Copyright : Axon Ivy 
  * Date      : 20. Sept. 2000
  * Version   : 1.0
  *
