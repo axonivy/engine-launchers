@@ -82,7 +82,7 @@ BEGIN
             VALUE "FileDescription", "Axon Ivy Engine Config Cli"
             VALUE "FileVersion", "7.3.2.0"
             VALUE "InternalName", "EngineConfigCli"
-            VALUE "LegalCopyright", "� 2001-2018 Axon Ivy AG"
+            VALUE "LegalCopyright", "(C) 2001-2018 Axon Ivy AG"
             VALUE "OriginalFilename", "EngineConfigCli.exe"
             VALUE "PrivateBuild", "Build Date 2018-07-18"
             VALUE "ProductName", "Axon Ivy Engine"
