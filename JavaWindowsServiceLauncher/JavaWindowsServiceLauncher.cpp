@@ -41,7 +41,7 @@ History:
 int main(int argc, char* argv[])
 {
 	CJavaWindowsService* pJavaWindowsService;
-	LPSTR windowsServiceName = "Axon.ivy Engine";
+	LPSTR windowsServiceName = "Axon Ivy Engine";
 	LPSTR command = NULL;
 	try
 	{

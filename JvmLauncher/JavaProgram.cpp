@@ -362,7 +362,7 @@ void CJavaProgram::initializeVmOptions(CVmOptions& options, LPCSTR pcApplication
 	if (useLowMemoryJvmSettings || containsServerStopArgument)
 	{
 		// this also prevents e.g. starting management port
-		// when stoping the axon ivy engine
+		// when stoping the Axon Ivy engine
 		options.addOption("-XX:-OmitStackTraceInFastThrow", NULL);
 		options.addOption("-Xmx256m", NULL);
 	}
@@ -597,7 +597,7 @@ void CJavaProgram::reportError(CLaunchException ex)
 	LPCSTR pcMessage;
 	CLog::debug("Report error to windows event log"); 
 
-	strcpy_s(pcEventSourceName, 256, "Axon.ivy Launcher");
+	strcpy_s(pcEventSourceName, 256, "Axon Ivy Launcher");
 	registerEventSource(pcEventSourceName);
 	hEventSource = RegisterEventSource(NULL, pcEventSourceName);
 	if (hEventSource == NULL)

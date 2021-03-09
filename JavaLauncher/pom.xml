@@ -27,7 +27,7 @@
 								<!-- AxonIvyEngine.exe -->
 								<ant dir="." target="build">
 									<property name="launcher" value="AxonIvyEngine" />
-									<property name="launcher.description" value="Axon.ivy Engine" />
+									<property name="launcher.description" value="Axon Ivy Engine" />
 									<property name="bin" value="${BIN_X64}" />
 									<property name="platform" value="x64" />
 								</ant>
@@ -35,7 +35,7 @@
 								<!-- ControlCenter.exe -->
 								<ant dir="." target="build">
 									<property name="launcher" value="ControlCenter" />
-									<property name="launcher.description" value="Axon.ivy Engine Control Center" />
+									<property name="launcher.description" value="Axon Ivy Engine Control Center" />
 									<property name="bin" value="${BIN_X64}" />
 									<property name="platform" value="x64" />
 								</ant>
@@ -43,7 +43,7 @@
 								<!-- EngineConfigCli.exe -->
 								<ant dir="." target="build">
 									<property name="launcher" value="EngineConfigCli" />
-									<property name="launcher.description" value="Axon.ivy Engine Config Cli" />
+									<property name="launcher.description" value="Axon Ivy Engine Config Cli" />
 									<property name="bin" value="${BIN_X64}" />
 									<property name="platform" value="x64" />
 								</ant>								
