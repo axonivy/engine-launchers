@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>ch.ivyteam.launch</groupId>
-	<version>9.1.0-SNAPSHOT</version>
+	<version>9.4.0-SNAPSHOT</version>
 	<artifactId>engine-launchers</artifactId>
 	<packaging>pom</packaging>
 
